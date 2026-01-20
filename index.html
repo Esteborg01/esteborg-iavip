@@ -6,520 +6,522 @@
   <title>Esteborg IA - Despliega todo tu poder</title>
 
   <style>
-    :root { color-scheme: dark; }
-    * { box-sizing: border-box; }
-    body {
-  margin: 0;
-  height: 100%;
-  min-height: 100vh;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-    "Inter", sans-serif;
-  background: radial-gradient(circle at top, #28224b 0, #050509 55%, #020208 100%);
-  color: var(--text-main);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 16px 8px 32px; /* 👈 antes 24px 12px 40px */
-  overflow: hidden;
-}
-    .app {
-  width: 100%;
-  max-width: 960px;  /* 👈 más compacto */
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
 
+  body {
+    margin: 0;
+    height: 100%;
+    min-height: 100vh;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+      "Inter", sans-serif;
+    background: radial-gradient(circle at top, #28224b 0, #050509 55%, #020208 100%);
+    color: #f5f5ff;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 16px 8px 32px; /* compacto, igual que Com7 */
+    overflow: hidden;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 960px;  /* ancho gemelo a Com7 */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .shell {
+    position: relative;
+    border-radius: 32px;
+    padding: 26px 26px 22px;
+    background:
+      radial-gradient(circle at top left, rgba(94, 234, 212, 0.06), transparent 55%),
+      radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.09), transparent 55%),
+      rgba(3, 7, 18, 0.96);
+    box-shadow:
+      0 30px 90px rgba(0, 0, 0, 0.95),
+      0 0 0 1px rgba(148, 163, 184, 0.28),
+      0 0 32px rgba(56, 189, 248, 0.25);
+    border: 1px solid rgba(75, 85, 99, 0.75);
+  }
+
+  .banner-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+  .banner-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background: radial-gradient(circle at top, #38bdf8, #4f46e5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 20px;
+    color: #ecfeff;
+    box-shadow:
+      0 0 0 2px rgba(15, 23, 42, 1),
+      0 0 0 1px rgba(226, 232, 240, 0.9),
+      0 0 32px rgba(96, 165, 250, 0.95);
+  }
+
+  .banner-title {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .banner-title-main {
+    font-size: 13px;
+    letter-spacing: 0.19em;
+    text-transform: uppercase;
+    color: rgba(209, 213, 219, 0.96);
+  }
+  .banner-title-sub {
+    font-size: 22px;
+    font-weight: 650;
+    letter-spacing: 0.02em;
+    color: #e5e7eb;
+  }
+
+  .banner-description {
+    margin-top: 4px;
+    font-size: 13px;
+    color: rgba(209, 213, 219, 0.92);
+  }
+
+  .panel {
+    margin-top: 18px;
+    border-radius: 22px;
+    padding: 14px 16px 14px;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.85)
+      );
+    border: 1px solid rgba(148, 163, 184, 0.8);
+    box-shadow:
+      inset 0 0 0 1px rgba(15, 23, 42, 0.96),
+      0 18px 40px rgba(15, 23, 42, 0.95);
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .panel-title {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: rgba(148, 163, 184, 0.95);
+  }
+  .panel-badge {
+    border-radius: 999px;
+    padding: 4px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    border: 1px solid rgba(52, 211, 153, 0.6);
+    color: #a7f3d0;
+    background: radial-gradient(circle at top left, rgba(16, 185, 129, 0.35), rgba(15, 23, 42, 0.98));
+  }
+  .panel-badge .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: radial-gradient(circle at center, #22c55e, #15803d);
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.95);
+  }
+
+  .chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 11px;
+    color: rgba(156, 163, 175, 0.95);
+  }
+  .chips-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(148, 163, 184, 0.98);
+  }
+  .chip-btn {
+    border-radius: 999px;
+    border: 1px solid rgba(129, 140, 248, 0.9);
+    background: radial-gradient(circle at top, rgba(79, 70, 229, 0.95), rgba(30, 64, 175, 0.98));
+    color: #e5e7eb;
+    padding: 4px 11px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow:
+      0 10px 22px rgba(15, 23, 42, 0.95),
+      0 0 0 1px rgba(191, 219, 254, 0.35);
+  }
+
+  .content-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .content-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(148, 163, 184, 0.98);
+  }
+  .content-btn {
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.9);
+    background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.86));
+    color: rgba(209, 213, 219, 0.98);
+    padding: 4px 10px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* CHAT */
+  .chat-container {
+    margin-top: 10px;
+    border-radius: 20px;
+    padding: 10px 10px 12px;
+    background:
+      radial-gradient(circle at top left, rgba(96, 165, 250, 0.07), transparent 55%),
+      radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.09), transparent 55%),
+      rgba(15, 23, 42, 0.98);
+    border: 1px solid rgba(55, 65, 81, 0.95);
+    box-shadow:
+      inset 0 0 0 1px rgba(15, 23, 42, 1),
+      0 20px 42px rgba(15, 23, 42, 0.98);
+
+    display: flex;
+    flex-direction: column;
+    max-height: 540px;
+    overflow: hidden;
+  }
+
+  .chat-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 2px 6px;
+  }
+  .chat-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chat-node {
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    border: 1px solid rgba(191, 219, 254, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #e5e7eb;
+    background: radial-gradient(circle at top, #4f46e5, #0ea5e9);
+    box-shadow:
+      0 0 0 1px rgba(15, 23, 42, 1),
+      0 0 18px rgba(129, 140, 248, 0.95);
+  }
+  .chat-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    font-size: 12px;
+    color: #e5e7eb;
+  }
+  .chat-title small {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(148, 163, 184, 0.95);
+  }
+
+  .chat-language-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 999px;
+    padding: 3px 7px;
+    border: 1px solid rgba(248, 250, 252, 0.3);
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
+    font-size: 11px;
+    color: rgba(229, 231, 235, 0.98);
+  }
+  .lang-option {
+    padding: 1px 6px;
+    border-radius: 999px;
+    border: 1px solid rgba(55, 65, 81, 0.9);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    cursor: pointer;
+  }
+  .lang-option.active {
+    border-color: rgba(96, 165, 250, 0.95);
+    background: radial-gradient(circle at top, rgba(59, 130, 246, 0.9), rgba(15, 23, 42, 0.9));
+  }
+
+  /* CHAT BOX */
+  #chat-log {
+    margin-top: 8px;
+    border-radius: 18px;
+    background: rgba(5, 7, 18, 0.96);
+    border: 1px solid rgba(51, 65, 85, 0.9);
+    padding: 12px;
+
+    flex: 1;
+    min-height: 200px;
+    max-height: none;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .msg-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .msg-row.user { justify-content: flex-end; }
+  .msg-tag {
+    font-size: 11px;
+    border-radius: 999px;
+    padding: 2px 7px;
+    border: 1px solid rgba(148, 163, 184, 0.7);
+    opacity: 0.9;
+    white-space: nowrap;
+  }
+  .msg-tag.user {
+    color: rgba(248, 250, 252, 0.96);
+    border-color: rgba(248, 250, 252, 0.6);
+  }
+  .msg-tag.assistant {
+    color: rgba(52, 211, 153, 0.96);
+    border-color: rgba(52, 211, 153, 0.7);
+  }
+  .msg-bubble {
+    max-width: 88%;
+    padding: 8px 12px;
+    border-radius: 14px;
+    font-size: 17px;
+    line-height: 1.5;
+    border: 1px solid transparent;
+  }
+  .msg-row.user .msg-bubble {
+    border-radius: 14px 14px 3px 14px;
+    background: linear-gradient(135deg, #1d4ed8, #4c1d95);
+    border-color: rgba(191, 219, 254, 0.4);
+    color: #e5e7eb;
+  }
+  .msg-row.assistant .msg-bubble {
+    border-radius: 14px 14px 14px 3px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 1), rgba(15, 23, 42, 0.92));
+    border-color: rgba(55, 65, 81, 0.9);
+    color: #e5e7eb;
+  }
+  .msg-text {
+    white-space: pre-wrap;
+  }
+
+  .input-row {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .input-row textarea {
+    resize: none;
+    border-radius: 999px;
+    border: 1px solid rgba(75, 85, 99, 0.95);
+    background: radial-gradient(circle at top, rgba(3, 7, 18, 0.98), rgba(3, 7, 18, 0.95));
+    color: #e5e7eb;
+    padding: 10px 14px;
+    font-size: 14px;
+    min-height: 44px;
+    max-height: 84px;
+    line-height: 1.4;
+    outline: none;
+    box-shadow:
+      0 0 0 1px rgba(15, 23, 42, 0.9),
+      0 14px 24px rgba(15, 23, 42, 0.98);
+  }
+  .input-row textarea::placeholder {
+    color: rgba(148, 163, 184, 0.95);
+  }
+
+  .send-button,
+  .mic-button {
+    border-radius: 999px;
+    border: none;
+    padding: 0 18px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .send-button {
+    background: radial-gradient(circle at top left, #facc15, #f97316);
+    color: #111827;
+    box-shadow:
+      0 12px 24px rgba(248, 184, 75, 0.85),
+      0 0 0 1px rgba(251, 191, 36, 0.9);
+  }
+  .mic-button {
+    background: radial-gradient(circle at top left, #0ea5e9, #4f46e5);
+    color: #e0f2fe;
+    box-shadow:
+      0 12px 24px rgba(56, 189, 248, 0.7),
+      0 0 0 1px rgba(191, 219, 254, 0.7);
+    font-size: 18px;
+    padding: 0 14px;
+  }
+  .mic-button.active {
+    box-shadow:
+      0 0 0 1px rgba(96, 165, 250, 0.95),
+      0 0 22px rgba(56, 189, 248, 1);
+  }
+
+  .status-line {
+    margin-top: 6px;
+    font-size: 11px;
+    color: rgba(148, 163, 184, 0.96);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: radial-gradient(circle at center, #22c55e, #15803d);
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.95);
+    transform: translateY(-0.5px);
+  }
+
+  .voice-row {
+    margin-top: 6px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: rgba(226, 232, 240, 0.96);
+  }
+  .voice-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .voice-toggle input {
+    accent-color: #facc15;
+  }
+  .voice-pill {
+    border-radius: 999px;
+    padding: 3px 8px;
+    border: 1px solid rgba(251, 191, 36, 0.75);
+    background: radial-gradient(circle at top, rgba(250, 204, 21, 0.85), rgba(15, 23, 42, 0.95));
+    color: #111827;
+    font-weight: 600;
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* FOOTER */
+  .footer-row {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    font-size: 11px;
+    color: rgba(148, 163, 184, 0.95);
+  }
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .footer-left strong {
+    font-weight: 600;
+    color: rgba(229, 231, 235, 0.96);
+  }
+  .footer-right {
+    font-size: 10px;
+    color: rgba(148, 163, 184, 0.9);
+    text-align: right;
+  }
+  .footer-right a {
+    color: #a5b4fc;
+    text-decoration: none;
+  }
+
+  @media (max-width: 720px) {
     .shell {
-      position: relative;
-      border-radius: 32px;
-      padding: 26px 26px 22px;
-      background:
-        radial-gradient(circle at top left, rgba(94, 234, 212, 0.06), transparent 55%),
-        radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.09), transparent 55%),
-        rgba(3, 7, 18, 0.96);
-      box-shadow:
-        0 30px 90px rgba(0, 0, 0, 0.95),
-        0 0 0 1px rgba(148, 163, 184, 0.28),
-        0 0 32px rgba(56, 189, 248, 0.25);
-      border: 1px solid rgba(75, 85, 99, 0.75);
+      padding: 20px 16px;
+      border-radius: 24px;
     }
-
-    .banner-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 10px;
-    }
-    .banner-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 999px;
-      background: radial-gradient(circle at top, #38bdf8, #4f46e5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 20px;
-      color: #ecfeff;
-      box-shadow:
-        0 0 0 2px rgba(15, 23, 42, 1),
-        0 0 0 1px rgba(226, 232, 240, 0.9),
-        0 0 32px rgba(96, 165, 250, 0.95);
-    }
-
-    .banner-title {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .banner-title-main {
-      font-size: 13px;
-      letter-spacing: 0.19em;
-      text-transform: uppercase;
-      color: rgba(209, 213, 219, 0.96);
+    #app {
+      padding: 18px 10px 26px;
     }
     .banner-title-sub {
-      font-size: 22px;
-      font-weight: 650;
-      letter-spacing: 0.02em;
-      color: #e5e7eb;
-    }
-
-    .banner-description {
-      margin-top: 4px;
-      font-size: 13px;
-      color: rgba(209, 213, 219, 0.92);
-    }
-
-    .panel {
-      margin-top: 18px;
-      border-radius: 22px;
-      padding: 14px 16px 14px;
-      background:
-        linear-gradient(
-          145deg,
-          rgba(15, 23, 42, 0.96),
-          rgba(15, 23, 42, 0.85)
-        );
-      border: 1px solid rgba(148, 163, 184, 0.8);
-      box-shadow:
-        inset 0 0 0 1px rgba(15, 23, 42, 0.96),
-        0 18px 40px rgba(15, 23, 42, 0.95);
-    }
-
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    .panel-title {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: rgba(148, 163, 184, 0.95);
-    }
-    .panel-badge {
-      border-radius: 999px;
-      padding: 4px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      border: 1px solid rgba(52, 211, 153, 0.6);
-      color: #a7f3d0;
-      background: radial-gradient(circle at top left, rgba(16, 185, 129, 0.35), rgba(15, 23, 42, 0.98));
-    }
-    .panel-badge .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: radial-gradient(circle at center, #22c55e, #15803d);
-      box-shadow: 0 0 12px rgba(34, 197, 94, 0.95);
-    }
-
-    .chips-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 8px;
-      font-size: 11px;
-      color: rgba(156, 163, 175, 0.95);
-    }
-    .chips-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: rgba(148, 163, 184, 0.98);
-    }
-    .chip-btn {
-      border-radius: 999px;
-      border: 1px solid rgba(129, 140, 248, 0.9);
-      background: radial-gradient(circle at top, rgba(79, 70, 229, 0.95), rgba(30, 64, 175, 0.98));
-      color: #e5e7eb;
-      padding: 4px 11px;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow:
-        0 10px 22px rgba(15, 23, 42, 0.95),
-        0 0 0 1px rgba(191, 219, 254, 0.35);
-    }
-
-    .content-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .content-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: rgba(148, 163, 184, 0.98);
-    }
-    .content-btn {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.86));
-      color: rgba(209, 213, 219, 0.98);
-      padding: 4px 10px;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* CHAT */
-    /* CHAT */
-.chat-container {
-  margin-top: 10px;
-  border-radius: 20px;
-  padding: 10px 10px 12px;
-  background:
-    radial-gradient(circle at top left, rgba(96, 165, 250, 0.07), transparent 55%),
-    radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.09), transparent 55%),
-    rgba(15, 23, 42, 0.98);
-  border: 1px solid rgba(55, 65, 81, 0.95);
-  box-shadow:
-    inset 0 0 0 1px rgba(15, 23, 42, 1),
-    0 20px 42px rgba(15, 23, 42, 0.98);
-
-  /* 🔹 Nuevo: que el contenedor sea fijo y solo el chat scrollee */
-  display: flex;
-  flex-direction: column;
-  max-height: 540px;   /* ajustable si lo quieres un poquito más alto o más bajo */
-  overflow: hidden;
-}
-
-    .chat-header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 2px 2px 6px;
-    }
-    .chat-header-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .chat-node {
-      width: 22px;
-      height: 22px;
-      border-radius: 999px;
-      border: 1px solid rgba(191, 219, 254, 0.95);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 700;
-      color: #e5e7eb;
-      background: radial-gradient(circle at top, #4f46e5, #0ea5e9);
-      box-shadow:
-        0 0 0 1px rgba(15, 23, 42, 1),
-        0 0 18px rgba(129, 140, 248, 0.95);
-    }
-    .chat-title {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      font-size: 12px;
-      color: #e5e7eb;
-    }
-    .chat-title small {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: rgba(148, 163, 184, 0.95);
-    }
-
-    .chat-language-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      border-radius: 999px;
-      padding: 3px 7px;
-      border: 1px solid rgba(248, 250, 252, 0.3);
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
-      font-size: 11px;
-      color: rgba(229, 231, 235, 0.98);
-    }
-    .lang-option {
-      padding: 1px 6px;
-      border-radius: 999px;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      cursor: pointer;
-    }
-    .lang-option.active {
-      border-color: rgba(96, 165, 250, 0.95);
-      background: radial-gradient(circle at top, rgba(59, 130, 246, 0.9), rgba(15, 23, 42, 0.9));
-    }
-
-    /* CHAT BOX */
-    /* CHAT BOX */
-#chat-log {
-  margin-top: 8px;
-  border-radius: 18px;
-  background: rgba(5, 7, 18, 0.96);
-  border: 1px solid rgba(51, 65, 85, 0.9);
-  padding: 12px;
-
-  /* 🔹 Nuevo: que ocupe el espacio disponible dentro del contenedor */
-  flex: 1;
-  min-height: 200px;
-  max-height: none;
-  overflow-y: auto;
-
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-    .msg-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-    }
-    .msg-row.user { justify-content: flex-end; }
-    .msg-tag {
-      font-size: 11px;
-      border-radius: 999px;
-      padding: 2px 7px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      opacity: 0.9;
-      white-space: nowrap;
-    }
-    .msg-tag.user {
-      color: rgba(248, 250, 252, 0.96);
-      border-color: rgba(248, 250, 252, 0.6);
-    }
-    .msg-tag.assistant {
-      color: rgba(52, 211, 153, 0.96);
-      border-color: rgba(52, 211, 153, 0.7);
-    }
-    .msg-bubble {
-      max-width: 88%;
-      padding: 8px 12px;
-      border-radius: 14px;
-      font-size: 17px;
-      line-height: 1.5;
-      border: 1px solid transparent;
-    }
-    .msg-row.user .msg-bubble {
-      border-radius: 14px 14px 3px 14px;
-      background: linear-gradient(135deg, #1d4ed8, #4c1d95);
-      border-color: rgba(191, 219, 254, 0.4);
-      color: #e5e7eb;
-    }
-    .msg-row.assistant .msg-bubble {
-      border-radius: 14px 14px 14px 3px;
-      background: linear-gradient(135deg, rgba(15, 23, 42, 1), rgba(15, 23, 42, 0.92));
-      border-color: rgba(55, 65, 81, 0.9);
-      color: #e5e7eb;
-    }
-    .msg-text {
-      white-space: pre-wrap;
-    }
-    .input-row {
-      margin-top: 10px;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto auto;
-      gap: 8px;
-      align-items: stretch;
-    }
-    .input-row textarea {
-      resize: none;
-      border-radius: 999px;
-      border: 1px solid rgba(75, 85, 99, 0.95);
-      background: radial-gradient(circle at top, rgba(3, 7, 18, 0.98), rgba(3, 7, 18, 0.95));
-      color: #e5e7eb;
-      padding: 10px 14px;
-      font-size: 14px;
-      min-height: 44px;
-      max-height: 84px;
-      line-height: 1.4;
-      outline: none;
-      box-shadow:
-        0 0 0 1px rgba(15, 23, 42, 0.9),
-        0 14px 24px rgba(15, 23, 42, 0.98);
-    }
-    .input-row textarea::placeholder {
-      color: rgba(148, 163, 184, 0.95);
-    }
-
-    .send-button,
-    .mic-button {
-      border-radius: 999px;
-      border: none;
-      padding: 0 18px;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
-    .send-button {
-      background: radial-gradient(circle at top left, #facc15, #f97316);
-      color: #111827;
-      box-shadow:
-        0 12px 24px rgba(248, 184, 75, 0.85),
-        0 0 0 1px rgba(251, 191, 36, 0.9);
-    }
-    .mic-button {
-      background: radial-gradient(circle at top left, #0ea5e9, #4f46e5);
-      color: #e0f2fe;
-      box-shadow:
-        0 12px 24px rgba(56, 189, 248, 0.7),
-        0 0 0 1px rgba(191, 219, 254, 0.7);
       font-size: 18px;
-      padding: 0 14px;
     }
-    .mic-button.active {
-      box-shadow:
-        0 0 0 1px rgba(96, 165, 250, 0.95),
-        0 0 22px rgba(56, 189, 248, 1);
+    .panel {
+      padding: 12px 12px 14px;
     }
-
-    .status-line {
-      margin-top: 6px;
-      font-size: 11px;
-      color: rgba(148, 163, 184, 0.96);
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .chat-container {
+      margin-top: 8px;
     }
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: radial-gradient(circle at center, #22c55e, #15803d);
-      box-shadow: 0 0 10px rgba(34, 197, 94, 0.95);
-      transform: translateY(-0.5px);
-    }
-
-    .voice-row {
-      margin-top: 6px;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      color: rgba(226, 232, 240, 0.96);
-    }
-    .voice-toggle {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .voice-toggle input {
-      accent-color: #facc15;
-    }
-    .voice-pill {
-      border-radius: 999px;
-      padding: 3px 8px;
-      border: 1px solid rgba(251, 191, 36, 0.75);
-      background: radial-gradient(circle at top, rgba(250, 204, 21, 0.85), rgba(15, 23, 42, 0.95));
-      color: #111827;
-      font-weight: 600;
-      font-size: 11px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    /* FOOTER */
-    .footer-row {
-      margin-top: 10px;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-      font-size: 11px;
-      color: rgba(148, 163, 184, 0.95);
-    }
-    .footer-left {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .footer-left strong {
-      font-weight: 600;
-      color: rgba(229, 231, 235, 0.96);
-    }
-    .footer-right {
-      font-size: 10px;
-      color: rgba(148, 163, 184, 0.9);
-      text-align: right;
-    }
-    .footer-right a {
-      color: #a5b4fc;
-      text-decoration: none;
-    }
-
-    @media (max-width: 720px) {
-      .shell {
-        padding: 20px 16px;
-        border-radius: 24px;
-      }
-      #app {
-        padding: 18px 10px 26px;
-      }
-      .banner-title-sub {
-        font-size: 18px;
-      }
-      .panel {
-        padding: 12px 12px 14px;
-      }
-      .chat-container {
-        margin-top: 8px;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
   <div id="app">
     <div class="shell">
+      
+      <!-- HEADER -->
       <div class="banner-header">
         <div class="banner-avatar">E</div>
         <div class="banner-title">
@@ -527,19 +529,20 @@
             ESTEBORG EXECUTIVE · MEMBERS VIP
           </div>
           <div class="banner-title-sub" id="i-banner-sub">
-            Entrenamiento de Comunicación con Inteligencia Emocional
+            Entrenamiento ejecutivo en IA aplicada
           </div>
         </div>
       </div>
+
       <div class="banner-description" id="i-banner-desc">
-        EsteborgCom7 es tu entrenador ejecutivo de comunicación. Aquí trabajas
-        situaciones reales, lecciones y retos diseñados para que tu mente sea tu ventaja.
+        Esteborg IA es tu copiloto ejecutivo de inteligencia artificial. Aquí diseñamos tu plan estratégico, optimizamos tu negocio y entrenamos tus habilidades ejecutivas con IA.
       </div>
 
+      <!-- PANEL PRINCIPAL -->
       <div class="panel">
         <div class="panel-header">
           <div class="panel-title" id="i-panel-title">
-            Mini entrenamiento · Comunicación con EsteborgCom7
+            Inicio del entrenamiento · Copiloto Ejecutivo IA
           </div>
           <div class="panel-badge">
             <span class="dot"></span>
@@ -547,48 +550,59 @@
           </div>
         </div>
 
-        <!-- CHIPS: SESIÓN -->
+        <!-- CHIPS: INTENCIONES -->
         <div class="chips-row">
-          <span class="chips-label" id="i-chips-label">Comenzar sesión:</span>
+          <span class="chips-label" id="i-chips-label">Quiero empezar:</span>
+
           <button
             class="chip-btn starter"
-            id="i-btn-lesson"
-            data-text="Quiero iniciar la Lección 1 de comunicación con inteligencia emocional."
+            id="i-btn-automation"
+            data-text="Quiero usar IA para automatizar tareas repetitivas del día a día."
           >
-            Iniciar Lección 1
+            Automatizar tareas
           </button>
+
           <button
             class="chip-btn starter"
-            id="i-btn-emotion"
-            data-text="Quiero trabajar mi inteligencia emocional en una conversación importante."
+            id="i-btn-decisions"
+            data-text="Quiero que la IA me ayude a tomar mejores decisiones ejecutivas."
           >
-            Inteligencia Emocional
+            Decisiones ejecutivas
           </button>
+
           <button
             class="chip-btn starter"
-            id="i-btn-challenge"
-            data-text="Dame un reto práctico de comunicación para hoy."
+            id="i-btn-business"
+            data-text="Quiero lanzar una nueva línea de negocio apalancando IA generativa."
           >
-            Iniciar retos
+            Nueva línea de negocio
+          </button>
+
+          <button
+            class="chip-btn starter"
+            id="i-btn-master"
+            data-text="Quiero dominar ChatGPT y otras IA en mi trabajo diario."
+          >
+            Dominar IA diaria
           </button>
         </div>
 
         <!-- CHIPS: CONTENIDO VISUAL -->
         <div class="content-row">
-          <span class="content-label" id="i-content-label">Contenido visual:</span>
+          <span class="content-label" id="i-content-label">Material:</span>
           <button
             class="content content-btn"
             id="i-btn-slides"
-            data-text="Muéstrame las diapositivas de la sesión que acompañan este entrenamiento."
+            data-text="Muéstrame las diapositivas ejecutivas para este módulo de IA."
           >
-            Diapositivas de la sesión
+            Diapositivas
           </button>
           <button
             class="content content-btn"
             id="i-btn-summary"
-            data-text="Dame un resumen descargable con los puntos clave de lo que trabajemos hoy."
+            data-text="Dame un resumen descargable del entrenamiento IA de hoy."
           >
-            Resumen descargable
+            Resumen IA
           </button>
         </div>
 
@@ -598,10 +612,11 @@
             <div class="chat-header-left">
               <div class="chat-node">E</div>
               <div class="chat-title">
-                <div id="i-chat-name">Esteborg</div>
-                <small id="i-chat-role">Entrenador de comunicación</small>
+                <div id="i-chat-name">Esteborg IA</div>
+                <small id="i-chat-role">Copiloto Ejecutivo IA</small>
               </div>
             </div>
+
             <div class="chat-language-pill">
               <span class="lang-option active" data-lang="es">ES</span>
               <span class="lang-option" data-lang="en">EN</span>
@@ -614,31 +629,37 @@
 
           <div id="chat-log"></div>
 
+          <!-- INPUT -->
           <div class="input-row">
             <textarea
               id="user-input"
-              placeholder="Cuéntame una situación real de comunicación que quieras mejorar..."
+              placeholder="Cuéntame qué quieres lograr con IA en los próximos 90 días..."
             ></textarea>
+
             <button id="mic-btn" class="mic-button" title="Hablar con voz">
               🎙️
             </button>
+
             <button id="send-btn" class="send-button">ENVIAR</button>
           </div>
 
+          <!-- STATUS -->
           <div class="status-line" id="status-line">
             <span class="status-dot"></span>
-            <span>Preparando tu sesión con EsteborgCom7...</span>
+            <span>Preparando tu entrenamiento con Esteborg IA...</span>
           </div>
 
+          <!-- VOZ -->
           <div class="voice-row">
             <label class="voice-toggle">
               <input type="checkbox" id="tts-toggle" />
-              <span id="i-voice-toggle-label">Voz Esteborg activada</span>
+              <span id="i-voice-toggle-label">Voz Esteborg IA activada</span>
             </label>
-            <div class="voice-pill" id="i-voice-pill">🎧 Voz Esteborg</div>
+            <div class="voice-pill" id="i-voice-pill">🎧 Voz Esteborg IA</div>
           </div>
         </div>
 
+        <!-- FOOTER -->
         <div class="footer-row">
           <div class="footer-left">
             <strong id="i-footer-token-title">Tokken Esteborg Members</strong>
@@ -652,9 +673,11 @@
             <a href="https://esteborg.com" target="_blank" rel="noopener">esteborg.com</a>
           </div>
         </div>
+
       </div>
     </div>
   </div>
+
   <script>
     const doc = document;
 
