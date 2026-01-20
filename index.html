@@ -1164,5 +1164,43 @@
       if (userMsgInput) userMsgInput.focus();
     });
   </script>
+  
+  <script>
+  (function () {
+    function sendResize() {
+      try {
+        const doc = document;
+        const height = Math.max(
+          doc.documentElement.scrollHeight,
+          doc.body.scrollHeight
+        );
+
+        window.parent &&
+          window.parent.postMessage(
+            { type: "esteborg-resize", height: height },
+            "*"
+          );
+      } catch (e) {
+        console.warn("[Esteborg] Error al enviar resize:", e);
+      }
+    }
+
+    // Al cargar y al redimensionar ventana
+    window.addEventListener("load", sendResize);
+    window.addEventListener("resize", sendResize);
+
+    // Observar cambios en el DOM (nuevos mensajes, etc.)
+    const observer = new MutationObserver(function () {
+      clearTimeout(window.__esteborgResizeTimer);
+      window.__esteborgResizeTimer = setTimeout(sendResize, 80);
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+    });
+  })();
+</script>
 </body>
 </html>
