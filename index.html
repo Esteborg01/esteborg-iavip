@@ -32,28 +32,27 @@
     }
 
     body {
-      margin: 0;
-      height: 100%;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Inter", sans-serif;
-      font-size: 18px; /* +2 puntos aprox vs default */
-      background: radial-gradient(circle at top, #28224b 0, #050509 55%, #020208 100%);
-      color: var(--text-main);
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 24px 12px 40px;
-      overflow: hidden;
-    }
+  margin: 0;
+  height: 100%;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Inter", sans-serif;
+  background: radial-gradient(circle at top, #28224b 0, #050509 55%, #020208 100%);
+  color: var(--text-main);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 16px 8px 32px; /* 👈 antes 24px 12px 40px */
+  overflow: hidden;
+}
 
     .app {
-      width: 100%;
-      max-width: 1120px; /* más ancho */
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
+  width: 100%;
+  max-width: 960px;  /* 👈 más compacto */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
     .hero {
       text-align: center;
