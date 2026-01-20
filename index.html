@@ -679,532 +679,535 @@
   </div>
 
   <script>
-    const doc = document;
+  const doc = document;
 
-    const chatBox = doc.getElementById("chatBox");
-    const userMsgInput = doc.getElementById("userMsg");
-    const sendBtn = doc.getElementById("sendBtn");
-    const sendLabelEl = doc.getElementById("sendLabel");
-    const demoStatusEl = doc.getElementById("demoStatus");
-    const demoStatusLabelEl = doc.getElementById("demoStatusLabel");
-    const heroTitleEl = doc.getElementById("heroTitle");
-    const heroSubEl = doc.getElementById("heroSub");
-    const chatTitleEl = doc.getElementById("chatTitle");
-    const chatSubtitleEl = doc.getElementById("chatSubtitle");
-    const chatModeLabelEl = doc.getElementById("chatModeLabel");
-    const demoNoteEl = doc.getElementById("demoNote");
-    const langPillContainer = doc.getElementById("langPills");
-    const starterRowEl = doc.getElementById("starterRow");
-    const starterLabelEl = doc.getElementById("starterLabel");
-    const tokenStatusEl = doc.getElementById("tokenStatus");
-    const micBtn = doc.getElementById("micBtn");
-    const voiceToggleBtn = doc.getElementById("voiceToggle");
-    const voiceLabelEl = doc.getElementById("voiceLabel");
+  const chatBox = doc.getElementById("chatBox");
+  const userMsgInput = doc.getElementById("userMsg");
+  const sendBtn = doc.getElementById("sendBtn");
+  const sendLabelEl = doc.getElementById("sendLabel");
+  const demoStatusEl = doc.getElementById("demoStatus");
+  const demoStatusLabelEl = doc.getElementById("demoStatusLabel");
+  const heroTitleEl = doc.getElementById("heroTitle");
+  const heroSubEl = doc.getElementById("heroSub");
+  const chatTitleEl = doc.getElementById("chatTitle");
+  const chatSubtitleEl = doc.getElementById("chatSubtitle");
+  const chatModeLabelEl = doc.getElementById("chatModeLabel");
+  const demoNoteEl = doc.getElementById("demoNote");
+  const langPillContainer = doc.getElementById("langPills");
+  const starterRowEl = doc.getElementById("starterRow");
+  const starterLabelEl = doc.getElementById("starterLabel");
+  const tokenStatusEl = doc.getElementById("tokenStatus");
+  const micBtn = doc.getElementById("micBtn");
+  const voiceToggleBtn = doc.getElementById("voiceToggle");
+  const voiceLabelEl = doc.getElementById("voiceLabel");
 
-    const API_BASE = "https://esteborg88full-backend-modular.onrender.com";
-    const API_URL = `${API_BASE}/api/modules/iavipcom`;
+  const API_BASE = "https://esteborg88full-backend-modular.onrender.com";
+  const API_URL = `${API_BASE}/api/modules/iavipcom`;
 
-    let history = [];
-    let isSending = false;
-    let demoEnded = false;
-    let userName = null;
-    let introStep = 1; // 1: Tokken, 2: nombre+objetivo, 3+: conversación
-    let currentLang = "es";
+  let history = [];
+  let isSending = false;
+  let demoEnded = false;
+  let userName = null;
+  let introStep = 1; // 1: Tokken, 2: nombre+objetivo, 3+: conversación
+  let currentLang = "es";
 
-    let storedToken = null;
-    let voiceEnabled = false;
+  let storedToken = null;
+  let voiceEnabled = false;
 
-    const UI_STRINGS = {
-      es: {
-        heroTitleHTML:
-          "Entrenamiento ejecutivo en <span>Inteligencia Artificial aplicada</span><br/>" +
-          "para desplegar todo tu poder.",
-        heroSubHTML:
-          "Programa Esteborg IA Executive · 3 meses, 100% online, con certificación " +
-          "<strong>AI Executive &amp; Prompt Engineer</strong> by Esteborg Institute.",
-        chatTitle: "Esteborg IA · Copiloto Ejecutivo",
-        chatSubtitle:
-          "Primero validamos tu Tokken Esteborg Members y te conozco por tu nombre. " +
-          "Después diseñamos juntos tu plan de 90 días con IA.",
-        chatModeLabel: "Acceso Members VIP",
-        inputPlaceholder: "Pega aquí tu Tokken Esteborg Members...",
-        sendLabel: "Enviar",
-        demoStatusInitial: "Esperando tu Tokken Esteborg Members",
-        demoNoteHTML:
-          "Si aún no tienes Tokken, puedes obtenerlo o recuperarlo en: " +
-          '<a href="https://membersvip.esteborg.live/#miembrosvip" target="_blank" rel="noopener noreferrer">' +
-          "https://membersvip.esteborg.live/#miembrosvip</a>.",
-        initialAssistant:
-          "¡Qué gusto saludarte! 😊 Antes de entrar a tu entrenamiento necesito tu Tokken Esteborg Members para validar tu acceso.\n\n" +
-          "Si aún no tienes token, puedes obtenerlo o recuperarlo en:\n" +
-          "https://membersvip.esteborg.live/#miembrosvip\n\n" +
-          "1️⃣ Pega aquí tu Tokken Esteborg Members.\n" +
-          "2️⃣ Después te pediré tu nombre y qué quieres lograr con IA en los próximos 90 días.",
-        initialAssistantMeta: "Acceso con Tokken",
-        afterToken:
-          "Perfecto, ya tengo tu Tokken registrado ✅\n\n" +
-          "Ahora dime:\n" +
-          "• ¿Cómo te llamas?\n" +
-          "• En una frase, ¿qué quieres lograr con IA en los próximos 90 días?",
-        afterTokenMeta: "Tokken validado",
-        startersLabel: "Ideas para empezar después de validar tu Tokken:",
-        starters: [
-          "Quiero usar IA para automatizar tareas repetitivas de mi equipo.",
-          "Quiero que la IA me ayude a tomar mejores decisiones ejecutivas.",
-          "Quiero lanzar una nueva línea de negocio apalancando IA generativa.",
-          "Quiero dominar ChatGPT y otras IA en mi trabajo diario."
-        ],
-        tokenDetectedUrl:
-          "Detecté un Tokken en la URL, lo usaré automáticamente en tu sesión.",
-        tokenDetectedStored:
-          "Tengo un Tokken Esteborg Members guardado, lo usaré automáticamente en tu sesión.",
-        tokenMissingHint:
-          "Pega tu Tokken Esteborg Members en el chat para comenzar.",
-        invalidToken:
-          "Tu Tokken no es válido o ya no está activo. Entra a Members VIP y genera uno nuevo.",
-        voiceOnLabel: "Voz Esteborg activada",
-        voiceOffLabel: "Voz Esteborg",
-        micHint:
-          "Toca el micrófono, habla y después revisa el texto antes de enviarlo."
-      },
-      en: {
-        heroTitleHTML:
-          "Executive training in <span>applied Artificial Intelligence</span><br/>" +
-          "to unlock all your power.",
-        heroSubHTML:
-          "Esteborg AI Executive Program · 3 months, 100% online, with " +
-          "<strong>AI Executive &amp; Prompt Engineer</strong> certification.",
-        chatTitle: "Esteborg AI · Executive Copilot",
-        chatSubtitle:
-          "First we validate your Esteborg Members Token and I learn your name. " +
-          "Then we design your 90-day AI plan together.",
-        chatModeLabel: "Members VIP Access",
-        inputPlaceholder: "Paste your Esteborg Members Token here...",
-        sendLabel: "Send",
-        demoStatusInitial: "Waiting for your Esteborg Members Token",
-        demoNoteHTML:
-          "If you don’t have a Token yet, you can get or recover it at: " +
-          '<a href="https://membersvip.esteborg.live/#miembrosvip" target="_blank" rel="noopener noreferrer">' +
-          "https://membersvip.esteborg.live/#miembrosvip</a>.",
-        initialAssistant:
-          "Great to have you here! 😊 Before we start your training I need your Esteborg Members Token to validate access.\n\n" +
-          "If you don’t have a token yet, you can get or recover it at:\n" +
-          "https://membersvip.esteborg.live/#miembrosvip\n\n" +
-          "1️⃣ Paste your Esteborg Members Token here.\n" +
-          "2️⃣ Then I’ll ask your name and what you want to achieve with AI in the next 90 days.",
-        initialAssistantMeta: "Token access",
-        afterToken:
-          "Awesome, I’ve registered your Token ✅\n\n" +
-          "Now tell me:\n" +
-          "• What’s your name?\n" +
-          "• In one sentence, what do you want to achieve with AI in the next 90 days?",
-        afterTokenMeta: "Token validated",
-        startersLabel: "Ideas to start after token validation:",
-        starters: [
-          "Use AI to automate repetitive tasks in my team.",
-          "Use AI to support my executive decision-making.",
-          "Launch a new business line powered by generative AI.",
-          "Master ChatGPT and other AIs in my daily work."
-        ],
-        tokenDetectedUrl:
-          "I detected a Token in the URL. I’ll use it automatically in your session.",
-        tokenDetectedStored:
-          "I found a stored Esteborg Members Token. I’ll use it automatically.",
-        tokenMissingHint:
-          "Paste your Esteborg Members Token in the chat to begin.",
-        invalidToken:
-          "Your Token is not valid or no longer active. Go to Members VIP and generate a new one.",
-        voiceOnLabel: "Esteborg voice on",
-        voiceOffLabel: "Esteborg voice",
-        micHint:
-          "Tap the mic, speak, then review the text before sending."
-      },
-      // Para ahorrar espacio, PT / FR / IT / DE pueden ser clones del EN/ES
-      pt: { /* puedes copiar y traducir igual que antes */ },
-      fr: { /* idem */ },
-      it: { /* idem */ },
-      de: { /* idem */ }
-    };
+  const UI_STRINGS = {
+    es: {
+      heroTitleHTML:
+        "Entrenamiento ejecutivo en <span>Inteligencia Artificial aplicada</span><br/>" +
+        "para desplegar todo tu poder.",
+      heroSubHTML:
+        "Programa Esteborg IA Executive · 3 meses, 100% online, con certificación " +
+        "<strong>AI Executive &amp; Prompt Engineer</strong> by Esteborg Institute.",
+      chatTitle: "Esteborg IA · Copiloto Ejecutivo",
+      chatSubtitle:
+        "Primero validamos tu Tokken Esteborg Members y te conozco por tu nombre. " +
+        "Después diseñamos juntos tu plan de 90 días con IA.",
+      chatModeLabel: "Acceso Members VIP",
+      inputPlaceholder: "Pega aquí tu Tokken Esteborg Members...",
+      sendLabel: "Enviar",
+      demoStatusInitial: "Esperando tu Tokken Esteborg Members",
+      demoNoteHTML:
+        "Si aún no tienes Tokken, puedes obtenerlo o recuperarlo en: " +
+        '<a href="https://membersvip.esteborg.live/#miembrosvip" target="_blank" rel="noopener noreferrer">' +
+        "https://membersvip.esteborg.live/#miembrosvip</a>.",
+      initialAssistant:
+        "¡Qué gusto saludarte! 😊 Antes de entrar a tu entrenamiento necesito tu Tokken Esteborg Members para validar tu acceso.\n\n" +
+        "Si aún no tienes token, puedes obtenerlo o recuperarlo en:\n" +
+        "https://membersvip.esteborg.live/#miembrosvip\n\n" +
+        "1️⃣ Pega aquí tu Tokken Esteborg Members.\n" +
+        "2️⃣ Después te pediré tu nombre y qué quieres lograr con IA en los próximos 90 días.",
+      initialAssistantMeta: "Acceso con Tokken",
+      afterToken:
+        "Perfecto, ya tengo tu Tokken registrado ✅\n\n" +
+        "Ahora dime:\n" +
+        "• ¿Cómo te llamas?\n" +
+        "• En una frase, ¿qué quieres lograr con IA en los próximos 90 días?",
+      afterTokenMeta: "Tokken validado",
+      startersLabel: "Ideas para empezar después de validar tu Tokken:",
+      starters: [
+        "Quiero usar IA para automatizar tareas repetitivas de mi equipo.",
+        "Quiero que la IA me ayude a tomar mejores decisiones ejecutivas.",
+        "Quiero lanzar una nueva línea de negocio apalancando IA generativa.",
+        "Quiero dominar ChatGPT y otras IA en mi trabajo diario."
+      ],
+      tokenDetectedUrl:
+        "Detecté un Tokken en la URL, lo usaré automáticamente en tu sesión.",
+      tokenDetectedStored:
+        "Tengo un Tokken Esteborg Members guardado, lo usaré automáticamente en tu sesión.",
+      tokenMissingHint:
+        "Pega tu Tokken Esteborg Members en el chat para comenzar.",
+      invalidToken:
+        "Tu Tokken no es válido o ya no está activo. Entra a Members VIP y genera uno nuevo.",
+      voiceOnLabel: "Voz Esteborg activada",
+      voiceOffLabel: "Voz Esteborg",
+      micHint:
+        "Toca el micrófono, habla y después revisa el texto antes de enviarlo."
+    },
+    en: {
+      heroTitleHTML:
+        "Executive training in <span>applied Artificial Intelligence</span><br/>" +
+        "to unlock all your power.",
+      heroSubHTML:
+        "Esteborg AI Executive Program · 3 months, 100% online, with " +
+        "<strong>AI Executive &amp; Prompt Engineer</strong> certification.",
+      chatTitle: "Esteborg AI · Executive Copilot",
+      chatSubtitle:
+        "First we validate your Esteborg Members Token and I learn your name. " +
+        "Then we design your 90-day AI plan together.",
+      chatModeLabel: "Members VIP Access",
+      inputPlaceholder: "Paste your Esteborg Members Token here...",
+      sendLabel: "Send",
+      demoStatusInitial: "Waiting for your Esteborg Members Token",
+      demoNoteHTML:
+        "If you don’t have a Token yet, you can get or recover it at: " +
+        '<a href="https://membersvip.esteborg.live/#miembrosvip" target="_blank" rel="noopener noreferrer">' +
+        "https://membersvip.esteborg.live/#miembrosvip</a>.",
+      initialAssistant:
+        "Great to have you here! 😊 Before we start your training I need your Esteborg Members Token to validate access.\n\n" +
+        "If you don’t have a token yet, you can get or recover it at:\n" +
+        "https://membersvip.esteborg.live/#miembrosvip\n\n" +
+        "1️⃣ Paste your Esteborg Members Token here.\n" +
+        "2️⃣ Then I’ll ask your name and what you want to achieve with AI in the next 90 days.",
+      initialAssistantMeta: "Token access",
+      afterToken:
+        "Awesome, I’ve registered your Token ✅\n\n" +
+        "Now tell me:\n" +
+        "• What’s your name?\n" +
+        "• In one sentence, what do you want to achieve with AI in the next 90 days?",
+      afterTokenMeta: "Token validated",
+      startersLabel: "Ideas to start after token validation:",
+      starters: [
+        "Use AI to automate repetitive tasks in my team.",
+        "Use AI to support my executive decision-making.",
+        "Launch a new business line powered by generative AI.",
+        "Master ChatGPT and other AIs in my daily work."
+      ],
+      tokenDetectedUrl:
+        "I detected a Token in the URL. I’ll use it automatically in your session.",
+      tokenDetectedStored:
+        "I found a stored Esteborg Members Token. I’ll use it automatically.",
+      tokenMissingHint:
+        "Paste your Esteborg Members Token in the chat to begin.",
+      invalidToken:
+        "Your Token is not valid or no longer active. Go to Members VIP and generate a new one.",
+      voiceOnLabel: "Esteborg voice on",
+      voiceOffLabel: "Esteborg voice",
+      micHint:
+        "Tap the mic, speak, then review the text before sending."
+    },
+    // PT / FR / IT / DE los puedes ir llenando después si quieres fino-fino
+    pt: {},
+    fr: {},
+    it: {},
+    de: {}
+  };
 
-    function formatLangForBackend(lang) {
-      const code = (lang || "").toLowerCase();
-      if (["es", "en", "pt", "fr", "de", "it"].includes(code)) return code;
-      return "es";
-    }
+  function formatLangForBackend(lang) {
+    const code = (lang || "").toLowerCase();
+    if (["es", "en", "pt", "fr", "de", "it"].includes(code)) return code;
+    return "es";
+  }
 
-    function stripHtml(html) {
-      const tmp = document.createElement("div");
-      tmp.innerHTML = html;
-      return tmp.textContent || tmp.innerText || "";
-    }
+  function stripHtml(html) {
+    const tmp = document.createElement("div");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+  }
 
-    function formatTextWithLinks(text) {
-      if (!text) return "";
-      const urlRegex =
-        /(https?:\/\/[^\s]+)|(www\.[^\s]+)|(membersvip\.esteborg\.live[^\s]*)/gi;
-      return text.replace(urlRegex, (match) => {
-        let url = match;
-        if (!/^https?:\/\//i.test(url)) {
-          if (url.startsWith("www.")) {
-            url = "https://" + url;
-          } else if (url.startsWith("membersvip.esteborg.live")) {
-            url = "https://" + url;
-          }
+  function formatTextWithLinks(text) {
+    if (!text) return "";
+    const urlRegex =
+      /(https?:\/\/[^\s]+)|(www\.[^\s]+)|(membersvip\.esteborg\.live[^\s]*)/gi;
+    return text.replace(urlRegex, (match) => {
+      let url = match;
+      if (!/^https?:\/\//i.test(url)) {
+        if (url.startsWith("www.")) {
+          url = "https://" + url;
+        } else if (url.startsWith("membersvip.esteborg.live")) {
+          url = "https://" + url;
         }
-        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${match}</a>`;
+      }
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer">${match}</a>`;
+    });
+  }
+
+  function appendMessage(role, text, meta) {
+    const row = doc.createElement("div");
+    row.className = "msg-row " + (role === "user" ? "user" : "ai");
+
+    const bubble = doc.createElement("div");
+    bubble.className = "bubble " + (role === "user" ? "bubble-user" : "bubble-ai");
+
+    const label = doc.createElement("div");
+    label.className = "bubble-label";
+    const dot = doc.createElement("span");
+    dot.className = "bubble-label-dot";
+    const who = doc.createElement("span");
+    who.textContent = role === "user" ? (userName || "Tú") : "Esteborg IA";
+
+    label.appendChild(dot);
+    label.appendChild(who);
+    bubble.appendChild(label);
+
+    const content = doc.createElement("div");
+    if (role === "assistant") {
+      content.innerHTML = formatTextWithLinks(text);
+    } else {
+      content.textContent = text;
+    }
+    bubble.appendChild(content);
+
+    if (meta) {
+      const metaDiv = doc.createElement("div");
+      metaDiv.className = "bubble-meta";
+      metaDiv.textContent = meta;
+      bubble.appendChild(metaDiv);
+    }
+
+    row.appendChild(bubble);
+    chatBox.appendChild(row);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    if (role === "assistant" && voiceEnabled && "speechSynthesis" in window) {
+      const utter = new SpeechSynthesisUtterance(stripHtml(text));
+      const lang = formatLangForBackend(currentLang);
+      const map = {
+        es: "es-MX",
+        en: "en-US",
+        pt: "pt-BR",
+        fr: "fr-FR",
+        de: "de-DE",
+        it: "it-IT"
+      };
+      utter.lang = map[lang] || "es-MX";
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utter);
+    }
+  }
+
+  function setLoading(isLoading) {
+    isSending = isLoading;
+    sendBtn.disabled = isLoading || demoEnded;
+    userMsgInput.disabled = demoEnded;
+    micBtn.disabled = demoEnded;
+
+    const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
+    sendLabelEl.textContent = isLoading ? "Pensando..." : strings.sendLabel;
+  }
+
+  function applyLanguageUI(lang) {
+    const strings = UI_STRINGS[lang] || UI_STRINGS["es"];
+    heroTitleEl.innerHTML = strings.heroTitleHTML;
+    heroSubEl.innerHTML = strings.heroSubHTML;
+    chatTitleEl.textContent = strings.chatTitle;
+    chatSubtitleEl.textContent = strings.chatSubtitle;
+    chatModeLabelEl.textContent = strings.chatModeLabel;
+    userMsgInput.placeholder = strings.inputPlaceholder;
+    demoNoteEl.innerHTML = strings.demoNoteHTML;
+    sendLabelEl.textContent = strings.sendLabel;
+    voiceLabelEl.textContent = voiceEnabled
+      ? strings.voiceOnLabel
+      : strings.voiceOffLabel;
+    demoStatusLabelEl.textContent = strings.demoStatusInitial;
+
+    starterRowEl.innerHTML = "";
+    if (strings.starters && strings.starters.length) {
+      const labelSpan = document.createElement("span");
+      labelSpan.className = "starter-label";
+      labelSpan.textContent = strings.startersLabel || "";
+      starterRowEl.appendChild(labelSpan);
+
+      strings.starters.forEach((s) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "starter-pill";
+        btn.textContent = s;
+        btn.addEventListener("click", () => {
+          userMsgInput.value = s;
+          userMsgInput.focus();
+        });
+        starterRowEl.appendChild(btn);
       });
     }
+  }
 
-    function appendMessage(role, text, meta) {
-      const row = doc.createElement("div");
-      row.className = "msg-row " + (role === "user" ? "user" : "ai");
+  function initTokenStatus() {
+    const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
+    let message = "";
 
-      const bubble = doc.createElement("div");
-      bubble.className = "bubble " + (role === "user" ? "bubble-user" : "bubble-ai");
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const urlToken =
+        params.get("tokken") || params.get("token") || params.get("t");
+      const localToken = localStorage.getItem("esteborg_token_members");
 
-      const label = doc.createElement("div");
-      label.className = "bubble-label";
-      const dot = doc.createElement("span");
-      dot.className = "bubble-label-dot";
-      const who = doc.createElement("span");
-      who.textContent = role === "user" ? (userName || "Tú") : "Esteborg IA";
-
-      label.appendChild(dot);
-      label.appendChild(who);
-      bubble.appendChild(label);
-
-      const content = doc.createElement("div");
-      if (role === "assistant") {
-        content.innerHTML = formatTextWithLinks(text);
+      if (urlToken) {
+        storedToken = urlToken.trim();
+        localStorage.setItem("esteborg_token_members", storedToken);
+        message = strings.tokenDetectedUrl;
+      } else if (localToken) {
+        storedToken = localToken.trim();
+        message = strings.tokenDetectedStored;
       } else {
-        content.textContent = text;
+        message = strings.tokenMissingHint;
       }
-      bubble.appendChild(content);
-
-      if (meta) {
-        const metaDiv = doc.createElement("div");
-        metaDiv.className = "bubble-meta";
-        metaDiv.textContent = meta;
-        bubble.appendChild(metaDiv);
-      }
-
-      row.appendChild(bubble);
-      chatBox.appendChild(row);
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-      if (role === "assistant" && voiceEnabled && "speechSynthesis" in window) {
-        const utter = new SpeechSynthesisUtterance(stripHtml(text));
-        const lang = formatLangForBackend(currentLang);
-        const map = {
-          es: "es-MX",
-          en: "en-US",
-          pt: "pt-BR",
-          fr: "fr-FR",
-          de: "de-DE",
-          it: "it-IT"
-        };
-        utter.lang = map[lang] || "es-MX";
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(utter);
-      }
+    } catch (e) {
+      console.warn("Token init error", e);
+      message = strings.tokenMissingHint;
     }
 
-    function setLoading(isLoading) {
-      isSending = isLoading;
-      sendBtn.disabled = isLoading || demoEnded;
-      userMsgInput.disabled = demoEnded;
-      micBtn.disabled = demoEnded;
+    if (tokenStatusEl) {
+      tokenStatusEl.innerHTML = "";
+      const dot = document.createElement("span");
+      dot.className = "token-dot";
+      const txt = document.createElement("span");
+      txt.textContent = message;
+      tokenStatusEl.appendChild(dot);
+      tokenStatusEl.appendChild(txt);
+    }
+  }
 
+  function initChat() {
+    history = [];
+    demoEnded = false;
+    introStep = 1;
+    userName = null;
+
+    const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
+    chatBox.innerHTML = "";
+    appendMessage("assistant", strings.initialAssistant, strings.initialAssistantMeta);
+    applyLanguageUI(currentLang);
+    initTokenStatus();
+    setLoading(false);
+  }
+
+  async function sendToBackend(messageText) {
+    const langForBackend = formatLangForBackend(currentLang);
+    const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
+
+    const payload = {
+      message: messageText,
+      history,
+      lang: langForBackend,
+      userName,
+      token: storedToken || null
+    };
+
+    try {
+      setLoading(true);
+
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(storedToken ? { "x-esteborg-token": storedToken } : {}),
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.status === 401) {
+        appendMessage("assistant", strings.invalidToken);
+        storedToken = null;
+        localStorage.removeItem("esteborg_token_members");
+        initTokenStatus();
+        introStep = 1;
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error("Respuesta no OK del backend");
+      }
+
+      const data = await res.json();
+      const reply =
+        (data && (data.reply || data.message || data.response)) ||
+        "No pude generar una respuesta en este momento. Intenta de nuevo.";
+
+      history.push({ role: "user", content: messageText });
+      history.push({ role: "assistant", content: reply });
+
+      appendMessage("assistant", reply);
+    } catch (err) {
+      console.error("Error al llamar al backend:", err);
+      appendMessage(
+        "assistant",
+        "Hubo un problema al conectar con Esteborg IA. Intenta de nuevo en unos momentos."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleUserMessage() {
+    if (isSending || demoEnded) return;
+    const text = (userMsgInput.value || "").trim();
+    if (!text) return;
+
+    const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
+
+    appendMessage("user", text);
+    userMsgInput.value = "";
+
+    if (introStep === 1) {
+      storedToken = text.trim();
+      try {
+        localStorage.setItem("esteborg_token_members", storedToken);
+      } catch (_) {}
+
+      initTokenStatus();
+      appendMessage("assistant", strings.afterToken, strings.afterTokenMeta);
+      introStep = 2;
+      return;
+    }
+
+    if (introStep === 2) {
+      userName = text.split(" ")[0] || text;
+      introStep = 3;
+      sendToBackend(text);
+      return;
+    }
+
+    sendToBackend(text);
+  }
+
+  let recognition = null;
+  let listening = false;
+
+  function setupSpeechRecognition() {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      micBtn.disabled = true;
+      micBtn.title = "Tu navegador no soporta dictado por voz.";
+      return;
+    }
+
+    const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
+
+    recognition = new SpeechRecognition();
+    recognition.lang = "es-MX";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.addEventListener("result", (event) => {
+      const transcript = Array.from(event.results)
+        .map((r) => r[0].transcript)
+        .join(" ");
+      userMsgInput.value = transcript;
+      userMsgInput.focus();
+    });
+
+    recognition.addEventListener("end", () => {
+      listening = false;
+      micBtn.classList.remove("listening");
+    });
+
+    micBtn.addEventListener("click", () => {
+      if (!recognition) return;
+      if (listening) {
+        recognition.stop();
+        listening = false;
+        micBtn.classList.remove("listening");
+      } else {
+        try {
+          const lang = formatLangForBackend(currentLang);
+          const map = {
+            es: "es-MX",
+            en: "en-US",
+            pt: "pt-BR",
+            fr: "fr-FR",
+            de: "de-DE",
+            it: "it-IT"
+          };
+          recognition.lang = map[lang] || "es-MX";
+        } catch (_) {}
+        recognition.start();
+        listening = true;
+        micBtn.classList.add("listening");
+      }
+    });
+
+    micBtn.title = strings.micHint || "";
+  }
+
+  function setupVoiceToggle() {
+    voiceToggleBtn.addEventListener("click", () => {
+      voiceEnabled = !voiceEnabled;
       const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
-     sendLabel: "Enviar a Esteborg IA";
-    }
-
-    function applyLanguageUI(lang) {
-      const strings = UI_STRINGS[lang] || UI_STRINGS["es"];
-      heroTitleEl.innerHTML = strings.heroTitleHTML;
-      heroSubEl.innerHTML = strings.heroSubHTML;
-      chatTitleEl.textContent = strings.chatTitle;
-      chatSubtitleEl.textContent = strings.chatSubtitle;
-      chatModeLabelEl.textContent = strings.chatModeLabel;
-      userMsgInput.placeholder = strings.inputPlaceholder;
-      demoNoteEl.innerHTML = strings.demoNoteHTML;
-      sendLabelEl.textContent = strings.sendLabel;
       voiceLabelEl.textContent = voiceEnabled
         ? strings.voiceOnLabel
         : strings.voiceOffLabel;
-      demoStatusLabelEl.textContent = strings.demoStatusInitial;
+      voiceToggleBtn.classList.toggle("active", voiceEnabled);
 
-      starterRowEl.innerHTML = "";
-      if (strings.starters && strings.starters.length) {
-        const labelSpan = document.createElement("span");
-        labelSpan.className = "starter-label";
-        labelSpan.textContent = strings.startersLabel || "";
-        starterRowEl.appendChild(labelSpan);
-
-        strings.starters.forEach((s) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "starter-pill";
-          btn.textContent = s;
-          btn.addEventListener("click", () => {
-            userMsgInput.value = s;
-            userMsgInput.focus();
-          });
-          starterRowEl.appendChild(btn);
-        });
+      if (!voiceEnabled && "speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
       }
-    }
-
-    function initTokenStatus() {
-      const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
-      let message = "";
-
-      try {
-        const params = new URLSearchParams(window.location.search);
-        const urlToken =
-          params.get("tokken") || params.get("token") || params.get("t");
-        const localToken = localStorage.getItem("esteborg_token_members");
-
-        if (urlToken) {
-          storedToken = urlToken.trim();
-          localStorage.setItem("esteborg_token_members", storedToken);
-          message = strings.tokenDetectedUrl;
-        } else if (localToken) {
-          storedToken = localToken.trim();
-          message = strings.tokenDetectedStored;
-        } else {
-          message = strings.tokenMissingHint;
-        }
-      } catch (e) {
-        console.warn("Token init error", e);
-        message = strings.tokenMissingHint;
-      }
-
-      if (tokenStatusEl) {
-        tokenStatusEl.innerHTML = "";
-        const dot = document.createElement("span");
-        dot.className = "token-dot";
-        const txt = document.createElement("span");
-        txt.textContent = message;
-        tokenStatusEl.appendChild(dot);
-        tokenStatusEl.appendChild(txt);
-      }
-    }
-
-    function initChat() {
-      history = [];
-      demoEnded = false;
-      introStep = 1;
-      userName = null;
-
-      const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
-      chatBox.innerHTML = "";
-      appendMessage("assistant", strings.initialAssistant, strings.initialAssistantMeta);
-      applyLanguageUI(currentLang);
-      initTokenStatus();
-      setLoading(false);
-    }
-
-    async function sendToBackend(messageText) {
-      const langForBackend = formatLangForBackend(currentLang);
-      const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
-
-      const payload = {
-        message: messageText,
-        history,
-        lang: langForBackend,
-        userName,
-        token: storedToken || null
-      };
-
-      try {
-        setLoading(true);
-
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            ...(storedToken ? { "x-esteborg-token": storedToken } : {}),
-          },
-          body: JSON.stringify(payload),
-        });
-
-        if (res.status === 401) {
-          appendMessage("assistant", strings.invalidToken);
-          storedToken = null;
-          localStorage.removeItem("esteborg_token_members");
-          initTokenStatus();
-          introStep = 1;
-          return;
-        }
-
-        if (!res.ok) {
-          throw new Error("Respuesta no OK del backend");
-        }
-
-        const data = await res.json();
-        const reply =
-          (data && (data.reply || data.message || data.response)) ||
-          "No pude generar una respuesta en este momento. Intenta de nuevo.";
-
-        history.push({ role: "user", content: messageText });
-        history.push({ role: "assistant", content: reply });
-
-        appendMessage("assistant", reply);
-      } catch (err) {
-        console.error("Error al llamar al backend:", err);
-        appendMessage(
-          "assistant",
-          "Hubo un problema al conectar con Esteborg IA. Intenta de nuevo en unos momentos."
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    function handleUserMessage() {
-      if (isSending || demoEnded) return;
-      const text = (userMsgInput.value || "").trim();
-      if (!text) return;
-
-      const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
-
-      appendMessage("user", text);
-      userMsgInput.value = "";
-
-      if (introStep === 1) {
-        storedToken = text.trim();
-        try {
-          localStorage.setItem("esteborg_token_members", storedToken);
-        } catch (_) {}
-
-        initTokenStatus();
-        appendMessage("assistant", strings.afterToken, strings.afterTokenMeta);
-        introStep = 2;
-        return;
-      }
-
-      if (introStep === 2) {
-        userName = text.split(" ")[0] || text;
-        introStep = 3;
-        sendToBackend(text);
-        return;
-      }
-
-      sendToBackend(text);
-    }
-
-    let recognition = null;
-    let listening = false;
-
-    function setupSpeechRecognition() {
-      const SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        micBtn.disabled = true;
-        micBtn.title = "Tu navegador no soporta dictado por voz.";
-        return;
-      }
-
-      recognition = new SpeechRecognition();
-      recognition.lang = "es-MX";
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
-
-      recognition.addEventListener("result", (event) => {
-        const transcript = Array.from(event.results)
-          .map((r) => r[0].transcript)
-          .join(" ");
-        userMsgInput.value = transcript;
-        userMsgInput.focus();
-      });
-
-      recognition.addEventListener("end", () => {
-        listening = false;
-        micBtn.classList.remove("listening");
-      });
-
-      micBtn.addEventListener("click", () => {
-        if (!recognition) return;
-        if (listening) {
-          recognition.stop();
-          listening = false;
-          micBtn.classList.remove("listening");
-        } else {
-          try {
-            const lang = formatLangForBackend(currentLang);
-            const map = {
-              es: "es-MX",
-              en: "en-US",
-              pt: "pt-BR",
-              fr: "fr-FR",
-              de: "de-DE",
-              it: "it-IT"
-            };
-            recognition.lang = map[lang] || "es-MX";
-          } catch (_) {}
-          recognition.start();
-          listening = true;
-          micBtn.classList.add("listening");
-        }
-      });
-
-      micBtn.title = strings.micHint || "";
-    }
-
-    function setupVoiceToggle() {
-      voiceToggleBtn.addEventListener("click", () => {
-        voiceEnabled = !voiceEnabled;
-        const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
-        voiceLabelEl.textContent = voiceEnabled
-          ? strings.voiceOnLabel
-          : strings.voiceOffLabel;
-        voiceToggleBtn.classList.toggle("active", voiceEnabled);
-
-        if (!voiceEnabled && "speechSynthesis" in window) {
-          window.speechSynthesis.cancel();
-        }
-      });
-    }
-
-    if (langPillContainer) {
-      langPillContainer.addEventListener("click", (event) => {
-        const btn = event.target.closest(".lang-pill");
-        if (!btn) return;
-        const lang = btn.dataset.lang;
-        if (!lang || lang === currentLang) return;
-
-        currentLang = lang;
-
-        Array.from(langPillContainer.querySelectorAll(".lang-pill")).forEach((el) => {
-          el.classList.toggle("active", el.dataset.lang === currentLang);
-        });
-
-        initChat();
-      });
-    }
-
-    if (sendBtn) {
-      sendBtn.addEventListener("click", handleUserMessage);
-    }
-
-    if (userMsgInput) {
-      userMsgInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" && !event.shiftKey) {
-          event.preventDefault();
-          handleUserMessage();
-        }
-      });
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      initChat();
-      setupSpeechRecognition();
-      setupVoiceToggle();
-
-      if (userMsgInput) userMsgInput.focus();
     });
-  </script>
+  }
+
+  if (langPillContainer) {
+    langPillContainer.addEventListener("click", (event) => {
+      const btn = event.target.closest(".lang-pill");
+      if (!btn) return;
+      const lang = btn.dataset.lang;
+      if (!lang || lang === currentLang) return;
+
+      currentLang = lang;
+
+      Array.from(langPillContainer.querySelectorAll(".lang-pill")).forEach((el) => {
+        el.classList.toggle("active", el.dataset.lang === currentLang);
+      });
+
+      initChat();
+    });
+  }
+
+  if (sendBtn) {
+    sendBtn.addEventListener("click", handleUserMessage);
+  }
+
+  if (userMsgInput) {
+    userMsgInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        handleUserMessage();
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initChat();
+    setupSpeechRecognition();
+    setupVoiceToggle();
+
+    if (userMsgInput) userMsgInput.focus();
+  });
+</script>
+
   
   <script>
   (function () {
