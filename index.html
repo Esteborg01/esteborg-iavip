@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Esteborg IA - Despliega todo tu poder</title>
+
+  <style>
+    :root {
+      --bg-main: #050509;
+      --accent: #f1ca63;
+      --accent-strong: #f6e29e;
+      --accent-alt: #8fd8ff;
+      --text-main: #f5f5ff;
+      --text-soft: #c3c3d8;
+      --text-dim: #7e7e9c;
+      --border-subtle: #25253a;
+      --card-bg: #0b0b16;
+      --card-inner: #10101d;
+      --radius-lg: 20px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      height: 100%;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Inter", sans-serif;
+      background: radial-gradient(circle at top, #28224b 0, #050509 55%, #020208 100%);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 24px 12px 40px;
+      overflow: hidden; /* <- solo la conversación scrollea */
+    }
+
+    .app {
+      width: 100%;
+      max-width: 960px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+
+    .hero-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .hero-logo-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #f8e089 0, #f1c967 18%, #8c46ff 52%, #32127b 90%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.8),
+        0 10px 30px rgba(0, 0, 0, 0.75);
+    }
+
+    .hero-logo-mark svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .hero-logo-text {
+      font-size: 0.95rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 650;
+    }
+
+    .hero-logo-text span {
+      color: var(--accent-strong);
+    }
+
+    .hero-title {
+      font-size: clamp(1.4rem, 2.2vw, 1.7rem);
+      line-height: 1.35;
+      margin: 0 0 6px;
+      font-weight: 640;
+    }
+
+    .hero-title span {
+      color: var(--accent-strong);
+    }
+
+    .hero-sub {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .hero-sub strong {
+      color: var(--accent-strong);
+    }
+
+    .chat-card {
+      margin-top: 8px;
+      border-radius: 24px;
+      background: radial-gradient(circle at top left, #262042 0, #050509 60%);
+      border: 1px solid rgba(140, 139, 196, 0.55);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.8);
+      padding: 16px;
+      flex: 1;
+      min-height: 0; /* importante para flex */
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (min-width: 900px) {
+      .chat-card {
+        padding: 18px 18px 16px;
+      }
+    }
+
+    .chat-inner {
+      border-radius: 18px;
+      background: linear-gradient(145deg, #0c0c19, #090915);
+      border: 1px solid rgba(111, 111, 180, 0.6);
+      padding: 14px 14px 12px;
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-shrink: 0;
+    }
+
+    .chat-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .chat-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .chat-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+
+    .chat-header-right {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dot-live {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent-strong);
+      box-shadow: 0 0 0 4px rgba(241, 202, 99, 0.28);
+    }
+
+    /* === Selector de idioma en botones === */
+
+    .lang-pill-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(140, 139, 196, 0.7);
+      background: rgba(8, 8, 20, 0.9);
+    }
+
+    .lang-pill-wrapper .lang-icon {
+      font-size: 0.9rem;
+    }
+
+    .lang-pill-group {
+      display: inline-flex;
+      gap: 4px;
+    }
+
+    .lang-pill {
+      border-radius: 999px;
+      border: 1px solid rgba(140, 139, 196, 0.4);
+      background: transparent;
+      color: var(--text-soft);
+      padding: 4px 10px;
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .lang-pill:hover {
+      border-color: rgba(241, 202, 99, 0.9);
+      color: var(--accent-strong);
+    }
+
+    .lang-pill.active {
+      background: radial-gradient(circle at 30% 0, #3c73ff, #182b5c);
+      border-color: rgba(135, 170, 255, 0.95);
+      color: #fff;
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.7),
+        0 0 12px rgba(60, 115, 255, 0.7);
+    }
+
+    /* === Chat box === */
+
+    .chat-box {
+      border-radius: 12px;
+      padding: 10px 9px;
+      background: radial-gradient(circle at top, rgba(32, 32, 64, 0.9) 0, rgba(8, 9, 20, 0.98) 42%);
+      border: 1px solid rgba(84, 84, 133, 0.8);
+      box-shadow:
+        inset 0 0 0 1px rgba(5, 5, 12, 0.8),
+        0 14px 40px rgba(0, 0, 0, 0.75);
+      scroll-behavior: smooth;
+      flex: 1;        /* <- ocupa el espacio disponible */
+      min-height: 0;  /* <- permite encogerse en flex */
+      overflow-y: auto; /* <- solo aquí hay scroll */
+    }
+
+    .chat-box::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .chat-box::-webkit-scrollbar-thumb {
+      background: rgba(110, 110, 160, 0.7);
+      border-radius: 999px;
+    }
+
+    .msg-row {
+      display: flex;
+      margin-bottom: 8px;
+    }
+
+    .msg-row.user {
+      justify-content: flex-end;
+    }
+
+    .bubble {
+      max-width: 80%;
+      padding: 7px 9px 7px;
+      border-radius: 13px;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      border: 1px solid transparent;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.65);
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .bubble-user {
+      background: linear-gradient(135deg, #f1ca63, #f6e29e);
+      color: #1c1407;
+      border-color: rgba(115, 85, 34, 0.52);
+    }
+
+    .bubble-ai {
+      background: radial-gradient(circle at top left, rgba(17, 18, 32, 0.98), rgba(11, 12, 24, 0.98));
+      color: var(--text-main);
+      border-color: rgba(135, 134, 202, 0.62);
+    }
+
+    .bubble-ai a {
+      color: var(--accent-alt);
+      text-decoration: none;
+      border-bottom: 1px dotted rgba(143, 216, 210, 0.7);
+    }
+
+    .bubble-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 3px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .bubble-label-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .bubble-meta {
+      font-size: 0.66rem;
+      color: var(--text-dim);
+      margin-top: 2px;
+      text-align: right;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      margin-top: 9px;
+      flex-shrink: 0;
+    }
+
+    .input-wrapper {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    #userMsg {
+      width: 100%;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(124, 124, 180, 0.65);
+      background: radial-gradient(circle at top left, rgba(26, 26, 52, 0.9), rgba(8, 9, 20, 0.98));
+      color: var(--text-main);
+      padding: 8px 16px 8px 12px;
+      font-size: 0.8rem;
+      outline: none;
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.7),
+        0 10px 25px rgba(0, 0, 0, 0.75);
+    }
+
+    #userMsg::placeholder {
+      color: rgba(159, 159, 210, 0.72);
+    }
+
+    #sendBtn {
+      border-radius: var(--radius-pill);
+      border: none;
+      padding: 0 14px;
+      font-size: 0.8rem;
+      font-weight: 560;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #f1ca63, #f6e29e);
+      color: #21140a;
+      cursor: pointer;
+      min-width: 130px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.75),
+        0 0 0 1px rgba(0, 0, 0, 0.7);
+    }
+
+    #sendBtn:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    #demoStatus {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent-strong);
+      box-shadow: 0 0 0 4px rgba(241, 202, 99, 0.28);
+    }
+
+    .status-dot.ended {
+      background: #ff6b6b;
+      box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.3);
+    }
+
+    .demo-note {
+      margin-top: 6px;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      flex-shrink: 0;
+    }
+
+    .demo-note a {
+      color: var(--accent-strong);
+      text-decoration: none;
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 16px 8px 28px;
+      }
+
+      .chat-card {
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <div class="hero-logo">
+        <div class="hero-logo-mark">
+          <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="gradHero" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#f9e6a9"/>
+                <stop offset="35%" stop-color="#f1c45d"/>
+                <stop offset="70%" stop-color="#b37cff"/>
+                <stop offset="100%" stop-color="#2c0f63"/>
+              </linearGradient>
+            </defs>
+            <circle cx="20" cy="20" r="18" fill="url(#gradHero)" />
+            <path d="M14 10c3.5 0 6 3.2 6 7.5S17.5 25 14 25 8 21.8 8 17.5 10.5 10 14 10Z" fill="rgba(12,8,24,0.96)"/>
+            <path d="M26 13c2.4 0 4.2 1.9 4.2 4.5S28.4 22 26 22s-4.2-1.9-4.2-4.5S23.6 13 26 13Z" fill="rgba(12,8,24,0.96)"/>
+            <path d="M18 13h3.5M18 16h3.5M18 19h3.5M18 22h3.5" stroke="#f9e6a9" stroke-width="1.2" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="hero-logo-text">ESTEBORG <span>EXECUTIVE</span></div>
+      </div>
+
+      <h1 class="hero-title" id="heroTitle"></h1>
+      <p class="hero-sub" id="heroSub"></p>
+    </header>
+
+    <main class="chat-card">
+      <div class="chat-inner">
+        <div class="chat-header">
+          <div class="chat-header-left">
+            <div class="chat-title" id="chatTitle"></div>
+            <div class="chat-subtitle" id="chatSubtitle"></div>
+          </div>
+          <div class="chat-header-right">
+            <span class="dot-live"></span>
+            <span id="chatModeLabel">Demo guiada</span>
+
+            <!-- Selector de idioma en botones -->
+            <div class="lang-pill-wrapper">
+              <span class="lang-icon">🌐</span>
+              <div class="lang-pill-group" id="langPills">
+                <button class="lang-pill active" type="button" data-lang="es">ES</button>
+                <button class="lang-pill" type="button" data-lang="en">EN</button>
+                <button class="lang-pill" type="button" data-lang="pt">PT</button>
+                <button class="lang-pill" type="button" data-lang="fr">FR</button>
+                <button class="lang-pill" type="button" data-lang="it">IT</button>
+                <button class="lang-pill" type="button" data-lang="de">DE</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sin starters visibles, flujo guiado por pasos -->
+        <div id="chatBox" class="chat-box"></div>
+
+        <div class="input-row">
+          <div class="input-wrapper">
+            <input
+              id="userMsg"
+              type="text"
+              placeholder="Escribe aquí lo que quieres lograr con IA..."
+              autocomplete="off"
+            />
+          </div>
+
+          <button id="sendBtn" type="button">
+            <span>Enviar a Esteborg IA</span>
+          </button>
+        </div>
+
+        <div class="status-row">
+          <div id="demoStatus">
+            <span class="status-dot"></span>
+            <span>Demo activa · primeras interacciones</span>
+          </div>
+        </div>
+
+        <p class="demo-note" id="demoNote">
+          Esta demo está conectada al programa <strong>Esteborg IA – Despliega todo tu poder</strong>.
+          Acceso completo exclusivo con Token Esteborg Members.
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const doc = document;
+
+    const chatBox = doc.getElementById("chatBox");
+    const userMsgInput = doc.getElementById("userMsg");
+    const sendBtn = doc.getElementById("sendBtn");
+    const demoStatusEl = doc.getElementById("demoStatus");
+    const heroTitleEl = doc.getElementById("heroTitle");
+    const heroSubEl = doc.getElementById("heroSub");
+    const chatTitleEl = doc.getElementById("chatTitle");
+    const chatSubtitleEl = doc.getElementById("chatSubtitle");
+    const chatModeLabelEl = doc.getElementById("chatModeLabel");
+    const demoNoteEl = doc.getElementById("demoNote");
+    const langPillContainer = doc.getElementById("langPills");
+
+    // ==== BACKEND MODULAR ====
+    const API_BASE = "https://esteborg88full-backend-modular.onrender.com";
+    const API_URL = `${API_BASE}/api/modules/iavipcom`;
+
+    let history = [];
+    let isSending = false;
+    let demoEnded = false;
+    let userName = null;
+    // 1 = pido nombre, 2 = pido objetivo IA, 3+ = backend full
+    let introStep = 1;
+    let currentLang = "es";
+
+    const MAX_DEMO_INTERACTIONS = 14;
+    let demoInteractionCount = 0; // cuenta respuestas del backend
+
+    // ==== Diccionario multiidioma UI ====
+    const UI_STRINGS = {
+      es: {
+        heroTitleHTML:
+          "¿Listo para desplegar <strong>todo tu poder</strong> con IA?<br />" +
+          '<span>Entrena con Esteborg IA Executive y domina la nueva era digital.</span>',
+        heroSubHTML:
+          "Programa acelerado de <strong>3 meses</strong>, 100% online, con certificación " +
+          "<strong>AI Executive &amp; Prompt Engineer</strong> by Esteborg Institute. " +
+          "Acceso exclusivo mediante Token Esteborg Members.",
+        chatTitle: "Esteborg IA · Copiloto Ejecutivo",
+        chatSubtitle:
+          "Cuéntale a Esteborg IA qué quieres lograr con la Inteligencia Artificial en tu empresa o carrera. " +
+          "Entre más contexto le des, más precisas serán sus recomendaciones.",
+        chatModeLabel: "Demo guiada",
+        inputPlaceholder: "Escribe aquí lo que quieres lograr con IA...",
+        sendLabel: "Enviar a Esteborg IA",
+        demoStatusInitial: "Demo activa · primeras interacciones",
+        demoStatusFinal: "Demo finalizada · entra a Members VIP para seguir",
+        demoStatusLast: "Demo activa · últimas {n} interacciones",
+        demoStatusRemaining: "Demo activa · {n} interacciones restantes",
+        demoNoteHTML:
+          "Esta demo está conectada al programa <strong>Esteborg IA – Despliega todo tu poder</strong>. " +
+          'Acceso completo exclusivo para miembros con Token en ' +
+          '<a href="https://membersvip.esteborg.live" target="_blank" rel="noopener noreferrer">Members VIP</a>.',
+        initialAssistant:
+          "👋 Bienvenido a <strong>Esteborg IA – Despliega todo tu poder</strong>. " +
+          "Antes de arrancar tu entrenamiento, dime: <strong>¿cómo te llamas?</strong>",
+        initialAssistantMeta: "Paso 1 de 2",
+        afterName:
+          "Gracias, {name}. Ahora dime en una sola frase qué quieres lograr primero con IA: " +
+          "más ventas, más productividad, mejores decisiones o automatizar tareas.",
+        introStep2Meta: "Paso 2 de 2",
+        starters: [
+          "Aprender IA desde cero",
+          "Aplicar IA en mi trabajo",
+          "Dominar ChatGPT y otras IA",
+          "Automatizar tareas con IA"
+        ]
+      },
+      en: {
+        heroTitleHTML:
+          "Ready to unlock <strong>all your power</strong> with AI?<br />" +
+          '<span>Train with Esteborg AI Executive and lead the new digital era.</span>',
+        heroSubHTML:
+          "Accelerated <strong>3-month</strong> online program with " +
+          "<strong>AI Executive &amp; Prompt Engineer</strong> certification by Esteborg Institute. " +
+          "Exclusive access via Esteborg Members Token.",
+        chatTitle: "Esteborg AI · Executive Copilot",
+        chatSubtitle:
+          "Tell Esteborg AI what you want to achieve with artificial intelligence in your company or career. " +
+          "The more context you share, the sharper the recommendations.",
+        chatModeLabel: "Guided demo",
+        inputPlaceholder: "Type what you want to achieve with AI...",
+        sendLabel: "Send to Esteborg AI",
+        demoStatusInitial: "Demo active · first interactions",
+        demoStatusFinal: "Demo finished · go to Members VIP to continue",
+        demoStatusLast: "Demo active · last {n} interactions",
+        demoStatusRemaining: "Demo active · {n} interactions remaining",
+        demoNoteHTML:
+          "This demo is connected to the program <strong>Esteborg IA – Despliega todo tu poder</strong>. " +
+          'Full access is exclusive for members with Token at ' +
+          '<a href="https://membersvip.esteborg.live" target="_blank" rel="noopener noreferrer">Members VIP</a>.',
+        initialAssistant:
+          "👋 Welcome to <strong>Esteborg IA – Despliega todo tu poder</strong>. " +
+          "Before we start, tell me: <strong>what’s your first name?</strong>",
+        initialAssistantMeta: "Step 1 of 2",
+        afterName:
+          "Thanks, {name}. Now in one sentence tell me what you want to achieve first with AI: " +
+          "more sales, more productivity, better decisions or task automation.",
+        introStep2Meta: "Step 2 of 2",
+        starters: [
+          "Learn AI from scratch",
+          "Apply AI to my job",
+          "Master ChatGPT and other AIs",
+          "Automate tasks with AI"
+        ]
+      },
+      fr: {
+        heroTitleHTML:
+          "Prêt à déployer <strong>tout ton pouvoir</strong> avec l’IA ?<br />" +
+          '<span>Forme-toi avec Esteborg IA Executive et mène la nouvelle ère digitale.</span>',
+        heroSubHTML:
+          "Programme accéléré de <strong>3 mois</strong>, 100 % en ligne, avec certification " +
+          "<strong>AI Executive &amp; Prompt Engineer</strong> par l’Esteborg Institute. " +
+          "Accès exclusif via Token Esteborg Members.",
+        chatTitle: "Esteborg IA · Copilote Exécutif",
+        chatSubtitle:
+          "Explique à Esteborg IA ce que tu veux accomplir avec l’intelligence artificielle dans ton entreprise ou ta carrière. " +
+          "Plus tu donnes de contexte, plus les recommandations seront précises.",
+        chatModeLabel: "Démo guidée",
+        inputPlaceholder: "Écris ce que tu veux accomplir avec l’IA...",
+        sendLabel: "Envoyer à Esteborg IA",
+        demoStatusInitial: "Démo active · premières interactions",
+        demoStatusFinal: "Démo terminée · va sur Members VIP pour continuer",
+        demoStatusLast: "Démo active · dernières {n} interactions",
+        demoStatusRemaining: "Démo active · {n} interactions restantes",
+        demoNoteHTML:
+          "Cette démo est connectée au programme <strong>Esteborg IA – Despliega todo tu poder</strong>. " +
+          'L’accès complet est réservé aux membres avec Token sur ' +
+          '<a href="https://membersvip.esteborg.live" target="_blank" rel="noopener noreferrer">Members VIP</a>.',
+        initialAssistant:
+          "👋 Bienvenue sur <strong>Esteborg IA – Despliega todo tu poder</strong>. " +
+          "Avant de commencer, dis-moi : <strong>comment t’appelles-tu ?</strong>",
+        initialAssistantMeta: "Étape 1 sur 2",
+        afterName:
+          "Merci, {name}. Maintenant, en une phrase, dis-moi ce que tu veux accomplir d’abord avec l’IA : " +
+          "plus de ventes, plus de productivité, de meilleures décisions ou l’automatisation des tâches.",
+        introStep2Meta: "Étape 2 sur 2",
+        starters: [
+          "Apprendre l’IA depuis zéro",
+          "Appliquer l’IA dans mon travail",
+          "Maîtriser ChatGPT et d’autres IA",
+          "Automatiser des tâches avec l’IA"
+        ]
+      },
+      pt: {
+        heroTitleHTML:
+          "Pronto para liberar <strong>todo o seu poder</strong> com IA?<br />" +
+          '<span>Treine com Esteborg IA Executive e lidere a nova era digital.</span>',
+        heroSubHTML:
+          "Programa acelerado de <strong>3 meses</strong>, 100% online, com certificação " +
+          "<strong>AI Executive &amp; Prompt Engineer</strong> pelo Esteborg Institute. " +
+          "Acesso exclusivo via Token Esteborg Members.",
+        chatTitle: "Esteborg IA · Copiloto Executivo",
+        chatSubtitle:
+          "Conte ao Esteborg IA o que você quer alcançar com inteligência artificial no seu trabalho ou negócio. " +
+          "Quanto mais contexto você der, mais precisas serão as recomendações.",
+        chatModeLabel: "Demo guiada",
+        inputPlaceholder: "Escreva aqui o que deseja alcançar com IA...",
+        sendLabel: "Enviar para Esteborg IA",
+        demoStatusInitial: "Demo ativa · primeiras interações",
+        demoStatusFinal: "Demo finalizada · entre em Members VIP para continuar",
+        demoStatusLast: "Demo ativa · últimas {n} interações",
+        demoStatusRemaining: "Demo ativa · {n} interações restantes",
+        demoNoteHTML:
+          "Esta demo está conectada ao programa <strong>Esteborg IA – Despliega todo tu poder</strong>. " +
+          'O acesso completo é exclusivo para membros com Token em ' +
+          '<a href="https://membersvip.esteborg.live" target="_blank" rel="noopener noreferrer">Members VIP</a>.',
+        initialAssistant:
+          "👋 Bem-vindo ao <strong>Esteborg IA – Despliega todo tu poder</strong>. " +
+          "Antes de começar, me diga: <strong>como você se chama?</strong>",
+        initialAssistantMeta: "Etapa 1 de 2",
+        afterName:
+          "Obrigado, {name}. Agora, em uma frase, me diga o que você quer alcançar primeiro com IA: " +
+          "mais vendas, mais produtividade, melhores decisões ou automatizar tarefas.",
+        introStep2Meta: "Etapa 2 de 2",
+        starters: [
+          "Aprender IA do zero",
+          "Aplicar IA no meu trabalho",
+          "Dominar o ChatGPT e outras IAs",
+          "Automatizar tarefas com IA"
+        ]
+      },
+      de: {
+        heroTitleHTML:
+          "Bereit, <strong>deine volle Stärke</strong> mit KI zu entfalten?<br />" +
+          '<span>Trainiere mit Esteborg AI Executive und führe die neue digitale Ära an.</span>',
+        heroSubHTML:
+          "Beschleunigtes <strong>3-Monats</strong>-Programm, komplett online, mit Zertifikat " +
+          "<strong>AI Executive &amp; Prompt Engineer</strong> vom Esteborg Institute. " +
+          "Exklusiver Zugang über Esteborg Members Token.",
+        chatTitle: "Esteborg AI · Executive Copilot",
+        chatSubtitle:
+          "Erkläre Esteborg AI, was du mit künstlicher Intelligenz in deinem Unternehmen oder deiner Karriere erreichen möchtest. " +
+          "Je mehr Kontext du gibst, desto präziser werden die Empfehlungen.",
+        chatModeLabel: "Geführte Demo",
+        inputPlaceholder: "Schreibe hier, was du mit KI erreichen willst...",
+        sendLabel: "An Esteborg AI senden",
+        demoStatusInitial: "Demo aktiv · erste Interaktionen",
+        demoStatusFinal: "Demo beendet · gehe zu Members VIP, um fortzufahren",
+        demoStatusLast: "Demo aktiv · letzte {n} Interaktionen",
+        demoStatusRemaining: "Demo aktiv · {n} Interaktionen verbleibend",
+        demoNoteHTML:
+          "Diese Demo ist mit dem Programm <strong>Esteborg IA – Despliega todo tu poder</strong> verbunden. " +
+          'Vollzugang nur für Mitglieder mit Token auf ' +
+          '<a href="https://membersvip.esteborg.live" target="_blank" rel="noopener noreferrer">Members VIP</a>.',
+        initialAssistant:
+          "👋 Willkommen bei <strong>Esteborg IA – Despliega todo tu poder</strong>. " +
+          "Bevor wir starten, sag mir bitte: <strong>Wie heißt du?</strong>",
+        initialAssistantMeta: "Schritt 1 von 2",
+        afterName:
+          "Danke, {name}. Sag mir jetzt in einem Satz, was du zuerst mit KI erreichen möchtest: " +
+          "mehr Umsatz, mehr Produktivität, bessere Entscheidungen oder automatisierte Aufgaben.",
+        introStep2Meta: "Schritt 2 von 2",
+        starters: [
+          "KI von Grund auf lernen",
+          "KI in meiner Arbeit einsetzen",
+          "ChatGPT und andere KIs meistern",
+          "Aufgaben mit KI automatisieren"
+        ]
+      },
+      it: {
+        heroTitleHTML:
+          "Pronto a liberare <strong>tutto il tuo potere</strong> con l’IA?<br />" +
+          '<span>Allenati con Esteborg IA Executive e guida la nuova era digitale.</span>',
+        heroSubHTML:
+          "Programma accelerato di <strong>3 mesi</strong>, 100% online, con certificazione " +
+          "<strong>AI Executive &amp; Prompt Engineer</strong> dell’Esteborg Institute. " +
+          "Accesso esclusivo tramite Token Esteborg Members.",
+        chatTitle: "Esteborg IA · Copilota Esecutivo",
+        chatSubtitle:
+          "Racconta a Esteborg IA cosa vuoi ottenere con l’intelligenza artificiale nel tuo lavoro o nella tua carriera. " +
+          "Più contesto dai, più precise saranno le raccomandazioni.",
+        chatModeLabel: "Demo guidata",
+        inputPlaceholder: "Scrivi qui cosa vuoi ottenere con l’IA...",
+        sendLabel: "Invia a Esteborg IA",
+        demoStatusInitial: "Demo attiva · prime interazioni",
+        demoStatusFinal: "Demo terminata · entra in Members VIP per continuare",
+        demoStatusLast: "Demo attiva · ultime {n} interazioni",
+        demoStatusRemaining: "Demo attiva · {n} interazioni rimanenti",
+        demoNoteHTML:
+          "Questa demo è collegata al programma <strong>Esteborg IA – Despliega todo tu poder</strong>. " +
+          'L’accesso completo è riservato ai membri con Token su ' +
+          '<a href="https://membersvip.esteborg.live" target="_blank" rel="noopener noreferrer">Members VIP</a>.',
+        initialAssistant:
+          "👋 Benvenuto in <strong>Esteborg IA – Despliega todo tu poder</strong>. " +
+          "Prima di iniziare, dimmi: <strong>come ti chiami?</strong>",
+        initialAssistantMeta: "Passo 1 di 2",
+        afterName:
+          "Grazie, {name}. Ora dimmi in una frase cosa vuoi ottenere per primo con l’IA: " +
+          "più vendite, più produttività, decisioni migliori o automatizzare compiti.",
+        introStep2Meta: "Passo 2 di 2",
+        starters: [
+          "Imparare l’IA da zero",
+          "Applicare l’IA nel mio lavoro",
+          "Dominare ChatGPT e altre IA",
+          "Automatizzare compiti con l’IA"
+        ]
+      }
+    };
+
+    // ----- Helpers UI -----
+    function formatTextWithLinks(text) {
+      if (!text) return "";
+      const urlRegex =
+        /(https?:\/\/[^\s]+)|(www\.[^\s]+)|(membersvip\.esteborg\.live[^\s]*)/gi;
+
+      return text.replace(urlRegex, (match) => {
+        let url = match;
+        if (!/^https?:\/\//i.test(url)) {
+          if (url.startsWith("www.")) {
+            url = "https://" + url;
+          } else if (url.startsWith("membersvip.esteborg.live")) {
+            url = "https://" + url;
+          }
+        }
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${match}</a>`;
+      });
+    }
+
+    function appendMessage(role, text, meta) {
+      const row = doc.createElement("div");
+      row.className = "msg-row " + (role === "user" ? "user" : "ai");
+
+      const bubble = doc.createElement("div");
+      bubble.className = "bubble " + (role === "user" ? "bubble-user" : "bubble-ai");
+
+      const label = doc.createElement("div");
+      label.className = "bubble-label";
+      const dot = doc.createElement("span");
+      dot.className = "bubble-label-dot";
+      const who = doc.createElement("span");
+      who.textContent = role === "user" ? (userName || "Tú") : "Esteborg IA";
+
+      label.appendChild(dot);
+      label.appendChild(who);
+      bubble.appendChild(label);
+
+      const content = doc.createElement("div");
+      if (role === "assistant") {
+        content.innerHTML = formatTextWithLinks(text);
+      } else {
+        content.textContent = text;
+      }
+      bubble.appendChild(content);
+
+      if (meta) {
+        const metaDiv = doc.createElement("div");
+        metaDiv.className = "bubble-meta";
+        metaDiv.textContent = meta;
+        bubble.appendChild(metaDiv);
+      }
+
+      row.appendChild(bubble);
+      chatBox.appendChild(row);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function updateDemoStatus(text, ended) {
+      if (!demoStatusEl) return;
+      demoStatusEl.innerHTML = "";
+
+      const dot = doc.createElement("span");
+      dot.className = "status-dot";
+      if (ended) dot.classList.add("ended");
+
+      const label = doc.createElement("span");
+      label.textContent = text;
+
+      demoStatusEl.appendChild(dot);
+      demoStatusEl.appendChild(label);
+    }
+
+    function setDemoStatus(status, remaining) {
+      const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
+
+      if (status === "ended") {
+        updateDemoStatus(strings.demoStatusFinal, true);
+        demoEnded = true;
+        sendBtn.disabled = true;
+        userMsgInput.disabled = true;
+        return;
+      }
+
+      demoEnded = false;
+      sendBtn.disabled = false;
+      userMsgInput.disabled = false;
+
+      if (status === "initial" || typeof remaining !== "number") {
+        updateDemoStatus(strings.demoStatusInitial, false);
+        return;
+      }
+
+      if (remaining <= 0) {
+        updateDemoStatus(strings.demoStatusFinal, true);
+        demoEnded = true;
+        sendBtn.disabled = true;
+        userMsgInput.disabled = true;
+      } else if (remaining <= 3) {
+        updateDemoStatus(
+          strings.demoStatusLast.replace("{n}", String(remaining)),
+          false
+        );
+      } else {
+        updateDemoStatus(
+          strings.demoStatusRemaining.replace("{n}", String(remaining)),
+          false
+        );
+      }
+    }
+
+    function formatLangForBackend(lang) {
+      const code = (lang || "").toLowerCase();
+      if (["es", "en", "fr", "pt", "de", "it"].includes(code)) return code;
+      return "es";
+    }
+
+    function setLoading(isLoading) {
+      isSending = isLoading;
+      sendBtn.disabled = isLoading || demoEnded;
+      userMsgInput.disabled = demoEnded;
+      const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
+      sendBtn.textContent = isLoading ? "Pensando..." : strings.sendLabel;
+    }
+
+    function applyLanguageUI(lang) {
+      const strings = UI_STRINGS[lang] || UI_STRINGS["es"];
+      heroTitleEl.innerHTML = strings.heroTitleHTML;
+      heroSubEl.innerHTML = strings.heroSubHTML;
+      chatTitleEl.textContent = strings.chatTitle;
+      chatSubtitleEl.textContent = strings.chatSubtitle;
+      chatModeLabelEl.textContent = strings.chatModeLabel;
+      userMsgInput.placeholder = strings.inputPlaceholder;
+      demoNoteEl.innerHTML = strings.demoNoteHTML;
+      setDemoStatus("initial");
+      setLoading(false);
+    }
+
+    async function sendToBackend(messageText) {
+      const langForBackend = formatLangForBackend(currentLang);
+      const payload = {
+        message: messageText,
+        history,
+        lang: langForBackend,
+        userName
+      };
+
+      try {
+        setLoading(true);
+
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          throw new Error("Respuesta no OK del backend");
+        }
+
+        const data = await res.json();
+        const reply =
+          (data && (data.reply || data.message || data.response)) ||
+          "No pude generar una respuesta en este momento. Intenta de nuevo.";
+
+        // Actualizar historial
+        history.push({ role: "user", content: messageText });
+        history.push({ role: "assistant", content: reply });
+
+        demoInteractionCount += 1;
+        const remaining = MAX_DEMO_INTERACTIONS - demoInteractionCount;
+
+        appendMessage("assistant", reply);
+        setDemoStatus(remaining <= 0 ? "ended" : "remaining", remaining);
+      } catch (err) {
+        console.error("Error al llamar al backend:", err);
+        appendMessage(
+          "assistant",
+          "Hubo un problema al conectar con Esteborg IA. Intenta de nuevo en unos momentos."
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // ---- Inicializar chat según idioma ----
+    function initChat() {
+      if (!chatBox) return;
+      chatBox.innerHTML = "";
+      history = [];
+      demoEnded = false;
+      introStep = 1;
+      demoInteractionCount = 0;
+
+      const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
+      applyLanguageUI(currentLang);
+      appendMessage("assistant", strings.initialAssistant, strings.initialAssistantMeta);
+    }
+
+    function handleUserMessage() {
+      if (isSending || demoEnded) return;
+      const text = (userMsgInput.value || "").trim();
+      if (!text) return;
+
+      appendMessage("user", text);
+      userMsgInput.value = "";
+
+      const strings = UI_STRINGS[currentLang] || UI_STRINGS["es"];
+
+      // Paso 1: nombre
+      if (introStep === 1) {
+        // Guardamos primer nombre para etiqueta
+        userName = text.split(" ")[0] || text;
+        const followUp = strings.afterName.replace("{name}", userName);
+        appendMessage("assistant", followUp, strings.introStep2Meta);
+        introStep = 2;
+        return;
+      }
+
+      // Paso 2: objetivo IA -> primera llamada al backend
+      if (introStep === 2) {
+        introStep = 3;
+        sendToBackend(text);
+        return;
+      }
+
+      // Paso 3+: flujo normal al backend
+      sendToBackend(text);
+    }
+
+    // ---- Gestión de idioma (pills) ----
+    if (langPillContainer) {
+      langPillContainer.addEventListener("click", (event) => {
+        const btn = event.target.closest(".lang-pill");
+        if (!btn) return;
+        const lang = btn.dataset.lang;
+        if (!lang || lang === currentLang) return;
+
+        currentLang = lang;
+
+        // Activar/desactivar visualmente
+        Array.from(langPillContainer.querySelectorAll(".lang-pill")).forEach((el) => {
+          el.classList.toggle("active", el.dataset.lang === currentLang);
+        });
+
+        initChat();
+      });
+    }
+
+    // ---- Listeners de envío ----
+    if (sendBtn) {
+      sendBtn.addEventListener("click", handleUserMessage);
+    }
+
+    if (userMsgInput) {
+      userMsgInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          handleUserMessage();
+        }
+      });
+    }
+
+    // ---- Arranque ----
+    document.addEventListener("DOMContentLoaded", () => {
+      initChat();
+      if (userMsgInput) {
+        userMsgInput.focus();
+      }
+    });
+  </script>
+</body>
+</html>
