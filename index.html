@@ -1095,11 +1095,6 @@
     }
   };
 
-  // Fallback para otros idiomas
-  ["pt", "fr", "it", "de"].forEach((lang) => {
-    I18N[lang] = I18N.en;
-  });
-
   function t(key, langOverride) {
     const lang = langOverride || currentLang || "es";
     const pack = I18N[lang] || I18N.es;
