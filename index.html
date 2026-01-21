@@ -1905,14 +1905,27 @@
     }
 
     if (els.ttsToggle && els.voicePill) {
-      els.ttsToggle.addEventListener("change", () => {
-        setStatus(els.ttsToggle.checked ? "statusTTSOn" : "statusTTSOff");
-      });
-      els.voicePill.addEventListener("click", () => {
-        els.ttsToggle.checked = !els.ttsToggle.checked;
-        setStatus(els.ttsToggle.checked ? "statusTTSOn" : "statusTTSOff");
-      });
+  // Switch ON/OFF
+  els.ttsToggle.addEventListener("change", () => {
+    if (!els.ttsToggle.checked) {
+      // Usuario APAGA la voz → detenemos el audio actual
+      stopTTS();
     }
+    setStatus(els.ttsToggle.checked ? "statusTTSOn" : "statusTTSOff");
+  });
+
+  // Píldora "Voz Esteborg IA"
+  els.voicePill.addEventListener("click", () => {
+    els.ttsToggle.checked = !els.ttsToggle.checked;
+
+    if (!els.ttsToggle.checked) {
+      // Usuario la apaga desde la píldora → también paramos el audio
+      stopTTS();
+    }
+
+    setStatus(els.ttsToggle.checked ? "statusTTSOn" : "statusTTSOff");
+  });
+}
 
     startSession(true);
   });
