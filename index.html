@@ -1588,15 +1588,13 @@
   if (!text) return;
 
   try {
-    // --- LIMPIADOR DE VOZ (NO LEE SIGNOS) ---
     let cleaned = text
-      .replace(/\.\.\./g, " ")      // elimina "..."
-      .replace(/[.,;:!?¡¿(){}\[\]"“”‘’]/g, " ")  // signos
-      .replace(/-/g, " ")           // guiones
-      .replace(/\s+/g, " ")         // compacta espacios
+      .replace(/\.\.\./g, " ")
+      .replace(/[.,;:!?¡¿(){}\[\]"“”‘’]/g, " ")
+      .replace(/-/g, " ")
+      .replace(/\s+/g, " ")
       .trim();
 
-    // acorta para ElevenLabs si es muy largo
     if (cleaned.length > 450) cleaned = cleaned.slice(0, 450);
 
     const res = await fetch(TTS_URL, {
