@@ -666,91 +666,112 @@
     text-decoration: underline;
   }
 
-  @media (max-width: 720px) {
-    #app {
-      padding: 24px 10px 28px;
-    }
-    .shell {
-      padding: 14px 12px 16px;
-      border-radius: 20px;
-    }
-    .banner-header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .panel {
-      margin-top: 14px;
-    }
-    .chat-container {
-      margin-top: 8px;
-    }
-    #chat-log {
-      max-height: 260px;
-      min-height: 160px;
-    }
-    .footer-row {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .footer-right {
-      text-align: left;
-    }
+  /* 👉 MODO TABLET / MÓVIL GRANDE */
+@media (max-width: 720px) {
+  /* Layout general: que se vea a pantalla completa en embed Carrd */
+  body {
+    padding: 0;
+    align-items: stretch;
+    justify-content: flex-start;
   }
 
-  @media (max-width: 480px) {
-    .banner-title-main {
-      font-size: 11px;
-    }
-    .banner-title-sub {
-      font-size: 18px;
-    }
-    .panel-title {
-      font-size: 11px;
-    }
-    .panel-badge {
-      font-size: 10px;
-    }
-    .chips-row,
-    .content-row {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .input-row {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    .input-actions {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .send-btn {
-      flex: 1;
-      justify-content: center;
-    }
-    .mic-btn {
-      width: 32px;
-      height: 32px;
-    }
+  #app {
+    padding: 18px 0 22px;
+    width: 100%;
   }
 
-  @media (max-width: 400px) {
-    .shell {
-      padding: 12px 10px 14px;
-    }
-    #app {
-      padding: 18px 10px 26px;
-    }
-    .banner-title-sub {
-      font-size: 18px;
-    }
-    .panel {
-      padding: 12px 12px 14px;
-    }
-    .chat-container {
-      margin-top: 8px;
-    }
+  .shell {
+    max-width: 100%;
+    margin: 0;
+    padding: 14px 12px 16px;
+    border-radius: 0; /* la tarjeta se vuelve pantalla completa en cel */
   }
+
+  /* Lo que ya tenías en 720, lo respetamos */
+  .banner-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .panel {
+    margin-top: 14px;
+    padding: 12px 12px 14px;
+  }
+
+  .chat-container {
+    margin-top: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #chat-log {
+    max-height: 260px;
+    min-height: 160px;
+  }
+
+  .footer-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-right {
+    text-align: left;
+  }
+}
+
+/* 👉 MODO MÓVIL CHICO (iPhone SE / Android pequeño) */
+@media (max-width: 480px) {
+  .banner-title-main {
+    font-size: 11px;
+  }
+
+  .banner-title-sub {
+    font-size: 18px;
+  }
+
+  .panel-title {
+    font-size: 11px;
+  }
+
+  .panel-badge {
+    font-size: 10px;
+  }
+
+  .chips-row,
+  .content-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .input-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input-actions {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .send-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .mic-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* un poco menos de padding general en pantallas muy pequeñas */
+  #app {
+    padding: 14px 0 18px;
+  }
+
+  .shell {
+    padding: 12px 10px 14px;
+  }
+}
 </style>
 </head>
 <body>
