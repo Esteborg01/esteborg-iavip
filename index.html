@@ -1565,38 +1565,47 @@
   }
 
   async function playTTS(text) {
-    if (!els.ttsToggle || !els.ttsToggle.checked) return;
-    if (!text) return;
+  if (!els.ttsToggle || !els.ttsToggle.checked) return;
+  if (!text) return;
 
-    try {
-      const trimmed = text.length > 450 ? text.slice(0, 450) : text;
+  try {
+    // --- LIMPIADOR DE VOZ (NO LEE SIGNOS) ---
+    let cleaned = text
+      .replace(/\.\.\./g, " ")      // elimina "..."
+      .replace(/[.,;:!?¡¿(){}\[\]"“”‘’]/g, " ")  // signos
+      .replace(/-/g, " ")           // guiones
+      .replace(/\s+/g, " ")         // compacta espacios
+      .trim();
 
-      const res = await fetch(TTS_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          text: trimmed,
-          voiceId: "IdhxxSTaAg80CTeSgScm"
-        })
-      });
+    // acorta para ElevenLabs si es muy largo
+    if (cleaned.length > 450) cleaned = cleaned.slice(0, 450);
 
-      if (!res.ok) {
-        console.error("[TTS] error:", await res.text());
-        return;
-      }
+    const res = await fetch(TTS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        text: cleaned,
+        voiceId: "IdhxxSTaAg80CTeSgScm"
+      })
+    });
 
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-
-      stopTTS();
-      currentAudio = new Audio(url);
-      currentAudio.play().catch((err) => {
-        console.warn("[TTS] no se pudo reproducir:", err);
-      });
-    } catch (e) {
-      console.error("[TTS] error general:", e);
+    if (!res.ok) {
+      console.error("[TTS] error:", await res.text());
+      return;
     }
+
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+
+    stopTTS();
+    currentAudio = new Audio(url);
+    currentAudio.play().catch((err) => {
+      console.warn("[TTS] no se pudo reproducir:", err);
+    });
+  } catch (e) {
+    console.error("[TTS] error general:", e);
   }
+}
 
   // ========== SPEECH ==========
   function getSpeechLangCode(lang) {
