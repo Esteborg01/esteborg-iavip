@@ -90,38 +90,26 @@ A continuación te dejo el **script completo** listo para pegar en `index_IA.htm
     voicePillLabel: "🎧 Voz Esteborg IA",
     sendButtonLabel: "ENVIAR",
 
-    statusInitialWithToken:
-      "Detecté un Tokken en la URL o guardado · lo usaré automáticamente en tu entrenamiento con Esteborg IA.",
-    statusInitialNoToken:
-      "Demo activa · si generas tu Tokken VIP en Members, lo usaré automáticamente en tu entrenamiento IA.",
-    statusTokenManual:
-      "Tokken pegado manualmente · usaré ese Tokken en tu entrenamiento IA.",
-    statusTokenValid:
-      "Modo Members activo · Tokken VIP válido para Esteborg IA.",
-    statusTokenInvalid:
-      "Tokken inválido o expirado · usando modo demo. Genera uno nuevo en Members.",
-    statusDemoEnded:
-      "Demo finalizada · renueva tu acceso para seguir entrenando con Esteborg IA.",
-    statusDemoActive:
-      "Demo activa · cuando estés listo, pega tu Tokken VIP Esteborg Members.",
-    statusListening: "Escuchando... habla ahora.",
-    statusProcessingSpeech: "Procesando lo que dijiste...",
-    statusMicError: "Hubo un problema con el micrófono, intenta de nuevo.",
-    statusTextCaptured:
-      "Texto capturado, puedes enviarlo o editarlo.",
-    statusTTSOn: "Voz Esteborg IA activada.",
-    statusTTSOff: "Voz Esteborg IA desactivada.",
-    statusLangCurrent: "Idioma cambiado a español.",
-
-    tokenPasteReply:
-      "Perfecto, ya tengo tu Tokken Esteborg Members ✅\nAhora dime: ¿qué quieres lograr con IA en tu negocio y tu rol ejecutivo?",
-    tokenWelcomeMessage:
-      "✅ Tu Tokken Esteborg Members está validado.\nEstás en modo Members VIP con Esteborg IA, podemos trabajar tus escenarios reales de negocio con acceso completo.",
+    statusPreparing: "Preparando tu entrenamiento con Esteborg IA...",
+    statusThinking: "Esteborg IA está pensando...",
+    statusReady: "Listo para continuar con tu entrenamiento.",
 
     welcomeMessage:
       "¡Qué gusto saludarte! 😊 Antes de entrar a tu entrenamiento necesito tu Tokken Esteborg Members para validar tu acceso.\n\n" +
       "Si aún no tienes token, puedes obtenerlo o recuperarlo en: https://membersvip.esteborg.live/#miembrosvip\n\n" +
-      "Una vez que tengas tu Tokken, pégalo aquí o accede desde tu panel Members VIP. Después elige el idioma en la parte superior (ES, EN, PT, FR, IT, DE) y empezamos a diseñar tu plan de IA."
+      "Una vez que tengas tu Tokken, pégalo aquí o haz tu primera pregunta sobre IA aplicada a tu negocio y yo te guío paso a paso.",
+
+    tokenDetectedUrl:
+      "Detecté un Tokken en la URL. Lo usaré automáticamente en tu sesión.",
+    tokenDetectedStored:
+      "Detecté un Tokken guardado. Lo usaré automáticamente en tu sesión.",
+    tokenMissingHint:
+      "Aún no detecto tu Tokken Esteborg Members. Pégalo en el chat cuando estés listo.",
+    invalidToken:
+      "Tu Tokken Esteborg Members parece inválido o expirado. Entra a https://membersvip.esteborg.live/#miembrosvip para generar uno nuevo y pégalo aquí.",
+
+    errorGeneric:
+      "Hubo un problema de conexión. Intenta de nuevo en algunos segundos."
   },
 
   en: {
@@ -142,7 +130,7 @@ A continuación te dejo el **script completo** listo para pegar en `index_IA.htm
     btnChallengeText:
       "I want to master AI in my daily work and executive role.",
 
-    contentLabel: "Material:",
+    contentLabel: "Content:",
     btnSlides: "Slides",
     btnSlidesText:
       "Show me the slides for the executive training in Applied AI.",
@@ -163,44 +151,32 @@ A continuación te dejo el **script completo** listo para pegar en `index_IA.htm
     voicePillLabel: "🎧 Esteborg IA Voice",
     sendButtonLabel: "SEND",
 
-    statusInitialWithToken:
-      "I detected a token in the URL or stored locally · I’ll use it automatically in your AI training.",
-    statusInitialNoToken:
-      "Demo active · if you generate your VIP token in Members, I’ll use it automatically in your AI training.",
-    statusTokenManual:
-      "Token pasted manually · I’ll use that token in your AI training.",
-    statusTokenValid:
-      "Members mode active · valid VIP token for Esteborg IA.",
-    statusTokenInvalid:
-      "Token invalid or expired · using demo mode. Generate a new one in Members.",
-    statusDemoEnded:
-      "Demo finished · renew your access to keep training with Esteborg IA.",
-    statusDemoActive:
-      "Demo active · whenever you’re ready, paste your Esteborg Members VIP token.",
-    statusListening: "Listening... you can speak now.",
-    statusProcessingSpeech: "Processing what you said...",
-    statusMicError:
-      "There was a problem with the microphone, please try again.",
-    statusTextCaptured:
-      "Text captured, you can send it or edit it.",
-    statusTTSOn: "Esteborg IA voice enabled.",
-    statusTTSOff: "Esteborg IA voice disabled.",
-    statusLangCurrent: "Language switched to English.",
-
-    tokenPasteReply:
-      "Perfect, I already have your Esteborg Members token ✅\nTell me now what you want to achieve with AI in your business and executive role.",
-    tokenWelcomeMessage:
-      "✅ Your Esteborg Members token is validated.\nYou are in Members VIP mode with Esteborg IA, so we can work on your real business scenarios with full access.",
+    statusPreparing: "Preparing your training with Esteborg IA...",
+    statusThinking: "Esteborg IA is thinking...",
+    statusReady: "Ready to continue your training.",
 
     welcomeMessage:
       "Great to see you here! 😊 Before we start your training I need your Esteborg Members token to validate your access.\n\n" +
       "If you don’t have a token yet, you can get or recover it at: https://membersvip.esteborg.live/#miembrosvip\n\n" +
-      "Once you have your token, paste it here or come from your Members VIP panel. Then choose your language at the top (ES, EN, PT, FR, IT, DE) and we’ll start designing your AI plan."
+      "Once you have your token, paste it here or ask your first question about AI applied to your business and I’ll guide you step by step.",
+
+    tokenDetectedUrl:
+      "I detected a token in the URL. I’ll use it automatically in your session.",
+    tokenDetectedStored:
+      "I detected a stored token. I’ll use it automatically in your session.",
+    tokenMissingHint:
+      "I haven’t detected your Esteborg Members token yet. Paste it into the chat when you’re ready.",
+    invalidToken:
+      "Your Esteborg Members token seems invalid or expired. Go to https://membersvip.esteborg.live/#miembrosvip to generate a new one and paste it here.",
+
+    errorGeneric:
+      "There was a connection problem. Please try again in a few seconds."
   },
 
   pt: {
     bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
-    bannerSub: "Treinamento executivo em IA aplicada para liberar todo o seu poder.",
+    bannerSub:
+      "Treinamento executivo em IA aplicada para liberar todo o seu poder.",
     bannerDesc:
       "Esteborg IA é o seu copiloto executivo de inteligência artificial. Aqui desenhamos seu plano estratégico, otimizamos o seu negócio e treinamos suas habilidades executivas com IA.",
     panelTitle: "INÍCIO DO TREINAMENTO · COPILOTO EXECUTIVO DE IA",
@@ -237,39 +213,26 @@ A continuación te dejo el **script completo** listo para pegar en `index_IA.htm
     voicePillLabel: "🎧 Voz Esteborg IA",
     sendButtonLabel: "ENVIAR",
 
-    statusInitialWithToken:
-      "Detectei um Tokken na URL ou salvo localmente · vou usá-lo automaticamente no seu treinamento com Esteborg IA.",
-    statusInitialNoToken:
-      "Demo ativa · se você gerar seu Tokken VIP no Members, vou usá-lo automaticamente no seu treinamento de IA.",
-    statusTokenManual:
-      "Tokken colado manualmente · vou usar esse Tokken no seu treinamento de IA.",
-    statusTokenValid:
-      "Modo Members ativo · Tokken VIP válido para Esteborg IA.",
-    statusTokenInvalid:
-      "Tokken inválido ou expirado · usando modo demo. Gere um novo no Members.",
-    statusDemoEnded:
-      "Demo finalizada · renove seu acesso para continuar treinando com Esteborg IA.",
-    statusDemoActive:
-      "Demo ativa · quando estiver pronto, cole seu Tokken VIP Esteborg Members.",
-    statusListening: "Ouvindo... pode falar agora.",
-    statusProcessingSpeech: "Processando o que você disse...",
-    statusMicError:
-      "Houve um problema com o microfone, tente novamente.",
-    statusTextCaptured:
-      "Texto capturado, você pode enviar ou editar.",
-    statusTTSOn: "Voz Esteborg IA ativada.",
-    statusTTSOff: "Voz Esteborg IA desativada.",
-    statusLangCurrent: "Idioma alterado para português.",
-
-    tokenPasteReply:
-      "Perfeito, já tenho o seu Tokken Esteborg Members ✅\nAgora me diga: o que você quer alcançar com IA no seu negócio e no seu papel executivo?",
-    tokenWelcomeMessage:
-      "✅ Seu Tokken Esteborg Members foi validado.\nVocê está no modo Members VIP com Esteborg IA, podemos trabalhar seus cenários reais de negócio com acesso completo.",
+    statusPreparing: "Preparando o seu treinamento com Esteborg IA...",
+    statusThinking: "Esteborg IA está pensando...",
+    statusReady: "Pronto para continuar o seu treinamento.",
 
     welcomeMessage:
       "Que bom ter você aqui! 😊 Antes de começar o seu treinamento eu preciso do seu Tokken Esteborg Members para validar o acesso.\n\n" +
       "Se você ainda não tem token, pode obter ou recuperar em: https://membersvip.esteborg.live/#miembrosvip\n\n" +
-      "Quando tiver o Tokken, cole aqui ou entre a partir do seu painel Members VIP. Depois escolha o idioma na parte superior (ES, EN, PT, FR, IT, DE) e começamos a desenhar o seu plano de IA."
+      "Quando tiver o Tokken, cole aqui ou faça sua primeira pergunta sobre IA aplicada ao seu negócio e eu vou guiá-lo passo a passo.",
+
+    tokenDetectedUrl:
+      "Detectei um Tokken na URL. Vou usá-lo automaticamente na sua sessão.",
+    tokenDetectedStored:
+      "Detectei um Tokken salvo. Vou usá-lo automaticamente na sua sessão.",
+    tokenMissingHint:
+      "Ainda não detectei o seu Tokken Esteborg Members. Cole-o no chat quando estiver pronto.",
+    invalidToken:
+      "Seu Tokken Esteborg Members parece inválido ou expirado. Acesse https://membersvip.esteborg.live/#miembrosvip para gerar um novo e colar aqui.",
+
+    errorGeneric:
+      "Houve um problema de conexão. Tente novamente em alguns segundos."
   },
 
   fr: {
@@ -278,7 +241,7 @@ A continuación te dejo el **script completo** listo para pegar en `index_IA.htm
       "Formation exécutive en IA appliquée pour libérer tout votre potentiel.",
     bannerDesc:
       "Esteborg IA est votre copilote exécutif en intelligence artificielle. Ici nous concevons votre plan stratégique, optimisons votre entreprise et entraînons vos compétences exécutives avec l’IA.",
-    panelTitle: "DÉBUT DE LA FORMATION · COPILOTE EXECUTIF IA",
+    panelTitle: "DÉBUT DE LA FORMATION · COPILOTE EXÉCUTIF IA",
 
     chipsLabel: "Je veux commencer par :",
     btnLesson: "Automatiser des tâches",
@@ -287,7 +250,7 @@ A continuación te dejo el **script completo** listo para pegar en `index_IA.htm
     btnEmotion: "Décisions exécutives",
     btnEmotionText:
       "Je veux que l’IA m’aide à prendre de meilleures décisions exécutives.",
-    btnChallenge: "Maîtrise de l’IA au quotidien",
+    btnChallenge: "Maîtriser l’IA au quotidien",
     btnChallengeText:
       "Je veux maîtriser l’IA dans mon quotidien et dans mon rôle exécutif.",
 
@@ -312,39 +275,26 @@ A continuación te dejo el **script completo** listo para pegar en `index_IA.htm
     voicePillLabel: "🎧 Voix Esteborg IA",
     sendButtonLabel: "ENVOYER",
 
-    statusInitialWithToken:
-      "J’ai détecté un Tokken dans l’URL ou enregistré localement · je l’utiliserai automatiquement dans votre formation avec Esteborg IA.",
-    statusInitialNoToken:
-      "Démo active · si vous générez votre Tokken VIP dans Members, je l’utiliserai automatiquement dans votre formation IA.",
-    statusTokenManual:
-      "Tokken collé manuellement · j’utiliserai ce Tokken dans votre formation IA.",
-    statusTokenValid:
-      "Mode Members actif · Tokken VIP valide pour Esteborg IA.",
-    statusTokenInvalid:
-      "Tokken invalide ou expiré · utilisation du mode démo. Générez-en un nouveau dans Members.",
-    statusDemoEnded:
-      "Démo terminée · renouvelez votre accès pour continuer à vous entraîner avec Esteborg IA.",
-    statusDemoActive:
-      "Démo active · lorsque vous serez prêt, collez votre Tokken VIP Esteborg Members.",
-    statusListening: "J’écoute... vous pouvez parler.",
-    statusProcessingSpeech: "Traitement de ce que vous avez dit...",
-    statusMicError:
-      "Un problème est survenu avec le micro, réessayez.",
-    statusTextCaptured:
-      "Texte capturé, vous pouvez l’envoyer ou le modifier.",
-    statusTTSOn: "Voix Esteborg IA activée.",
-    statusTTSOff: "Voix Esteborg IA désactivée.",
-    statusLangCurrent: "Langue changée en français.",
-
-    tokenPasteReply:
-      "Parfait, j’ai déjà votre Tokken Esteborg Members ✅\nDites-moi maintenant ce que vous voulez accomplir avec l’IA dans votre entreprise et votre rôle exécutif.",
-    tokenWelcomeMessage:
-      "✅ Votre Tokken Esteborg Members est validé.\nVous êtes en mode Members VIP avec Esteborg IA, nous pouvons travailler vos scénarios réels de business avec un accès complet.",
+    statusPreparing: "Préparation de votre formation avec Esteborg IA...",
+    statusThinking: "Esteborg IA est en train de réfléchir...",
+    statusReady: "Prêt à poursuivre votre formation.",
 
     welcomeMessage:
       "Ravi de vous voir ici ! 😊 Avant de démarrer votre formation j’ai besoin de votre Tokken Esteborg Members pour valider votre accès.\n\n" +
       "Si vous n’avez pas encore de token, vous pouvez l’obtenir ou le récupérer sur : https://membersvip.esteborg.live/#miembrosvip\n\n" +
-      "Une fois que vous avez votre Tokken, collez-le ici ou accédez depuis votre espace Members VIP. Ensuite, choisissez la langue en haut (ES, EN, PT, FR, IT, DE) et nous commençons à concevoir votre plan IA."
+      "Une fois que vous avez votre Tokken, collez-le ici ou posez votre première question sur l’IA appliquée à votre business et je vous guiderai étape par étape.",
+
+    tokenDetectedUrl:
+      "J’ai détecté un Tokken dans l’URL. Je l’utiliserai automatiquement dans votre session.",
+    tokenDetectedStored:
+      "J’ai détecté un Tokken enregistré. Je l’utiliserai automatiquement dans votre session.",
+    tokenMissingHint:
+      "Je n’ai pas encore détecté votre Tokken Esteborg Members. Collez-le dans le chat quand vous serez prêt.",
+    invalidToken:
+      "Votre Tokken Esteborg Members semble invalide ou expiré. Rendez-vous sur https://membersvip.esteborg.live/#miembrosvip pour en générer un nouveau et le coller ici.",
+
+    errorGeneric:
+      "Un problème de connexion est survenu. Réessayez dans quelques secondes."
   },
 
   it: {
@@ -387,39 +337,26 @@ A continuación te dejo el **script completo** listo para pegar en `index_IA.htm
     voicePillLabel: "🎧 Voce Esteborg IA",
     sendButtonLabel: "INVIA",
 
-    statusInitialWithToken:
-      "Ho rilevato un Tokken nell’URL o salvato localmente · lo userò automaticamente nel tuo allenamento con Esteborg IA.",
-    statusInitialNoToken:
-      "Demo attiva · se generi il tuo Tokken VIP in Members, lo userò automaticamente nel tuo allenamento IA.",
-    statusTokenManual:
-      "Tokken incollato manualmente · userò quel Tokken nel tuo allenamento IA.",
-    statusTokenValid:
-      "Modalità Members attiva · Tokken VIP valido per Esteborg IA.",
-    statusTokenInvalid:
-      "Tokken non valido o scaduto · uso della modalità demo. Generane uno nuovo in Members.",
-    statusDemoEnded:
-      "Demo terminata · rinnova il tuo accesso per continuare ad allenarti con Esteborg IA.",
-    statusDemoActive:
-      "Demo attiva · quando sei pronto, incolla il tuo Tokken VIP Esteborg Members.",
-    statusListening: "In ascolto... puoi parlare ora.",
-    statusProcessingSpeech: "Elaboro ciò che hai detto...",
-    statusMicError:
-      "Si è verificato un problema con il microfono, riprova.",
-    statusTextCaptured:
-      "Testo catturato, puoi inviarlo o modificarlo.",
-    statusTTSOn: "Voce Esteborg IA attivata.",
-    statusTTSOff: "Voce Esteborg IA disattivata.",
-    statusLangCurrent: "Lingua cambiata in italiano.",
-
-    tokenPasteReply:
-      "Perfetto, ho già il tuo Tokken Esteborg Members ✅\nOra dimmi cosa vuoi ottenere con l’IA nel tuo business e nel tuo ruolo executive.",
-    tokenWelcomeMessage:
-      "✅ Il tuo Tokken Esteborg Members è stato validato.\nSei in modalità Members VIP con Esteborg IA, possiamo lavorare sui tuoi scenari reali di business con accesso completo.",
+    statusPreparing: "Preparando il tuo allenamento con Esteborg IA...",
+    statusThinking: "Esteborg IA sta pensando...",
+    statusReady: "Pronto a continuare il tuo allenamento.",
 
     welcomeMessage:
       "Felice di vederti qui! 😊 Prima di iniziare il tuo allenamento ho bisogno del tuo Tokken Esteborg Members per convalidare l’accesso.\n\n" +
       "Se non hai ancora il token, puoi ottenerlo o recuperarlo su: https://membersvip.esteborg.live/#miembrosvip\n\n" +
-      "Una volta che hai il Tokken, incollalo qui o entra dal tuo pannello Members VIP. Poi scegli la lingua in alto (ES, EN, PT, FR, IT, DE) e iniziamo a progettare il tuo piano IA."
+      "Una volta che hai il Tokken, incollalo qui o fai la tua prima domanda sull’IA applicata al tuo business e ti guiderò passo dopo passo.",
+
+    tokenDetectedUrl:
+      "Ho rilevato un Tokken nell’URL. Lo userò automaticamente nella tua sessione.",
+    tokenDetectedStored:
+      "Ho rilevato un Tokken salvato. Lo userò automaticamente nella tua sessione.",
+    tokenMissingHint:
+      "Non ho ancora rilevato il tuo Tokken Esteborg Members. Incollalo nella chat quando sei pronto.",
+    invalidToken:
+      "Il tuo Tokken Esteborg Members sembra non valido o scaduto. Vai su https://membersvip.esteborg.live/#miembrosvip per generarne uno nuovo e incollarlo qui.",
+
+    errorGeneric:
+      "Si è verificato un problema di connessione. Riprova tra qualche secondo."
   },
 
   de: {
@@ -462,47 +399,29 @@ A continuación te dejo el **script completo** listo para pegar en `index_IA.htm
     voicePillLabel: "🎧 Esteborg IA-Stimme",
     sendButtonLabel: "SENDEN",
 
-    statusInitialWithToken:
-      "Ich habe einen Tokken in der URL oder lokal gespeichert erkannt · ich werde ihn automatisch in deinem Training mit Esteborg IA verwenden.",
-    statusInitialNoToken:
-      "Demo aktiv · wenn du deinen VIP-Tokken in Members erzeugst, werde ich ihn automatisch in deinem KI-Training verwenden.",
-    statusTokenManual:
-      "Tokken manuell eingefügt · ich werde diesen Tokken in deinem KI-Training verwenden.",
-    statusTokenValid:
-      "Members-Modus aktiv · gültiger VIP-Tokken für Esteborg IA.",
-    statusTokenInvalid:
-      "Tokken ungültig oder abgelaufen · Demo-Modus aktiv. Erzeuge einen neuen in Members.",
-    statusDemoEnded:
-      "Demo beendet · erneuere deinen Zugang, um weiter mit Esteborg IA zu trainieren.",
-    statusDemoActive:
-      "Demo aktiv · sobald du bereit bist, füge deinen Esteborg Members VIP-Tokken ein.",
-    statusListening: "Ich höre zu... du kannst jetzt sprechen.",
-    statusProcessingSpeech: "Verarbeite, was du gesagt hast...",
-    statusMicError:
-      "Es gab ein Problem mit dem Mikrofon, bitte versuche es erneut.",
-    statusTextCaptured:
-      "Text erfasst, du kannst ihn senden oder bearbeiten.",
-    statusTTSOn: "Esteborg IA-Stimme aktiviert.",
-    statusTTSOff: "Esteborg IA-Stimme deaktiviert.",
-    statusLangCurrent: "Sprache auf Deutsch geändert.",
-
-    tokenPasteReply:
-      "Perfekt, ich habe deinen Esteborg Members-Tokken ✅\nSag mir jetzt, was du mit KI in deinem Unternehmen und in deiner Executive-Rolle erreichen möchtest.",
-    tokenWelcomeMessage:
-      "✅ Dein Esteborg Members-Tokken ist validiert.\nDu bist im Members VIP-Modus mit Esteborg IA, wir können jetzt an deinen realen Business-Szenarien mit vollem Zugriff arbeiten.",
+    statusPreparing:
+      "Dein Training mit Esteborg IA wird vorbereitet...",
+    statusThinking: "Esteborg IA denkt gerade nach...",
+    statusReady: "Bereit, mit deinem Training fortzufahren.",
 
     welcomeMessage:
       "Schön, dass du hier bist! 😊 Bevor wir mit deinem Training starten, brauche ich deinen Esteborg Members-Tokken, um deinen Zugang zu validieren.\n\n" +
       "Wenn du noch keinen Token hast, kannst du ihn hier bekommen oder wiederherstellen: https://membersvip.esteborg.live/#miembrosvip\n\n" +
-      "Sobald du deinen Tokken hast, füge ihn hier ein oder komm über dein Members-VIP-Dashboard. Wähle dann oben die Sprache (ES, EN, PT, FR, IT, DE) und wir beginnen, deinen KI-Plan zu entwickeln."
+      "Sobald du deinen Tokken hast, füge ihn hier ein oder stell deine erste Frage zu KI in deinem Unternehmen – ich führe dich Schritt für Schritt.",
+
+    tokenDetectedUrl:
+      "Ich habe einen Tokken in der URL erkannt. Ich werde ihn automatisch in deiner Session verwenden.",
+    tokenDetectedStored:
+      "Ich habe einen gespeicherten Tokken erkannt. Ich werde ihn automatisch in deiner Session verwenden.",
+    tokenMissingHint:
+      "Ich habe deinen Esteborg Members-Tokken noch nicht erkannt. Füge ihn ins Chatfeld ein, wenn du bereit bist.",
+    invalidToken:
+      "Dein Esteborg Members-Tokken scheint ungültig oder abgelaufen zu sein. Gehe auf https://membersvip.esteborg.live/#miembrosvip, um einen neuen zu erzeugen und hier einzufügen.",
+
+    errorGeneric:
+      "Es gab ein Verbindungsproblem. Bitte versuche es in ein paar Sekunden erneut."
   }
 };
-
-  function t(key, langOverride) {
-    const lang = langOverride || currentLang || "es";
-    const pack = I18N[lang] || I18N.es;
-    return pack[key] || I18N.es[key] || "";
-  }
 
   // ========== TOKEN VIP (CLON EC7) ==========
   let VIP_TOKEN = null;
