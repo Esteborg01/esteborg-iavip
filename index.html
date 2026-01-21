@@ -1382,6 +1382,15 @@
   }
 };
 
+  const LANG_INSTRUCTIONS = {
+  es: "A partir de ahora responde SIEMPRE en español latino ejecutivo, claro y directo. Nunca cambies de idioma.",
+  en: "From now on you MUST answer ALWAYS in professional American English. Do not switch languages.",
+  pt: "A partir de agora, responda SEMPRE em português brasileiro profissional. Não mude de idioma.",
+  fr: "À partir de maintenant, répondez TOUJOURS en français professionnel. Ne changez pas de langue.",
+  it: "D'ora in poi rispondi SEMPRE in italiano professionale. Non cambiare lingua.",
+  de: "Antworte ab jetzt IMMER auf professionellem Deutsch. Wechsle die Sprache nicht."
+};
+
   function t(key, langOverride) {
     const lang = langOverride || currentLang || "es";
     const pack = I18N[lang] || I18N.es;
@@ -1462,6 +1471,16 @@
   }
 
   const els = {};
+function buildBackendHistory() {
+  const langMsg = LANG_INSTRUCTIONS[currentLang];
+  if (!langMsg) return history;
+
+  // Creamos una copia nueva con un mensaje de sistema al inicio
+  return [
+    { role: "system", content: langMsg },
+    ...history
+  ];
+}
 
   // ========== UI ==========
   function applyUILanguage() {
@@ -1705,16 +1724,16 @@
 
     try {
       const resp = await fetch(API_BASE + MODULE_PATH, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: userText,
-          rawToken: tokenToSend,
-          userName: null,
-          history,
-          lang: currentLang
-        })
-      });
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    message: userText,
+    rawToken: tokenToSend,
+    userName: null,
+    history: buildBackendHistory(), // ← aquí va la magia
+    lang: currentLang               // mantenemos el lang que ya usabas
+  })
+});
 
       console.log("[IA] Respuesta HTTP:", resp.status);
       if (!resp.ok) throw new Error("HTTP " + resp.status);
