@@ -1016,72 +1016,71 @@
     // EVENTOS
     // =========================
 
-    async function handleSend() {
-      if (isSending) return;
-      const text = userInput.value.trim();
-      if (!text) return;
-
-      isSending = true;
-      stopTTS();
-
-      addMessage("user", text, { speak: false });
-      userInput.value = "";
-
-      const typingBubble = addMessage("assistant", TYPING_TEXT[currentLang], {
-        speak: false
-      });
-
-      try {
-        const data = await sendToBackend(text);
-        const aiText = data && data.message ? data.message : "(Sin respuesta)";
-        typingBubble.textContent = aiText;
-        if (voiceToggle.checked) {
-          playTTS(aiText).catch(() => {});
-        }
-      } catch (err) {
-        console.error("[BACKEND ERROR]", err);
-        typingBubble.textContent =
-          "Hubo un error al conectar con Esteborg IA. Intenta de nuevo en unos segundos.";
-      } finally {
-        isSending = false;
-      }
+    function wireEvents() {
+    // Botón enviar
+    if (els.sendBtn) {
+      els.sendBtn.addEventListener("click", () => handleSend());
     }
 
-    // click enviar
-    sendBtn.addEventListener("click", handleSend);
-
-    // enter para enviar
-    userInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        handleSend();
-      }
-    });
-
-    // mic STT
-    micBtn.addEventListener("click", async () => {
-      const transcript = await startSTT();
-      if (transcript) {
-        userInput.value = (userInput.value + " " + transcript).trim();
-      }
-    });
-
-    // idiomas
-    langPills.forEach((pill) => {
-      pill.addEventListener("click", () => {
-        const lang = pill.dataset.lang;
-        setLanguage(lang);
+    // Enter en textarea (Enter envía, Shift+Enter hace salto de línea)
+    if (els.inputEl) {
+      els.inputEl.addEventListener("keydown", (ev) => {
+        if (ev.key === "Enter" && !ev.shiftKey) {
+          ev.preventDefault();
+          handleSend();
+        }
       });
-    });
+    }
 
-    // chips
-    chipButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const prompt = btn.getAttribute("data-prompt") || btn.textContent;
-        userInput.value = prompt;
-        userInput.focus();
+    // Chips de inicio (botones de “Automatizar tareas…”, etc)
+    if (els.starterBtns) {
+      els.starterBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const txt = btn.dataset.text || btn.textContent || "";
+          handleSend(txt);
+        });
       });
-    });
+    }
+
+    // Chips de contenido (Diapositivas / Resumen IA, etc)
+    if (els.contentBtns) {
+      els.contentBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const txt = btn.dataset.text || btn.textContent || "";
+          handleSend(txt);
+        });
+      });
+    }
+
+    // Selector de idioma
+    if (els.langOptions && els.langOptions.length) {
+      els.langOptions.forEach((opt) => {
+        opt.addEventListener("click", () => {
+          const lang = opt.dataset.lang;
+          if (!lang || lang === currentLang) return;
+
+          currentLang = lang;
+          els.langOptions.forEach((o) =>
+            o.classList.toggle("active", o.dataset.lang === lang)
+          );
+
+          applyUILanguage();
+        });
+      });
+    }
+
+    // Toggle de voz Esteborg IA
+    if (els.voiceToggle && els.voiceToggleLabel) {
+      const s = (key) => t(currentLang, key);
+
+      els.voiceToggle.addEventListener("change", () => {
+        voiceEnabled = !!els.voiceToggle.checked;
+        els.voiceToggleLabel.textContent = voiceEnabled
+          ? s("voiceToggleLabel")
+          : s("voiceToggleLabel");
+      });
+    }
+  }
 
     // =========================
     // INIT
