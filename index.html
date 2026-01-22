@@ -26,22 +26,25 @@
 
     body {
       min-height: 100vh;
-      height: 100vh;
-      overflow: hidden;
+      height: auto;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         -apple-system, "Segoe UI", sans-serif;
       background: radial-gradient(circle at top, #020617, #020617);
       color: #e5e7eb;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: flex-start;
+      padding: 20px 12px 32px;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
 
     #app {
       width: 100%;
       max-width: 960px;
-      padding: 24px 16px 32px;
-      height: 100vh;
+      padding: 0 16px;
+      height: auto;
+      min-height: calc(100vh - 40px);
       display: flex;
       flex-direction: column;
     }
@@ -55,6 +58,8 @@
       box-shadow: 0 24px 80px rgba(0, 0, 0, 0.9);
       padding: 22px 24px 20px;
       border: 1px solid rgba(148, 163, 184, 0.25);
+      max-height: calc(100vh - 40px);
+      overflow: hidden; /* el scroll vive dentro del chat */
     }
 
     /* Banner */
@@ -64,6 +69,7 @@
       align-items: center;
       gap: 16px;
       margin-bottom: 18px;
+      flex-shrink: 0;
     }
 
     .banner-avatar {
@@ -115,6 +121,7 @@
       border: 1px solid rgba(148, 163, 184, 0.25);
       padding: 14px 18px 16px;
       margin-top: 14px;
+      flex-shrink: 0;
     }
 
     .panel-title {
@@ -195,6 +202,8 @@
       margin-top: 16px;
       display: flex;
       flex-direction: column;
+      flex: 1;
+      min-height: 0; /* clave para que el chat se ajuste dentro de shell */
     }
 
     .chat-header {
@@ -203,6 +212,7 @@
       justify-content: space-between;
       gap: 10px;
       margin-bottom: 8px;
+      flex-shrink: 0;
     }
 
     .chat-header-left {
@@ -315,6 +325,7 @@
       gap: 6px;
       font-size: 11px;
       color: #9ca3af;
+      flex-shrink: 0;
     }
 
     .lang-label {
@@ -353,7 +364,9 @@
       border: 1px solid rgba(31, 41, 55, 0.9);
       display: flex;
       flex-direction: column;
-      height: 250px;
+      flex: 1;
+      min-height: 180px;
+      max-height: none;
     }
 
     #chat-log {
@@ -407,6 +420,7 @@
       align-items: flex-end;
       gap: 10px;
       margin-top: 10px;
+      flex-shrink: 0;
     }
 
     #user-input {
@@ -478,6 +492,7 @@
       margin-top: 12px;
       border-top: 1px solid rgba(31, 41, 55, 0.9);
       padding-top: 8px;
+      flex-shrink: 0;
     }
 
     .footer-left {
@@ -507,12 +522,13 @@
         overflow-y: auto;
         align-items: stretch;
         justify-content: flex-start;
+        padding: 16px 0 24px;
       }
 
       #app {
         height: auto;
         min-height: 100vh;
-        padding: 18px 0 22px;
+        padding: 0;
         width: 100%;
       }
 
@@ -521,6 +537,7 @@
         margin: 0;
         border-radius: 0;
         padding: 14px 12px 16px;
+        max-height: none; /* en móvil dejamos que crezca y el body scrollea */
       }
 
       .banner-header {
@@ -535,7 +552,6 @@
 
       .chat-container {
         margin-top: 8px;
-        height: 260px;
         -webkit-overflow-scrolling: touch;
       }
 
@@ -595,14 +611,6 @@
       .mic-btn {
         width: 34px;
         height: 34px;
-      }
-
-      #app {
-        padding: 14px 0 18px;
-      }
-
-      .shell {
-        padding: 12px 10px 14px;
       }
     }
   </style>
@@ -981,11 +989,17 @@
         lang: currentLang
       };
 
+      const headers = {
+        "Content-Type": "application/json"
+      };
+
+      if (membersToken) {
+        headers["x-esteborg-token"] = membersToken;
+      }
+
       const res = await fetch(API_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers,
         body: JSON.stringify(payload)
       });
 
@@ -1008,7 +1022,7 @@
       isSending = true;
       stopTTS();
 
-      const userBubble = addMessage("user", text, { speak: false });
+      addMessage("user", text, { speak: false });
       userInput.value = "";
 
       const typingBubble = addMessage("assistant", TYPING_TEXT[currentLang], {
