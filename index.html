@@ -749,6 +749,206 @@
 
   const LANGS = ["es", "en", "pt", "fr", "it", "de"];
 
+  // =========================
+  // TEXTOS UI POR IDIOMA
+  // =========================
+
+  const I18N = {
+    es: {
+      bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
+      bannerSub:
+        "Entrenamiento ejecutivo en IA aplicada para desplegar todo tu poder.",
+      bannerDesc:
+        "Esteborg IA es tu copiloto ejecutivo de inteligencia artificial. Aquí diseñamos tu plan estratégico, optimizamos tu negocio y entrenamos tus habilidades ejecutivas con IA.",
+      panelTitleTop: "INICIO DEL ENTRENAMIENTO · COPILOTO EJECUTIVO IA",
+      chipsLabel: "QUIERO EMPEZAR:",
+      materialLabel: "MATERIAL:",
+      chipAutomate: "Automatizar tareas",
+      chipAutomatePrompt: "Automatizar tareas repetitivas con IA",
+      chipDecisions: "Decisiones ejecutivas",
+      chipDecisionsPrompt: "Tomar mejores decisiones ejecutivas con IA",
+      chipBusiness: "Nueva línea de negocio",
+      chipBusinessPrompt: "Diseñar una nueva línea de negocio usando IA",
+      chipDailyIA: "Dominar IA diaria",
+      chipDailyIAPrompt: "Usar IA todos los días como hábito ejecutivo",
+      chipSlides: "Diapositivas",
+      chipSlidesPrompt: "Quiero que me resumas las diapositivas de la sesión.",
+      chipSummary: "Resumen IA",
+      chipSummaryPrompt:
+        "Dame el resumen ejecutivo de todo lo que trabajamos hoy.",
+      chatUserLabel: "TÚ",
+      chatAssistantLabel: "ESTEBORG IA",
+      inputPlaceholder:
+        "Cuéntame qué quieres lograr con IA en los próximos 90 días...",
+      voiceLabel: "Voz Esteborg IA",
+      systemLangChanged: "Idioma cambiado a Español."
+    },
+    en: {
+      bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
+      bannerSub:
+        "Executive AI training to unlock all your power.",
+      bannerDesc:
+        "Esteborg IA is your executive AI copilot. Here we design your strategic plan, optimize your business and train your executive skills with AI.",
+      panelTitleTop: "TRAINING START · EXECUTIVE AI COPILOT",
+      chipsLabel: "I WANT TO START WITH:",
+      materialLabel: "MATERIAL:",
+      chipAutomate: "Automate tasks",
+      chipAutomatePrompt: "Automate my repetitive tasks with AI.",
+      chipDecisions: "Executive decisions",
+      chipDecisionsPrompt: "Make better executive decisions using AI.",
+      chipBusiness: "New business line",
+      chipBusinessPrompt: "Design a new business line using AI.",
+      chipDailyIA: "Daily AI habit",
+      chipDailyIAPrompt: "Use AI every day as an executive habit.",
+      chipSlides: "Slides",
+      chipSlidesPrompt: "Summarize the slides of this session.",
+      chipSummary: "Executive summary",
+      chipSummaryPrompt:
+        "Give me the executive summary of everything we worked on today.",
+      chatUserLabel: "YOU",
+      chatAssistantLabel: "ESTEBORG IA",
+      inputPlaceholder:
+        "Tell me what you want to achieve with AI in the next 90 days...",
+      voiceLabel: "Esteborg IA voice",
+      systemLangChanged: "Language switched to English."
+    },
+    pt: {
+      bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
+      bannerSub:
+        "Treinamento executivo em IA para liberar todo o seu poder.",
+      bannerDesc:
+        "Esteborg IA é seu copiloto executivo de inteligência artificial. Aqui desenhamos seu plano estratégico, otimizamos seu negócio e treinamos suas habilidades executivas com IA.",
+      panelTitleTop: "INÍCIO DO TREINAMENTO · COPILOTO EXECUTIVO IA",
+      chipsLabel: "QUERO COMEÇAR POR:",
+      materialLabel: "MATERIAL:",
+      chipAutomate: "Automatizar tarefas",
+      chipAutomatePrompt: "Automatizar tarefas repetitivas com IA.",
+      chipDecisions: "Decisões executivas",
+      chipDecisionsPrompt:
+        "Tomar melhores decisões executivas usando IA.",
+      chipBusiness: "Nova linha de negócios",
+      chipBusinessPrompt:
+        "Desenhar uma nova linha de negócios com IA.",
+      chipDailyIA: "Dominar IA diária",
+      chipDailyIAPrompt:
+        "Usar IA todos os dias como hábito executivo.",
+      chipSlides: "Apresentação",
+      chipSlidesPrompt: "Resuma os slides desta sessão.",
+      chipSummary: "Resumo IA",
+      chipSummaryPrompt:
+        "Dê o resumo executivo de tudo o que trabalhamos hoje.",
+      chatUserLabel: "VOCÊ",
+      chatAssistantLabel: "ESTEBORG IA",
+      inputPlaceholder:
+        "Conte o que você quer alcançar com IA nos próximos 90 dias...",
+      voiceLabel: "Voz Esteborg IA",
+      systemLangChanged: "Idioma alterado para Português."
+    },
+    fr: {
+      bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
+      bannerSub:
+        "Entraînement exécutif en IA pour déployer tout ton pouvoir.",
+      bannerDesc:
+        "Esteborg IA est ton copilote exécutif en intelligence artificielle. Ici nous concevons ton plan stratégique, optimisons ton business et entraînons tes compétences exécutives avec l’IA.",
+      panelTitleTop: "DÉBUT DE LA FORMATION · COPILOTE IA EXÉCUTIF",
+      chipsLabel: "JE VEUX COMMENCER PAR :",
+      materialLabel: "CONTENU :",
+      chipAutomate: "Automatiser des tâches",
+      chipAutomatePrompt:
+        "Automatiser mes tâches répétitives avec l’IA.",
+      chipDecisions: "Décisions exécutives",
+      chipDecisionsPrompt:
+        "Prendre de meilleures décisions exécutives avec l’IA.",
+      chipBusiness: "Nouvelle ligne de business",
+      chipBusinessPrompt:
+        "Concevoir une nouvelle activité en utilisant l’IA.",
+      chipDailyIA: "IA au quotidien",
+      chipDailyIAPrompt:
+        "Utiliser l’IA tous les jours comme habitude exécutive.",
+      chipSlides: "Diapositives",
+      chipSlidesPrompt:
+        "Résume-moi les diapositives de la session.",
+      chipSummary: "Résumé IA",
+      chipSummaryPrompt:
+        "Donne-moi le résumé exécutif de tout ce que nous avons travaillé aujourd’hui.",
+      chatUserLabel: "TOI",
+      chatAssistantLabel: "ESTEBORG IA",
+      inputPlaceholder:
+        "Dis-moi ce que tu veux accomplir avec l’IA dans les 90 prochains jours...",
+      voiceLabel: "Voix Esteborg IA",
+      systemLangChanged: "Langue changée en Français."
+    },
+    it: {
+      bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
+      bannerSub:
+        "Training esecutivo in IA per liberare tutto il tuo potere.",
+      bannerDesc:
+        "Esteborg IA è il tuo copilota esecutivo di intelligenza artificiale. Qui disegniamo il tuo piano strategico, ottimizziamo il business e alleniamo le tue abilità esecutive con l’IA.",
+      panelTitleTop: "INIZIO DELL’ALLENAMENTO · COPILOTA ESECUTIVO IA",
+      chipsLabel: "VOGLIO INIZIARE DA:",
+      materialLabel: "MATERIALE:",
+      chipAutomate: "Automatizzare compiti",
+      chipAutomatePrompt:
+        "Automatizzare i miei compiti ripetitivi con l’IA.",
+      chipDecisions: "Decisioni esecutive",
+      chipDecisionsPrompt:
+        "Prendere decisioni esecutive migliori usando l’IA.",
+      chipBusiness: "Nuova linea di business",
+      chipBusinessPrompt:
+        "Progettare una nuova linea di business usando l’IA.",
+      chipDailyIA: "IA quotidiana",
+      chipDailyIAPrompt:
+        "Usare l’IA ogni giorno come abitudine esecutiva.",
+      chipSlides: "Diapositive",
+      chipSlidesPrompt:
+        "Riassumi le diapositive della sessione.",
+      chipSummary: "Sintesi IA",
+      chipSummaryPrompt:
+        "Dammi la sintesi esecutiva di tutto ciò che abbiamo lavorato oggi.",
+      chatUserLabel: "TU",
+      chatAssistantLabel: "ESTEBORG IA",
+      inputPlaceholder:
+        "Raccontami cosa vuoi ottenere con l’IA nei prossimi 90 giorni...",
+      voiceLabel: "Voce Esteborg IA",
+      systemLangChanged: "Lingua cambiata in Italiano."
+    },
+    de: {
+      bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
+      bannerSub:
+        "Executive-AI-Training, um deine ganze Kraft freizusetzen.",
+      bannerDesc:
+        "Esteborg IA ist dein Executive-AI-Copilot. Hier entwerfen wir deinen strategischen Plan, optimieren dein Geschäft und trainieren deine Führungsfähigkeiten mit KI.",
+      panelTitleTop: "START DES TRAININGS · EXECUTIVE-AI-COPILOT",
+      chipsLabel: "ICH MÖCHTE STARTEN MIT:",
+      materialLabel: "MATERIAL:",
+      chipAutomate: "Aufgaben automatisieren",
+      chipAutomatePrompt:
+        "Meine wiederkehrenden Aufgaben mit KI automatisieren.",
+      chipDecisions: "Management-Entscheidungen",
+      chipDecisionsPrompt:
+        "Bessere Management-Entscheidungen mit KI treffen.",
+      chipBusiness: "Neue Geschäftslinie",
+      chipBusinessPrompt:
+        "Eine neue Geschäftslinie mit KI entwerfen.",
+      chipDailyIA: "Tägliche KI-Routine",
+      chipDailyIAPrompt:
+        "KI jeden Tag als Führungsgewohnheit nutzen.",
+      chipSlides: "Folien",
+      chipSlidesPrompt:
+        "Fasse mir die Folien dieser Sitzung zusammen.",
+      chipSummary: "KI-Zusammenfassung",
+      chipSummaryPrompt:
+        "Gib mir die Executive-Zusammenfassung von allem, was wir heute erarbeitet haben.",
+      chatUserLabel: "DU",
+      chatAssistantLabel: "ESTEBORG IA",
+      inputPlaceholder:
+        "Erzähl mir, was du in den nächsten 90 Tagen mit KI erreichen möchtest...",
+      voiceLabel: "Esteborg-IA-Stimme",
+      systemLangChanged: "Sprache auf Deutsch umgestellt."
+    }
+  };
+
+  // Bienvenida por idioma
   const WELCOME = {
     es: "¡Perfecto! Vamos a trabajar tu entrenamiento ejecutivo en IA. Antes de empezar, necesito tu Tokken Esteborg Members para validar tu acceso. Una vez validado, diseñaremos juntos tu plan: automatización, nuevas líneas de negocio y mejora de tus decisiones ejecutivas.",
     en: "Great to have you here. Before we start your executive AI training I’ll need your Esteborg Members token to validate access. Once it’s validated, we’ll design your plan together: automation, new business lines and stronger executive decisions.",
@@ -806,7 +1006,7 @@
   })();
 
   // =========================
-  // DOM refs
+  // DOM
   // =========================
 
   const chatLog = document.getElementById("chat-log");
@@ -817,6 +1017,13 @@
   const langPills = Array.from(document.querySelectorAll(".lang-pill"));
   const chipButtons = Array.from(document.querySelectorAll(".chip-btn"));
 
+  const bannerMainEl = document.querySelector(".banner-title-main");
+  const bannerSubEl = document.querySelector(".banner-title-sub");
+  const bannerDescEl = document.querySelector(".banner-description");
+  const panelTitles = document.querySelectorAll(".panel .panel-title");
+  const voiceLabelSpan = document.querySelector(".toggle-label span");
+  const langLabelSpan = document.querySelector(".lang-label");
+
   // =========================
   // UTILS
   // =========================
@@ -825,10 +1032,11 @@
     chatLog.scrollTop = chatLog.scrollHeight;
   }
 
+  // Limpieza para TTS (no lea signos)
   function cleanForTTS(text) {
     return text
       .replace(/[\n\r]+/g, " ")
-      .replace(/[.,;:!?¡¿"'“”(){}\[\]<>«»]/g, "")
+      .replace(/[.,;:!?¡¿\"'“”(){}\[\]<>«»]/g, "")
       .replace(/\s{2,}/g, " ")
       .trim();
   }
@@ -839,12 +1047,15 @@
 
     const roleLabel = document.createElement("div");
     roleLabel.className = "msg-role";
-    roleLabel.textContent =
-      role === "user"
-        ? "TÚ"
-        : role === "assistant"
-        ? "ESTEBORG IA"
-        : "SISTEMA";
+
+    const pack = I18N[currentLang] || I18N.es;
+    if (role === "user") {
+      roleLabel.textContent = pack.chatUserLabel;
+    } else if (role === "assistant") {
+      roleLabel.textContent = pack.chatAssistantLabel;
+    } else {
+      roleLabel.textContent = "SISTEMA";
+    }
 
     const bubble = document.createElement("div");
     bubble.className = `msg-bubble ${role}`;
@@ -857,21 +1068,76 @@
 
     if (role === "user" || role === "assistant") {
       history.push({ role: role === "user" ? "user" : "assistant", content });
-      if (history.length > 20) {
-        history = history.slice(-20);
-      }
+      if (history.length > 20) history = history.slice(-20);
     }
 
-    if (role === "assistant" && speak && voiceToggle.checked) {
+    if (role === "assistant" && speak && voiceToggle && voiceToggle.checked) {
       playTTS(content).catch(() => {});
     }
 
     return bubble;
   }
 
+  function applyUILanguage() {
+    const pack = I18N[currentLang] || I18N.es;
+
+    if (bannerMainEl) bannerMainEl.textContent = pack.bannerMain;
+    if (bannerSubEl) bannerSubEl.textContent = pack.bannerSub;
+    if (bannerDescEl) bannerDescEl.textContent = pack.bannerDesc;
+
+    // panelTitles[0] = INICIO..., [1] = QUIERO EMPEZAR, [2] = MATERIAL
+    if (panelTitles[0]) panelTitles[0].textContent = pack.panelTitleTop;
+    if (panelTitles[1]) panelTitles[1].textContent = pack.chipsLabel;
+    if (panelTitles[2]) panelTitles[2].textContent = pack.materialLabel;
+
+    // Chips: primera fila (automatizar, decisiones, negocio, diaria)
+    const rows = document.querySelectorAll(".panel .chips-row");
+    if (rows[0]) {
+      const chips = rows[0].querySelectorAll(".chip-btn");
+      if (chips[0]) {
+        chips[0].dataset.prompt = pack.chipAutomatePrompt;
+        chips[0].innerHTML =
+          '<span class="chip-dot"></span> ' + pack.chipAutomate;
+      }
+      if (chips[1]) {
+        chips[1].dataset.prompt = pack.chipDecisionsPrompt;
+        chips[1].innerHTML =
+          '<span class="chip-dot"></span> ' + pack.chipDecisions;
+      }
+      if (chips[2]) {
+        chips[2].dataset.prompt = pack.chipBusinessPrompt;
+        chips[2].innerHTML =
+          '<span class="chip-dot"></span> ' + pack.chipBusiness;
+      }
+      if (chips[3]) {
+        chips[3].dataset.prompt = pack.chipDailyIAPrompt;
+        chips[3].innerHTML =
+          '<span class="chip-dot"></span> ' + pack.chipDailyIA;
+      }
+    }
+
+    // Segunda fila: material
+    if (rows[1]) {
+      const chips2 = rows[1].querySelectorAll(".chip-btn");
+      if (chips2[0]) {
+        chips2[0].dataset.prompt = pack.chipSlidesPrompt;
+        chips2[0].textContent = pack.chipSlides;
+      }
+      if (chips2[1]) {
+        chips2[1].dataset.prompt = pack.chipSummaryPrompt;
+        chips2[1].textContent = pack.chipSummary;
+      }
+    }
+
+    if (userInput) userInput.placeholder = pack.inputPlaceholder;
+    if (voiceLabelSpan) voiceLabelSpan.textContent = pack.voiceLabel;
+    if (langLabelSpan)
+      langLabelSpan.textContent =
+        currentLang === "en" ? "LANGUAGE:" : "IDIOMA:";
+  }
+
   function setLanguage(lang) {
     if (!LANGS.includes(lang)) return;
-
     currentLang = lang;
     localStorage.setItem("esteborg_ia_lang", lang);
 
@@ -879,19 +1145,10 @@
       pill.classList.toggle("active", pill.dataset.lang === lang)
     );
 
-    const msg =
-      lang === "es"
-        ? "Idioma cambiado a Español."
-        : lang === "en"
-        ? "Language switched to English."
-        : lang === "pt"
-        ? "Idioma alterado para Português."
-        : lang === "fr"
-        ? "Langue changée en Français."
-        : lang === "it"
-        ? "Lingua cambiata in Italiano."
-        : "Sprache auf Deutsch umgestellt.";
-    addMessage("system", msg, { speak: false });
+    applyUILanguage();
+
+    const pack = I18N[currentLang] || I18N.es;
+    addMessage("system", pack.systemLangChanged, { speak: false });
   }
 
   // =========================
@@ -945,9 +1202,7 @@
 
   if (voiceToggle) {
     voiceToggle.addEventListener("change", () => {
-      if (!voiceToggle.checked) {
-        stopTTS();
-      }
+      if (!voiceToggle.checked) stopTTS();
     });
   }
 
@@ -981,13 +1236,13 @@
   }
 
   // =========================
-  // NETWORK
+  // BACKEND
   // =========================
 
   async function sendToBackend(text) {
     const payload = {
       message: text,
-      token: membersToken || null,
+      rawToken: membersToken || null, // <- lo que espera el módulo IA
       userName: null,
       history,
       lang: currentLang
@@ -1042,10 +1297,7 @@
       const data = await sendToBackend(text);
       const reply =
         (data &&
-          (data.reply ||
-            data.message ||
-            data.response ||
-            data.content)) ||
+          (data.reply || data.message || data.response || data.content)) ||
         "No recibí respuesta del servidor. Intenta de nuevo.";
 
       typingBubble.textContent = reply;
@@ -1074,7 +1326,7 @@
       sendBtn.addEventListener("click", () => handleSend());
     }
 
-    // Enter en textarea (Enter envía, Shift+Enter salto de línea)
+    // Enter en textarea (Enter manda, Shift+Enter salto de línea)
     if (userInput) {
       userInput.addEventListener("keydown", (ev) => {
         if (ev.key === "Enter" && !ev.shiftKey) {
@@ -1083,7 +1335,7 @@
         }
       });
 
-      // Auto-resize suave del textarea
+      // Auto-resize
       userInput.addEventListener("input", () => {
         userInput.style.height = "44px";
         userInput.style.height =
@@ -1091,7 +1343,7 @@
       });
     }
 
-    // Chips (arriba y material)
+    // Chips
     if (chipButtons && chipButtons.length) {
       chipButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -1115,7 +1367,7 @@
       });
     }
 
-    // Micrófono
+    // Mic
     if (micBtn) {
       micBtn.addEventListener("click", async () => {
         try {
@@ -1139,6 +1391,7 @@
     langPills.forEach((pill) =>
       pill.classList.toggle("active", pill.dataset.lang === currentLang)
     );
+    applyUILanguage();
   }
 
   function initWelcome() {
@@ -1163,5 +1416,6 @@
     wireEvents();
   })();
 </script>
+
 </body>
 </html>
