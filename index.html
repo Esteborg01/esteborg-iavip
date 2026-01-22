@@ -736,7 +736,7 @@
     </div>
   </div>
 
-  <script>
+ <script>
   // =========================
   // CONFIG
   // =========================
@@ -745,9 +745,64 @@
   const API_URL = API_BASE + "/api/modules/iavipcom";
 
   const ELEVEN_VOICE_ID = "IdhxxSTaAg80CTeSgScm";
-  const ELEVEN_API_KEY = "TU_API_KEY_ELEVENLABS_AQUI"; // <-- pon aquí tu key
+  const ELEVEN_API_KEY = "sk_d7c998f4ef73b568e67098031d28b96c5cf1f1d46db39c8f"; // <-- pon aquí tu key
 
   const LANGS = ["es", "en", "pt", "fr", "it", "de"];
+
+  // =========================
+  // TOKKEN VIP (MISMO FLUJO QUE COM7)
+  // =========================
+
+  const VIP_STORAGE_KEY = "esteborg_vip_token";
+  let VIP_TOKEN = null;
+
+  function getVIPTokenFromURL() {
+    const params = new URLSearchParams(window.location.search || "");
+    const raw =
+      params.get("tokken") ||
+      params.get("access_token") ||
+      params.get("token") ||
+      "";
+    const trimmed = (raw || "").trim();
+    console.log(
+      "[IA] Tokken detectado en URL:",
+      trimmed ? trimmed.slice(0, 40) + "..." : "(ninguno)"
+    );
+    return trimmed || null;
+  }
+
+  // Permite que otro iframe/página nos mande el tokken por postMessage
+  window.addEventListener("message", (event) => {
+    if (!event.data || event.data.type !== "esteborg-token") return;
+    const tokken = (event.data.tokken || "").trim();
+    if (!tokken) return;
+    VIP_TOKEN = tokken;
+    console.log(
+      "[IA] Tokken recibido por postMessage:",
+      VIP_TOKEN.slice(0, 40) + "..."
+    );
+    try {
+      localStorage.setItem(VIP_STORAGE_KEY, VIP_TOKEN);
+    } catch (e) {
+      console.warn("[IA] No pude guardar Tokken desde postMessage:", e);
+    }
+  });
+
+  // Carga inicial del Tokken (igual que en Com7)
+  document.addEventListener("DOMContentLoaded", () => {
+    try {
+      const stored = localStorage.getItem(VIP_STORAGE_KEY);
+      if (stored) {
+        VIP_TOKEN = stored.trim();
+        console.log("[IA] Tokken recuperado de localStorage");
+      } else {
+        VIP_TOKEN = getVIPTokenFromURL();
+      }
+    } catch (e) {
+      console.warn("[IA] No pude leer localStorage:", e);
+      VIP_TOKEN = getVIPTokenFromURL();
+    }
+  });
 
   // =========================
   // TEXTOS UI POR IDIOMA
@@ -785,8 +840,7 @@
     },
     en: {
       bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
-      bannerSub:
-        "Executive AI training to unlock all your power.",
+      bannerSub: "Executive AI training to unlock all your power.",
       bannerDesc:
         "Esteborg IA is your executive AI copilot. Here we design your strategic plan, optimize your business and train your executive skills with AI.",
       panelTitleTop: "TRAINING START · EXECUTIVE AI COPILOT",
@@ -948,7 +1002,6 @@
     }
   };
 
-  // Bienvenida por idioma
   const WELCOME = {
     es: "¡Perfecto! Vamos a trabajar tu entrenamiento ejecutivo en IA. Antes de empezar, necesito tu Tokken Esteborg Members para validar tu acceso. Una vez validado, diseñaremos juntos tu plan: automatización, nuevas líneas de negocio y mejora de tus decisiones ejecutivas.",
     en: "Great to have you here. Before we start your executive AI training I’ll need your Esteborg Members token to validate access. Once it’s validated, we’ll design your plan together: automation, new business lines and stronger executive decisions.",
@@ -963,7 +1016,7 @@
     en: "Typing…",
     pt: "Digitando…",
     fr: "Écriture…",
-    it: "Scrivendo…",
+    it: "Schreibend…",
     de: "Schreibt…"
   };
 
@@ -989,21 +1042,6 @@
   let history = [];
   let ttsAudio = null;
   let isSending = false;
-
-  // Tokken Members: URL o localStorage
-  let membersToken = null;
-  (function initToken() {
-    const url = new URL(window.location.href);
-    const urlToken = url.searchParams.get("access_token");
-    const stored = localStorage.getItem("esteborg_token_members");
-
-    if (urlToken) {
-      membersToken = urlToken;
-      localStorage.setItem("esteborg_token_members", urlToken);
-    } else if (stored) {
-      membersToken = stored;
-    }
-  })();
 
   // =========================
   // DOM
@@ -1032,7 +1070,6 @@
     chatLog.scrollTop = chatLog.scrollHeight;
   }
 
-  // Limpieza para TTS (no lea signos)
   function cleanForTTS(text) {
     return text
       .replace(/[\n\r]+/g, " ")
@@ -1085,12 +1122,10 @@
     if (bannerSubEl) bannerSubEl.textContent = pack.bannerSub;
     if (bannerDescEl) bannerDescEl.textContent = pack.bannerDesc;
 
-    // panelTitles[0] = INICIO..., [1] = QUIERO EMPEZAR, [2] = MATERIAL
     if (panelTitles[0]) panelTitles[0].textContent = pack.panelTitleTop;
     if (panelTitles[1]) panelTitles[1].textContent = pack.chipsLabel;
     if (panelTitles[2]) panelTitles[2].textContent = pack.materialLabel;
 
-    // Chips: primera fila (automatizar, decisiones, negocio, diaria)
     const rows = document.querySelectorAll(".panel .chips-row");
     if (rows[0]) {
       const chips = rows[0].querySelectorAll(".chip-btn");
@@ -1116,7 +1151,6 @@
       }
     }
 
-    // Segunda fila: material
     if (rows[1]) {
       const chips2 = rows[1].querySelectorAll(".chip-btn");
       if (chips2[0]) {
@@ -1240,9 +1274,17 @@
   // =========================
 
   async function sendToBackend(text) {
+    // Igual que Com7: usamos VIP_TOKEN o lo buscamos de la URL
+    const tokenToSend = VIP_TOKEN || getVIPTokenFromURL();
+
+    console.log(
+      "[IA] Tokken que mando al backend:",
+      tokenToSend ? tokenToSend.slice(0, 40) + "..." : "(null)"
+    );
+
     const payload = {
       message: text,
-      rawToken: membersToken || null, // <- lo que espera el módulo IA
+      rawToken: tokenToSend || null,
       userName: null,
       history,
       lang: currentLang
@@ -1252,8 +1294,8 @@
       "Content-Type": "application/json"
     };
 
-    if (membersToken) {
-      headers["x-esteborg-token"] = membersToken;
+    if (tokenToSend) {
+      headers["x-esteborg-token"] = tokenToSend;
     }
 
     const res = await fetch(API_URL, {
@@ -1321,12 +1363,10 @@
   // =========================
 
   function wireEvents() {
-    // Botón enviar
     if (sendBtn) {
       sendBtn.addEventListener("click", () => handleSend());
     }
 
-    // Enter en textarea (Enter manda, Shift+Enter salto de línea)
     if (userInput) {
       userInput.addEventListener("keydown", (ev) => {
         if (ev.key === "Enter" && !ev.shiftKey) {
@@ -1335,7 +1375,6 @@
         }
       });
 
-      // Auto-resize
       userInput.addEventListener("input", () => {
         userInput.style.height = "44px";
         userInput.style.height =
@@ -1343,7 +1382,6 @@
       });
     }
 
-    // Chips
     if (chipButtons && chipButtons.length) {
       chipButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -1357,7 +1395,6 @@
       });
     }
 
-    // Selector de idioma
     if (langPills && langPills.length) {
       langPills.forEach((pill) => {
         pill.addEventListener("click", () => {
@@ -1367,7 +1404,6 @@
       });
     }
 
-    // Mic
     if (micBtn) {
       micBtn.addEventListener("click", async () => {
         try {
@@ -1406,16 +1442,20 @@
   (function init() {
     initLanguageUI();
     initWelcome();
-    if (membersToken) {
+
+    const tokenToSend = VIP_TOKEN || getVIPTokenFromURL();
+    if (tokenToSend) {
       addMessage(
         "system",
         "Tokken Esteborg Members detectado. Lo usaré automáticamente en tu entrenamiento.",
         { speak: false }
       );
     }
+
     wireEvents();
   })();
 </script>
+
 
 </body>
 </html>
