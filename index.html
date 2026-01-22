@@ -2,1975 +2,1101 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Esteborg IA - Despliega todo tu poder</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+  <title>Esteborg IA · Entrenamiento Ejecutivo en IA</title>
 
   <style>
-  :root { color-scheme: dark; }
-  * { box-sizing: border-box; }
-
-  body {
-    margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden; /* ← ESTE ES EL FIX */
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-    -apple-system, system-ui, "Segoe UI", sans-serif;
-  background: radial-gradient(circle at top, #020617, #020617);
-  color: #e5e7eb;
-}
-
-  #app {
-    min-height: 100vh;
-    padding: 32px 16px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .shell {
-    width: 100%;
-    max-width: 960px;
-    border-radius: 24px;
-    padding: 18px 18px 20px;
-    background:
-      radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 55%),
-      radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.14), transparent 55%),
-      rgba(15, 23, 42, 0.98);
-    border: 1px solid rgba(15, 23, 42, 1);
-    box-shadow:
-      0 32px 120px rgba(15, 23, 42, 0.95),
-      0 0 0 1px rgba(148, 163, 184, 0.35);
-  }
-
-  .banner-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 10px;
-  }
-  .banner-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 999px;
-    background: radial-gradient(circle at top, #38bdf8, #4f46e5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 20px;
-    color: #ecfeff;
-    box-shadow:
-      0 0 0 2px rgba(15, 23, 42, 1),
-      0 0 0 1px rgba(226, 232, 240, 0.9),
-      0 0 32px rgba(96, 165, 250, 0.95);
-  }
-
-  .banner-title {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .banner-title-main {
-    font-size: 13px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #e5e7eb;
-  }
-  .banner-title-sub {
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    background: linear-gradient(to right, #e5e7eb, #93c5fd);
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-
-  .banner-desc {
-    margin-top: 4px;
-    font-size: 12px;
-    color: rgba(156, 163, 175, 0.95);
-    max-width: 720px;
-  }
-
-  .panel {
-    margin-top: 16px;
-    border-radius: 22px;
-    padding: 14px 14px 16px;
-    background:
-      radial-gradient(circle at top left, rgba(59, 130, 246, 0.16), transparent 55%),
-      radial-gradient(circle at bottom right, rgba(22, 163, 74, 0.15), transparent 55%),
-      rgba(15, 23, 42, 0.98);
-    border: 1px solid rgba(55, 65, 81, 0.95);
-    box-shadow:
-      0 24px 80px rgba(15, 23, 42, 0.95),
-      0 0 0 1px rgba(148, 163, 184, 0.35);
-  }
-
-  .panel-header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-
-  .panel-title-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .panel-title {
-    font-size: 13px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #e5e7eb;
-  }
-
-  .panel-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    border: 1px solid rgba(52, 211, 153, 0.6);
-    color: #a7f3d0;
-    background: radial-gradient(circle at top left, rgba(16, 185, 129, 0.35), rgba(15, 23, 42, 0.98));
-  }
-  .panel-badge .dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 999px;
-    background: radial-gradient(circle at center, #22c55e, #15803d);
-    box-shadow: 0 0 12px rgba(34, 197, 94, 0.95);
-  }
-
-  .chips-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-    margin-bottom: 8px;
-    font-size: 11px;
-    color: rgba(156, 163, 175, 0.95);
-  }
-  .chips-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: rgba(148, 163, 184, 0.95);
-    margin-right: 4px;
-  }
-
-  .chip-btn {
-    border-radius: 999px;
-    border: 1px solid rgba(55, 65, 81, 0.95);
-    background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.14), rgba(15, 23, 42, 0.98));
-    padding: 6px 10px;
-    font-size: 11px;
-    color: #e5e7eb;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    transition:
-      background-color 0.18s ease,
-      border-color 0.18s ease,
-      transform 0.12s ease,
-      box-shadow 0.18s ease;
-    box-shadow:
-      0 10px 22px rgba(15, 23, 42, 0.95),
-      0 0 0 1px rgba(30, 64, 175, 0.35);
-  }
-  .chip-btn span.icon {
-    font-size: 14px;
-  }
-  .chip-btn:hover {
-    border-color: rgba(96, 165, 250, 0.9);
-    background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.24), rgba(15, 23, 42, 1));
-    transform: translateY(-1px);
-    box-shadow:
-      0 12px 26px rgba(15, 23, 42, 0.98),
-      0 0 0 1px rgba(129, 140, 248, 0.7);
-  }
-  .chip-btn:active {
-    transform: translateY(0);
-    box-shadow:
-      0 4px 14px rgba(15, 23, 42, 0.95),
-      0 0 0 1px rgba(30, 64, 175, 0.7);
-  }
-
-  .chips-hint {
-    margin-top: 2px;
-    font-size: 10px;
-    color: rgba(148, 163, 184, 0.9);
-  }
-
-  .content-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-    margin-top: 10px;
-    margin-bottom: 6px;
-    font-size: 11px;
-  }
-  .content-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: rgba(148, 163, 184, 0.95);
-    margin-right: 4px;
-  }
-  .content {
-    border-radius: 999px;
-    border: 1px solid rgba(55, 65, 81, 0.95);
-    background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), rgba(15, 23, 42, 0.98));
-    padding: 5px 9px;
-    font-size: 11px;
-    color: #e5e7eb;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    transition:
-      background-color 0.18s ease,
-      border-color 0.18s ease,
-      transform 0.12s ease,
-      box-shadow 0.18s ease;
-    box-shadow:
-      0 10px 20px rgba(15, 23, 42, 0.95),
-      0 0 0 1px rgba(56, 189, 248, 0.35);
-  }
-  .content span.icon {
-    font-size: 14px;
-  }
-  .content:hover {
-    border-color: rgba(56, 189, 248, 0.9);
-    background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.26), rgba(15, 23, 42, 1));
-    transform: translateY(-1px);
-    box-shadow:
-      0 12px 26px rgba(15, 23, 42, 0.98),
-      0 0 0 1px rgba(56, 189, 248, 0.7);
-  }
-  .content:active {
-    transform: translateY(0);
-    box-shadow:
-      0 4px 14px rgba(15, 23, 42, 0.95),
-      0 0 0 1px rgba(37, 99, 235, 0.7);
-  }
-
-  .chat-container {
-    margin-top: 10px;
-    border-radius: 20px;
-    padding: 10px 10px 12px;
-    background:
-      radial-gradient(circle at top left, rgba(96, 165, 250, 0.07), transparent 55%),
-      radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.09), transparent 55%),
-      rgba(15, 23, 42, 0.98);
-    border: 1px solid rgba(55, 65, 81, 0.95);
-    box-shadow:
-      0 22px 70px rgba(15, 23, 42, 0.96),
-      0 0 0 1px rgba(148, 163, 184, 0.4);
-  }
-
-  .chat-header-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 8px;
-  }
-
-  .chat-header-left {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .chat-node {
-    width: 28px;
-    height: 28px;
-    border-radius: 999px;
-    background: radial-gradient(circle at top, #38bdf8, #4f46e5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 15px;
-    color: #ecfeff;
-    box-shadow:
-      0 0 0 1px rgba(226, 232, 240, 0.9),
-      0 0 24px rgba(96, 165, 250, 0.95);
-  }
-
-  .chat-title {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .chat-title div {
-    font-size: 13px;
-    font-weight: 600;
-  }
-
-  .chat-title small {
-    font-size: 11px;
-    color: rgba(156, 163, 175, 0.95);
-  }
-
-  .chat-header-right {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .lang-pill {
-    border-radius: 999px;
-    border: 1px solid rgba(55, 65, 81, 0.95);
-    background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.98));
-    padding: 3px 8px;
-    font-size: 11px;
-    color: rgba(148, 163, 184, 0.95);
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .lang-label {
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-size: 10px;
-  }
-
-  .lang-options {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .lang-option {
-    padding: 2px 6px;
-    border-radius: 999px;
-    cursor: pointer;
-    font-size: 10px;
-    border: 1px solid transparent;
-    transition:
-      background-color 0.14s ease,
-      color 0.14s ease,
-      border-color 0.14s ease;
-    color: rgba(148, 163, 184, 0.9);
-  }
-
-  .lang-option.active {
-    border-color: rgba(96, 165, 250, 0.85);
-    background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.5), rgba(15, 23, 42, 1));
-    color: #e5e7eb;
-  }
-
-  .voice-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .voice-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: rgba(148, 163, 184, 0.95);
-    cursor: pointer;
-  }
-  .voice-toggle input {
-    width: 26px;
-    height: 14px;
-    border-radius: 999px;
-    background: rgba(15, 23, 42, 1);
-    border: 1px solid rgba(55, 65, 81, 1);
-    position: relative;
-    appearance: none;
-    outline: none;
-    cursor: pointer;
-  }
-  .voice-toggle input::before {
-    content: "";
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    width: 10px;
-    height: 10px;
-    border-radius: 999px;
-    background: rgba(148, 163, 184, 1);
-    transition: transform 0.18s ease, background-color 0.18s ease;
-  }
-  .voice-toggle input:checked::before {
-    transform: translateX(10px);
-    background: rgba(56, 189, 248, 1);
-  }
-
-  .voice-pill {
-    border-radius: 999px;
-    border: 1px solid rgba(55, 65, 81, 0.95);
-    background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.15), rgba(15, 23, 42, 0.98));
-    padding: 4px 9px;
-    font-size: 11px;
-    color: #e5e7eb;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .status-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: rgba(148, 163, 184, 0.9);
-    margin-bottom: 6px;
-  }
-  .status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 999px;
-    background: radial-gradient(circle at center, #22c55e, #22c55e);
-    box-shadow: 0 0 12px rgba(34, 197, 94, 0.95);
-  }
-
-  #chat-log {
-    max-height: 320px;
-    min-height: 160px;
-    overflow-y: auto;
-    padding: 8px 10px;
-    border-radius: 14px;
-    background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.98));
-    border: 1px solid rgba(31, 41, 55, 1);
-    box-shadow:
-      inset 0 0 0 1px rgba(15, 23, 42, 1),
-      inset 0 0 18px rgba(15, 23, 42, 1);
-  }
-
-  .msg-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 6px;
-    margin-bottom: 8px;
-  }
-  .msg-row.user {
-    justify-content: flex-end;
-  }
-
-  .msg-tag {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: rgba(148, 163, 184, 0.95);
-    margin-top: 2px;
-  }
-
-  .msg-tag.user {
-    order: 2;
-  }
-
-  .msg-bubble {
-    max-width: 80%;
-    padding: 7px 10px;
-    border-radius: 14px;
-    font-size: 12px;
-    line-height: 1.45;
-  }
-
-  .msg-row.user .msg-bubble {
-    background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.15), rgba(15, 23, 42, 0.98));
-    border: 1px solid rgba(59, 130, 246, 0.9);
-    box-shadow:
-      0 12px 24px rgba(15, 23, 42, 0.96),
-      0 0 0 1px rgba(37, 99, 235, 0.75);
-  }
-
-  .msg-row.assistant .msg-bubble {
-    background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.16), rgba(15, 23, 42, 0.98));
-    border: 1px solid rgba(30, 64, 175, 0.9);
-    box-shadow:
-      0 12px 24px rgba(15, 23, 42, 0.96),
-      0 0 0 1px rgba(30, 64, 175, 0.75);
-  }
-
-  .msg-text {
-    white-space: pre-wrap;
-  }
-
-  .input-row {
-    margin-top: 10px;
-    display: flex;
-    gap: 8px;
-    align-items: flex-end;
-  }
-
-  .input-row textarea {
-    flex: 1;
-    resize: none;
-    border-radius: 999px;
-    border: 1px solid rgba(55, 65, 81, 0.95);
-    background: radial-gradient(circle at top, rgba(3, 7, 18, 0.98), rgba(3, 7, 18, 0.95));
-    color: #e5e7eb;
-    padding: 10px 14px;
-    font-size: 14px;
-    min-height: 44px;
-    max-height: 84px;
-    line-height: 1.4;
-    outline: none;
-    box-shadow:
-      0 0 0 1px rgba(15, 23, 42, 0.9),
-      0 14px 24px rgba(15, 23, 42, 0.98);
-  }
-  .input-row textarea::placeholder {
-    color: rgba(148, 163, 184, 0.95);
-  }
-
-  .input-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .send-btn {
-    border-radius: 999px;
-    border: 1px solid rgba(96, 165, 250, 1);
-    background: radial-gradient(circle at top left, rgba(37, 99, 235, 1), rgba(30, 64, 175, 1));
-    padding: 9px 16px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #eff6ff;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    box-shadow:
-      0 14px 30px rgba(30, 64, 175, 0.9),
-      0 0 0 1px rgba(129, 140, 248, 0.9);
-    transition:
-      transform 0.12s ease,
-      box-shadow 0.18s ease,
-      background-color 0.18s ease,
-      border-color 0.18s ease;
-  }
-
-  .send-btn:hover {
-    transform: translateY(-1px);
-    box-shadow:
-      0 18px 40px rgba(30, 64, 175, 0.95),
-      0 0 0 1px rgba(129, 140, 248, 1);
-    border-color: rgba(129, 140, 248, 1);
-  }
-
-  .send-btn:active {
-    transform: translateY(0);
-    box-shadow:
-      0 6px 18px rgba(30, 64, 175, 0.98),
-      0 0 0 1px rgba(79, 70, 229, 1);
-  }
-
-  .send-btn:disabled {
-    opacity: 0.5;
-    cursor: default;
-    transform: none;
-    box-shadow:
-      0 6px 16px rgba(15, 23, 42, 0.9),
-      0 0 0 1px rgba(30, 64, 175, 0.7);
-  }
-
-  .mic-btn {
-    width: 34px;
-    height: 34px;
-    border-radius: 999px;
-    border: 1px solid rgba(55, 65, 81, 0.95);
-    background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.98));
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    color: rgba(148, 163, 184, 0.95);
-    cursor: pointer;
-    box-shadow:
-      0 10px 20px rgba(15, 23, 42, 0.96),
-      0 0 0 1px rgba(30, 64, 175, 0.6);
-    transition:
-      background-color 0.16s ease,
-      border-color 0.16s ease,
-      box-shadow 0.16s ease,
-      transform 0.12s ease,
-      color 0.16s ease;
-  }
-
-  .mic-btn:hover {
-    border-color: rgba(96, 165, 250, 0.9);
-    background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.4), rgba(15, 23, 42, 1));
-    color: #e5e7eb;
-    transform: translateY(-1px);
-    box-shadow:
-      0 14px 30px rgba(15, 23, 42, 0.98),
-      0 0 0 1px rgba(129, 140, 248, 0.9);
-  }
-
-  .mic-btn.active {
-    border-color: rgba(52, 211, 153, 1);
-    background: radial-gradient(circle at top left, rgba(22, 163, 74, 0.55), rgba(15, 23, 42, 1));
-    color: #bbf7d0;
-    box-shadow:
-      0 16px 36px rgba(22, 163, 74, 0.85),
-      0 0 0 1px rgba(34, 197, 94, 0.9);
-  }
-
-  .mic-btn:disabled {
-    opacity: 0.5;
-    cursor: default;
-    transform: none;
-  }
-
-  .footer-row {
-    margin-top: 14px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(31, 41, 55, 1);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 11px;
-    color: rgba(148, 163, 184, 0.9);
-  }
-
-  .footer-left {
-    max-width: 460px;
-  }
-
-  .footer-left span {
-    display: inline;
-  }
-
-  .footer-right {
-    text-align: right;
-  }
-
-  .footer-right a {
-    color: #60a5fa;
-    text-decoration: none;
-  }
-
-  .footer-right a:hover {
-    text-decoration: underline;
-  }
-
-  /* 👉 MODO TABLET / MÓVIL GRANDE */
-@media (max-width: 720px) {
-  /* Layout general: que se vea a pantalla completa en embed Carrd */
-  body {
-    padding: 0;
-    align-items: stretch;
-    justify-content: flex-start;
-  }
-
-  #app {
-    padding: 18px 0 22px;
-    width: 100%;
-  }
-
-  .shell {
-    max-width: 100%;
-    margin: 0;
-    padding: 14px 12px 16px;
-    border-radius: 0; /* la tarjeta se vuelve pantalla completa en cel */
-  }
-
-  /* Lo que ya tenías en 720, lo respetamos */
-  .banner-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .panel {
-    margin-top: 14px;
-    padding: 12px 12px 14px;
-  }
-
-  .chat-container {
-    margin-top: 8px;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  #chat-log {
-    max-height: 260px;
-    min-height: 160px;
-  }
-
-  .footer-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .footer-right {
-    text-align: left;
-  }
-}
-
-/* 👉 MODO MÓVIL CHICO (iPhone SE / Android pequeño) */
-@media (max-width: 480px) {
-  .banner-title-main {
-    font-size: 11px;
-  }
-
-  .banner-title-sub {
-    font-size: 18px;
-  }
-
-  .panel-title {
-    font-size: 11px;
-  }
-
-  .panel-badge {
-    font-size: 10px;
-  }
-
-  .chips-row,
-  .content-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .input-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .input-actions {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .send-btn {
-    flex: 1;
-    justify-content: center;
-  }
-
-  .mic-btn {
-    width: 32px;
-    height: 32px;
-  }
-
-  /* un poco menos de padding general en pantallas muy pequeñas */
-  #app {
-    padding: 14px 0 18px;
-  }
-
-  .shell {
-    padding: 12px 10px 14px;
-  }
-}
-</style>
+    :root {
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        -apple-system, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #020617, #020617);
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #app {
+      width: 100%;
+      max-width: 960px;
+      padding: 24px 16px 32px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .shell {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-radius: 28px;
+      background: radial-gradient(circle at top left, #0f172a, #020617);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.9);
+      padding: 22px 24px 20px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    /* Banner */
+
+    .banner-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .banner-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: radial-gradient(circle at 20% 0%, #38bdf8, #4f46e5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 22px;
+      color: #0b1120;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.4),
+        0 18px 35px rgba(15, 23, 42, 0.9);
+    }
+
+    .banner-title-main {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .banner-title-sub {
+      font-size: 20px;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .banner-title-sub span {
+      color: #a5b4fc;
+    }
+
+    .banner-description {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-top: 6px;
+      max-width: 540px;
+      line-height: 1.5;
+    }
+
+    /* Panel sesión / botones de arriba */
+
+    .panel {
+      border-radius: 22px;
+      background: radial-gradient(circle at top, #020617, #020617);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      padding: 14px 18px 16px;
+      margin-top: 14px;
+    }
+
+    .panel-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+
+    .panel-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px 4px;
+      border-radius: 999px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      background: linear-gradient(
+        to right,
+        rgba(34, 197, 94, 0.1),
+        rgba(22, 163, 74, 0.2)
+      );
+      border: 1px solid rgba(34, 197, 94, 0.6);
+      color: #bbf7d0;
+      margin-bottom: 8px;
+    }
+
+    .panel-badge-indicator {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+    }
+
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    .chip-btn {
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top left, #0b1120, #020617);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: #e5e7eb;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.18s ease, border-color 0.18s ease,
+        transform 0.08s ease;
+    }
+
+    .chip-btn:hover {
+      background: radial-gradient(circle at top left, #111827, #020617);
+      border-color: rgba(165, 180, 252, 0.9);
+      transform: translateY(-1px);
+    }
+
+    .chip-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #38bdf8;
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+    }
+
+    /* Tarjeta de chat */
+
+    .chat-panel {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .chat-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .bot-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 20% 0%, #38bdf8, #4f46e5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      color: #0b1120;
+    }
+
+    .bot-meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bot-name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .bot-role {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .chat-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .toggle-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .toggle-label span {
+      font-size: 11px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 38px;
+      height: 20px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #020617;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      transition: 0.2s;
+    }
+
+    .toggle-slider::before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      top: 2px;
+      background-color: #9ca3af;
+      border-radius: 999px;
+      transition: 0.2s;
+    }
+
+    .toggle-switch input:checked + .toggle-slider {
+      background: linear-gradient(145deg, #4f46e5, #38bdf8);
+      border-color: transparent;
+    }
+
+    .toggle-switch input:checked + .toggle-slider::before {
+      transform: translateX(16px);
+      background: #020617;
+    }
+
+    /* Idiomas */
+
+    .lang-row {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .lang-label {
+      margin-right: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .lang-pill {
+      min-width: 26px;
+      padding: 3px 8px 4px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: radial-gradient(circle at top left, #020617, #020617);
+      font-size: 11px;
+      cursor: pointer;
+      text-align: center;
+      color: #e5e7eb;
+      transition: background 0.15s ease, border-color 0.15s ease,
+        color 0.15s ease;
+    }
+
+    .lang-pill.active {
+      background: linear-gradient(145deg, #4f46e5, #38bdf8);
+      border-color: transparent;
+      color: #020617;
+    }
+
+    /* Chat log */
+
+    .chat-container {
+      margin-top: 10px;
+      border-radius: 18px;
+      padding: 12px 10px 10px;
+      background: radial-gradient(circle at top, #020617, #020617);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      display: flex;
+      flex-direction: column;
+      height: 250px;
+    }
+
+    #chat-log {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 6px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .msg-row {
+      margin-bottom: 10px;
+    }
+
+    .msg-role {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #6b7280;
+      margin-bottom: 2px;
+    }
+
+    .msg-bubble {
+      border-radius: 14px;
+      padding: 8px 10px;
+      background: #020617;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      color: #e5e7eb;
+    }
+
+    .msg-bubble.user {
+      border-color: rgba(59, 130, 246, 0.8);
+      background: radial-gradient(circle at top, #020617, #020617);
+    }
+
+    .msg-bubble.assistant {
+      border-color: rgba(148, 163, 184, 0.9);
+      background: radial-gradient(circle at top, #020617, #020617);
+    }
+
+    .msg-bubble.system {
+      font-size: 11px;
+      color: #9ca3af;
+      border-style: dashed;
+    }
+
+    /* Input zona */
+
+    .input-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    #user-input {
+      flex: 1;
+      resize: none;
+      min-height: 44px;
+      max-height: 88px;
+      background: #020617;
+      border-radius: 14px;
+      border: 1px solid rgba(55, 65, 81, 1);
+      padding: 10px 12px;
+      color: #e5e7eb;
+      font-size: 13px;
+      line-height: 1.4;
+      outline: none;
+    }
+
+    #user-input::placeholder {
+      color: #6b7280;
+    }
+
+    .input-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .send-btn,
+    .mic-btn {
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 16px;
+      font-weight: 500;
+    }
+
+    .send-btn {
+      background: linear-gradient(145deg, #4f46e5, #38bdf8);
+      color: #020617;
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.55);
+      gap: 6px;
+    }
+
+    .send-btn span.icon {
+      font-size: 15px;
+    }
+
+    .mic-btn {
+      background: radial-gradient(circle at top, #020617, #020617);
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      width: 40px;
+      height: 40px;
+      padding: 0;
+    }
+
+    /* Footer */
+
+    .footer-row {
+      font-size: 11px;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 12px;
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      padding-top: 8px;
+    }
+
+    .footer-left {
+      max-width: 60%;
+    }
+
+    .footer-link {
+      color: #60a5fa;
+      text-decoration: none;
+    }
+
+    .footer-link:hover {
+      text-decoration: underline;
+    }
+
+    .footer-right {
+      text-align: right;
+    }
+
+    /* 🔻 RESPONSIVE */
+
+    /* Tablet / móvil grande */
+    @media (max-width: 720px) {
+      body {
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+        align-items: stretch;
+        justify-content: flex-start;
+      }
+
+      #app {
+        height: auto;
+        min-height: 100vh;
+        padding: 18px 0 22px;
+        width: 100%;
+      }
+
+      .shell {
+        max-width: 100%;
+        margin: 0;
+        border-radius: 0;
+        padding: 14px 12px 16px;
+      }
+
+      .banner-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .panel {
+        margin-top: 12px;
+        padding: 12px 12px 14px;
+      }
+
+      .chat-container {
+        margin-top: 8px;
+        height: 260px;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      #chat-log {
+        max-height: none;
+      }
+
+      .footer-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-right {
+        text-align: left;
+      }
+    }
+
+    /* Móvil chico */
+    @media (max-width: 480px) {
+      .banner-title-main {
+        font-size: 11px;
+      }
+
+      .banner-title-sub {
+        font-size: 18px;
+      }
+
+      .panel-title {
+        font-size: 11px;
+      }
+
+      .panel-badge {
+        font-size: 10px;
+      }
+
+      .chips-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .input-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .input-actions {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .send-btn {
+        flex: 1;
+        justify-content: center;
+      }
+
+      .mic-btn {
+        width: 34px;
+        height: 34px;
+      }
+
+      #app {
+        padding: 14px 0 18px;
+      }
+
+      .shell {
+        padding: 12px 10px 14px;
+      }
+    }
+  </style>
 </head>
+
 <body>
   <div id="app">
     <div class="shell">
-      
       <!-- HEADER -->
-      <div class="banner-header">
+      <header class="banner-header">
         <div class="banner-avatar">E</div>
-        <div class="banner-title">
-          <div class="banner-title-main" id="i-banner-main">
-            ESTEBORG EXECUTIVE · MEMBERS VIP
+        <div>
+          <div class="banner-title-main">ESTEBORG EXECUTIVE · MEMBERS VIP</div>
+          <div class="banner-title-sub">
+            Entrenamiento ejecutivo en <span>IA</span> aplicada para desplegar todo tu poder.
           </div>
-          <div class="banner-title-sub" id="i-banner-sub">
-            Entrenamiento ejecutivo en IA aplicada para desplegar todo tu poder.
-          </div>
-        </div>
-      </div>
-
-      <div class="banner-desc" id="i-banner-desc">
-        Esteborg IA es tu copiloto ejecutivo de inteligencia artificial. Aquí
-        diseñamos tu plan estratégico, optimizamos tu negocio y entrenamos tus
-        habilidades ejecutivas con IA.
-      </div>
-
-      <!-- PANEL -->
-      <div class="panel">
-        <div class="panel-header-row">
-          <div class="panel-title-wrap">
-            <div class="panel-title" id="i-panel-title">
-              INICIO DEL ENTRENAMIENTO · COPILOTO EJECUTIVO IA
-            </div>
-            <div class="panel-badge">
-              <span class="dot"></span>
-              <span>Sesión privada con Esteborg IA</span>
-            </div>
+          <div class="banner-description">
+            Esteborg IA es tu copiloto ejecutivo de inteligencia artificial. Aquí diseñamos tu plan estratégico,
+            optimizamos tu negocio y entrenamos tus habilidades ejecutivas con IA.
           </div>
         </div>
+      </header>
 
-        <!-- CHIPS: INTENCIÓN INICIAL -->
+      <!-- PANEL SUPERIOR: BOTONES DE INICIO -->
+      <section class="panel">
+        <div class="panel-title">INICIO DEL ENTRENAMIENTO · COPILOTO EJECUTIVO IA</div>
+        <div class="panel-badge">
+          <span class="panel-badge-indicator"></span>
+          SESIÓN PRIVADA CON ESTEBORG IA
+        </div>
+
+        <div class="panel-title" style="margin-top:6px;">QUIERO EMPEZAR:</div>
         <div class="chips-row">
-          <span class="chips-label" id="i-chips-label">Quiero empezar:</span>
-
-          <button
-            class="chip-btn starter"
-            id="i-btn-automation"
-            data-text="Quiero usar IA para automatizar tareas repetitivas del día a día."
-          >
-            Automatizar tareas
+          <button class="chip-btn" data-prompt="Automatizar tareas repetitivas con IA">
+            <span class="chip-dot"></span> Automatizar tareas
           </button>
-
-          <button
-            class="chip-btn starter"
-            id="i-btn-decisions"
-            data-text="Quiero que la IA me ayude a tomar mejores decisiones ejecutivas."
-          >
-            Decisiones ejecutivas
+          <button class="chip-btn" data-prompt="Tomar mejores decisiones ejecutivas con IA">
+            <span class="chip-dot"></span> Decisiones ejecutivas
           </button>
-
-          <button
-            class="chip-btn starter"
-            id="i-btn-business"
-            data-text="Quiero lanzar una nueva línea de negocio apalancando IA generativa."
-          >
-            Nueva línea de negocio
+          <button class="chip-btn" data-prompt="Diseñar una nueva línea de negocio usando IA">
+            <span class="chip-dot"></span> Nueva línea de negocio
           </button>
-
-          <button
-            class="chip-btn starter"
-            id="i-btn-master"
-            data-text="Quiero dominar ChatGPT y otras IA en mi trabajo diario."
-          >
-            Dominar IA diaria
+          <button class="chip-btn" data-prompt="Usar IA todos los días como hábito ejecutivo">
+            <span class="chip-dot"></span> Dominar IA diaria
           </button>
         </div>
-        <div class="chips-hint">
-          Da clic en alguno de estos botones para que Esteborg IA arranque tu entrenamiento con un contexto claro.
-        </div>
 
-        <!-- CHIPS: CONTENIDO VISUAL -->
-        <div class="content-row">
-          <span class="content-label" id="i-content-label">Material:</span>
-          <button
-            class="content content-btn"
-            id="i-btn-slides"
-            data-text="Muéstrame las diapositivas del entrenamiento ejecutivo en IA aplicada."
-          >
+        <div class="panel-title" style="margin-top:10px;">MATERIAL:</div>
+        <div class="chips-row">
+          <button class="chip-btn" data-prompt="Quiero que me resumas las diapositivas de la sesión.">
             Diapositivas
           </button>
-          <button
-            class="content content-btn"
-            id="i-btn-summary"
-            data-text="Dame un resumen descargable con los puntos clave del entrenamiento en IA."
-          >
+          <button class="chip-btn" data-prompt="Dame el resumen ejecutivo de todo lo que trabajamos hoy.">
             Resumen IA
           </button>
         </div>
+      </section>
 
-        <!-- CHAT -->
-        <div class="chat-container">
-          <div class="chat-header-row">
-            <div class="chat-header-left">
-              <div class="chat-node">E</div>
-              <div class="chat-title">
-                <div id="i-chat-name">Esteborg IA</div>
-                <small id="i-chat-role">Copiloto Ejecutivo IA</small>
+      <!-- PANEL CHAT -->
+      <section class="panel chat-panel">
+        <div class="chat-header">
+          <div class="chat-header-left">
+            <div class="bot-avatar">E</div>
+            <div class="bot-meta">
+              <div class="bot-name">Esteborg IA</div>
+              <div class="bot-role">Copiloto Ejecutivo IA</div>
+            </div>
+          </div>
+          <div class="chat-header-right">
+            <label class="toggle-label">
+              <span>Voz Esteborg IA</span>
+              <div class="toggle-switch">
+                <input type="checkbox" id="voice-toggle" />
+                <span class="toggle-slider"></span>
               </div>
-            </div>
-
-            <div class="chat-header-right">
-              <div class="voice-row">
-                <label class="voice-toggle">
-                  <input type="checkbox" id="tts-toggle" />
-                  <span id="i-voice-toggle-label">Voz Esteborg IA activada</span>
-                </label>
-                <div class="voice-pill" id="i-voice-pill">🎧 Voz Esteborg IA</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="status-row" id="status-line">
-            <span class="status-dot"></span>
-            <span>Preparando tu entrenamiento con Esteborg IA...</span>
-          </div>
-
-          <div class="lang-pill">
-            <span class="lang-label">Idioma:</span>
-            <div class="lang-options">
-              <span class="lang-option active" data-lang="es">ES</span>
-              <span class="lang-option" data-lang="en">EN</span>
-              <span class="lang-option" data-lang="pt">PT</span>
-              <span class="lang-option" data-lang="fr">FR</span>
-              <span class="lang-option" data-lang="it">IT</span>
-              <span class="lang-option" data-lang="de">DE</span>
-            </div>
-          </div>
-
-          <div id="chat-log"></div>
-
-          <!-- INPUT -->
-          <div class="input-row">
-            <textarea
-              id="user-input"
-              placeholder="Cuéntame qué quieres lograr con IA en los próximos 90 días..."
-            ></textarea>
-
-            <div class="input-actions">
-              <button class="send-btn" id="send-btn">
-                <span>ENVIAR</span>
-                <span>⏎</span>
-              </button>
-
-              <button class="mic-btn" id="mic-btn" title="Hablar con Esteborg IA">
-                🎙️
-              </button>
-            </div>
+            </label>
           </div>
         </div>
 
-        <!-- FOOTER -->
+        <!-- Idiomas -->
+        <div class="lang-row">
+          <span class="lang-label">IDIOMA:</span>
+          <button class="lang-pill" data-lang="es">ES</button>
+          <button class="lang-pill" data-lang="en">EN</button>
+          <button class="lang-pill" data-lang="pt">PT</button>
+          <button class="lang-pill" data-lang="fr">FR</button>
+          <button class="lang-pill" data-lang="it">IT</button>
+          <button class="lang-pill" data-lang="de">DE</button>
+        </div>
+
+        <!-- Chat log -->
+        <div class="chat-container">
+          <div id="chat-log"></div>
+        </div>
+
+        <!-- Input -->
+        <div class="input-row">
+          <textarea id="user-input" placeholder="Cuéntame qué quieres lograr con IA en los próximos 90 días..."></textarea>
+          <div class="input-actions">
+            <button class="send-btn" id="send-btn">
+              <span class="icon">➜</span>
+              <span>Enviar</span>
+            </button>
+            <button class="mic-btn" id="mic-btn">🎤</button>
+          </div>
+        </div>
+
+        <!-- Footer -->
         <div class="footer-row">
           <div class="footer-left">
-            <strong id="i-footer-token-title">Tokken Esteborg Members</strong>
-            <br />
-            <span id="i-footer-token-text">
-              Para acceder al entrenamiento completo necesitas tu Tokken Esteborg Members.
-              Si aún no tienes token, puedes obtenerlo o recuperarlo en:
-              https://membersvip.esteborg.live/#miembrosvip
-            </span>
+            Tokken Esteborg Members<br />
+            Para acceder al entrenamiento completo necesitas tu Tokken Esteborg Members. Si aún no tienes token, puedes
+            obtenerlo o recuperarlo en: <a class="footer-link"
+              href="https://membersvip.esteborg.live/#miembrosvip" target="_blank">membersvip.esteborg.live</a>
           </div>
           <div class="footer-right">
-            Propiedad de Esteban Manuel González Cárdenas · Esteborg<br />
-            <a href="https://esteborg.com" target="_blank" rel="noopener">esteborg.com</a>
+            Propiedad de Esteban Manuel González Cárdenas · Esteborg
           </div>
         </div>
-
-      </div>
+      </section>
     </div>
   </div>
-<script>
-(() => {
-  // ========== CONFIG ==========
-  const API_BASE = "https://esteborg88full-backend-modular.onrender.com";
-  const MODULE_PATH = "/api/modules/iavipcom";
-  const TTS_URL = API_BASE + "/api/voice";
-  const VIP_STORAGE_KEY = "esteborg_vip_token";
 
-  // ========== I18N ==========
-  const I18N = {
-  es: {
-    bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
-    bannerSub: "Entrenamiento ejecutivo en IA aplicada para desplegar todo tu poder.",
-    bannerDesc:
-      "Esteborg IA es tu copiloto ejecutivo de inteligencia artificial. Aquí diseñamos tu plan estratégico, optimizamos tu negocio y entrenamos tus habilidades ejecutivas con IA.",
-    panelTitle: "INICIO DEL ENTRENAMIENTO · COPILOTO EJECUTIVO IA",
+  <script>
+    // =========================
+    // CONFIG
+    // =========================
 
-    chipsLabel: "Quiero empezar:",
-    btnAutomation: "Automatizar tareas",
-    btnAutomationText:
-      "Quiero usar IA para automatizar tareas repetitivas del día a día.",
-    btnDecisions: "Decisiones ejecutivas",
-    btnDecisionsText:
-      "Quiero que la IA me ayude a tomar mejores decisiones ejecutivas.",
-    btnBusiness: "Nueva línea de negocio",
-    btnBusinessText:
-      "Quiero lanzar una nueva línea de negocio apalancando IA generativa.",
-    btnMaster: "Dominar IA diaria",
-    btnMasterText:
-      "Quiero dominar ChatGPT y otras IA en mi trabajo diario.",
+    const API_BASE = "https://esteborg88full-backend-modular.onrender.com";
+    const API_URL = API_BASE + "/api/modules/iavipcom";
 
-    contentLabel: "Material:",
-    btnSlides: "Diapositivas",
-    btnSlidesText:
-      "Muéstrame las diapositivas del entrenamiento ejecutivo en IA aplicada.",
-    btnSummary: "Resumen IA",
-    btnSummaryText:
-      "Dame un resumen descargable con los puntos clave del entrenamiento en IA.",
+    const ELEVEN_VOICE_ID = "IdhxxSTaAg80CTeSgScm";
+    const ELEVEN_API_KEY = "TU_API_KEY_ELEVENLABS_AQUI"; // <-- pon aquí tu key
 
-    chatName: "Esteborg IA",
-    chatRole: "Copiloto Ejecutivo IA",
-    inputPlaceholder:
-      "Cuéntame qué quieres lograr con IA en los próximos 90 días...",
+    const LANGS = ["es", "en", "pt", "fr", "it", "de"];
 
-    footerTokenTitle: "Tokken Esteborg Members",
-    footerTokenText:
-      "Si aún no tienes token, puedes obtenerlo o recuperarlo en: https://membersvip.esteborg.live/#miembrosvip",
-
-    voiceToggleLabel: "Voz Esteborg IA activada",
-    voicePillLabel: "🎧 Voz Esteborg IA",
-    sendButtonLabel: "ENVIAR",
-
-    statusInitialWithToken:
-      "Detecté un Tokken en la URL o guardado · lo usaré automáticamente en tu entrenamiento con Esteborg IA.",
-    statusInitialNoToken:
-      "Demo activa · si generas tu Tokken VIP en Members, lo usaré automáticamente en tu entrenamiento IA.",
-    statusTokenManual:
-      "Tokken pegado manualmente · usaré ese Tokken en tu entrenamiento IA.",
-    statusTokenValid:
-      "Modo Members activo · Tokken VIP válido para Esteborg IA.",
-    statusTokenInvalid:
-      "Tokken inválido o expirado · usando modo demo. Genera uno nuevo en Members.",
-    statusDemoEnded:
-      "Demo finalizada · renueva tu acceso para seguir entrenando con Esteborg IA.",
-    statusDemoActive:
-      "Demo activa · cuando estés listo, pega tu Tokken VIP Esteborg Members.",
-    statusListening: "Escuchando... habla ahora.",
-    statusProcessingSpeech: "Procesando lo que dijiste...",
-    statusMicError:
-      "Hubo un problema con el micrófono, intenta de nuevo.",
-    statusTextCaptured:
-      "Texto capturado, puedes enviarlo o editarlo.",
-    statusTTSOn: "Voz Esteborg IA activada.",
-    statusTTSOff: "Voz Esteborg IA desactivada.",
-    statusLangCurrent: "Idioma cambiado a español.",
-
-    tokenPasteReply:
-      "Perfecto, ya tengo tu Tokken Esteborg Members ✅\nAhora dime: ¿qué quieres lograr con IA en tu negocio y tu rol ejecutivo?",
-    tokenWelcomeMessage:
-      "✅ Tu Tokken Esteborg Members está validado.\nEstás en modo Members VIP con Esteborg IA, podemos trabajar tus escenarios reales de negocio con acceso completo.",
-
-    welcomeMessage:
-      "¡Qué gusto saludarte! 😊 Antes de entrar a tu entrenamiento necesito tu Tokken Esteborg Members para validar tu acceso.\n\n" +
-      "Si aún no tienes token, puedes obtenerlo o recuperarlo en: https://membersvip.esteborg.live/#miembrosvip\n\n" +
-      "Una vez que tengas tu Tokken, pégalo aquí o accede desde tu panel Members VIP. Después elige el idioma en la parte superior (ES, EN, PT, FR, IT, DE) y empezamos a diseñar tu plan de IA."
-  },
-
-  en: {
-    bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
-    bannerSub: "Executive training in Applied AI to unlock all your power.",
-    bannerDesc:
-      "Esteborg IA is your executive AI copilot. Here we design your strategic plan, optimize your business and train your executive skills with AI.",
-    panelTitle: "TRAINING START · EXECUTIVE AI COPILOT",
-
-    chipsLabel: "I want to start with:",
-    btnAutomation: "Automate tasks",
-    btnAutomationText:
-      "I want to use AI to automate repetitive day-to-day tasks.",
-    btnDecisions: "Executive decisions",
-    btnDecisionsText:
-      "I want AI to help me make better executive decisions.",
-    btnBusiness: "New business line",
-    btnBusinessText:
-      "I want to launch a new business line leveraging generative AI.",
-    btnMaster: "Daily AI mastery",
-    btnMasterText:
-      "I want to master ChatGPT and other AIs in my daily work.",
-
-    contentLabel: "Content:",
-    btnSlides: "Slides",
-    btnSlidesText:
-      "Show me the slides for the executive training in Applied AI.",
-    btnSummary: "AI Summary",
-    btnSummaryText:
-      "Give me a downloadable summary with the key points of this AI training.",
-
-    chatName: "Esteborg IA",
-    chatRole: "Executive AI copilot",
-    inputPlaceholder:
-      "Tell me what you want to achieve with AI in the next 90 days...",
-
-    footerTokenTitle: "Esteborg Members Token",
-    footerTokenText:
-      "If you don't have a token yet, you can get or recover it at: https://membersvip.esteborg.live/#miembrosvip",
-
-    voiceToggleLabel: "Esteborg IA voice enabled",
-    voicePillLabel: "🎧 Esteborg IA Voice",
-    sendButtonLabel: "SEND",
-
-    statusInitialWithToken:
-      "I detected a token in the URL or stored locally · I’ll use it automatically in your AI training.",
-    statusInitialNoToken:
-      "Demo active · if you generate your VIP token in Members, I’ll use it automatically in your AI training.",
-    statusTokenManual:
-      "Token pasted manually · I’ll use that token in your AI training.",
-    statusTokenValid:
-      "Members mode active · valid VIP token for Esteborg IA.",
-    statusTokenInvalid:
-      "Token invalid or expired · using demo mode. Generate a new one in Members.",
-    statusDemoEnded:
-      "Demo finished · renew your access to keep training with Esteborg IA.",
-    statusDemoActive:
-      "Demo active · whenever you’re ready, paste your Esteborg Members VIP token.",
-    statusListening: "Listening... you can speak now.",
-    statusProcessingSpeech: "Processing what you said...",
-    statusMicError:
-      "There was a problem with the microphone, please try again.",
-    statusTextCaptured:
-      "Text captured, you can send it or edit it.",
-    statusTTSOn: "Esteborg IA voice enabled.",
-    statusTTSOff: "Esteborg IA voice disabled.",
-    statusLangCurrent: "Language switched to English.",
-
-    tokenPasteReply:
-      "Perfect, I already have your Esteborg Members token ✅\nTell me now what you want to achieve with AI in your business and executive role.",
-    tokenWelcomeMessage:
-      "✅ Your Esteborg Members token is validated.\nYou are in Members VIP mode with Esteborg IA, so we can work on your real business scenarios with full access.",
-
-    welcomeMessage:
-      "Great to see you here! 😊 Before we start your training I need your Esteborg Members token to validate your access.\n\n" +
-      "If you don’t have a token yet, you can get or recover it at: https://membersvip.esteborg.live/#miembrosvip\n\n" +
-      "Once you have your token, paste it here or come from your Members VIP panel. Then choose your language at the top (ES, EN, PT, FR, IT, DE) and we’ll start designing your AI plan."
-  },
-
-  pt: {
-    bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
-    bannerSub:
-      "Treinamento executivo em IA aplicada para liberar todo o seu poder.",
-    bannerDesc:
-      "Esteborg IA é seu copiloto executivo de inteligência artificial. Aqui desenhamos seu plano estratégico, otimizamos seu negócio e treinamos suas habilidades executivas com IA.",
-    panelTitle: "INÍCIO DO TREINAMENTO · COPILOTO EXECUTIVO IA",
-
-    chipsLabel: "Quero começar por:",
-    btnAutomation: "Automatizar tarefas",
-    btnAutomationText:
-      "Quero usar IA para automatizar tarefas repetitivas.",
-    btnDecisions: "Decisões executivas",
-    btnDecisionsText:
-      "Quero que a IA me ajude a tomar melhores decisões.",
-    btnBusiness: "Nova linha de negócio",
-    btnBusinessText:
-      "Quero lançar uma nova linha de negócio usando IA generativa.",
-    btnMaster: "Dominar IA diária",
-    btnMasterText:
-      "Quero dominar ChatGPT e IA no meu dia a dia.",
-
-    contentLabel: "Material:",
-    btnSlides: "Apresentação",
-    btnSlidesText:
-      "Mostre os slides do treinamento executivo em IA aplicada.",
-    btnSummary: "Resumo IA",
-    btnSummaryText:
-      "Dê-me um resumo para download com os pontos-chave da IA.",
-
-    chatName: "Esteborg IA",
-    chatRole: "Copiloto Executivo IA",
-    inputPlaceholder:
-      "Conte o que deseja alcançar com IA nos próximos 90 dias...",
-
-    footerTokenTitle: "Tokken Esteborg Members",
-    footerTokenText:
-      "Se você ainda não tem token, pode obtê-lo em: https://membersvip.esteborg.live/#miembrosvip",
-
-    voiceToggleLabel: "Voz Esteborg IA ativada",
-    voicePillLabel: "🎧 Voz Esteborg IA",
-    sendButtonLabel: "ENVIAR",
-
-    statusInitialWithToken:
-      "Detectei um Tokken na URL ou armazenado · usarei automaticamente.",
-    statusInitialNoToken:
-      "Demo ativa · quando gerar seu Tokken VIP, usarei automaticamente.",
-    statusTokenManual:
-      "Tokken colado manualmente · usarei ele agora.",
-    statusTokenValid: "Modo Members ativo · Tokken VIP válido.",
-    statusTokenInvalid:
-      "Tokken inválido ou expirado · usando modo demo.",
-    statusDemoEnded: "Demo finalizada · renove seu acesso.",
-    statusDemoActive: "Demo ativa · cole seu Tokken quando quiser.",
-    statusListening: "Ouvindo... pode falar.",
-    statusProcessingSpeech: "Processando...",
-    statusMicError: "Erro com microfone.",
-    statusTextCaptured: "Texto capturado.",
-    statusTTSOn: "Voz ativada.",
-    statusTTSOff: "Voz desativada.",
-    statusLangCurrent: "Idioma alterado para português.",
-
-    tokenPasteReply:
-      "Perfeito, já tenho seu Tokken Esteborg Members. O que deseja alcançar com IA?",
-    tokenWelcomeMessage:
-      "Seu Tokken Esteborg Members é válido. Vamos trabalhar com IA em cenários reais.",
-
-    welcomeMessage:
-      "Que bom ter você aqui! 😊 Antes de começarmos, preciso do seu Tokken Esteborg Members para validar o acesso.\n\n" +
-      "Se ainda não tem um, obtenha em: https://membersvip.esteborg.live/#miembrosvip\n\n" +
-      "Depois escolha seu idioma acima (ES, EN, PT, FR, IT, DE) e começaremos seu plano de IA."
-  },
-
-  fr: {
-    bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
-    bannerSub:
-      "Formation exécutive en IA appliquée pour libérer tout votre potentiel.",
-    bannerDesc:
-      "Esteborg IA est votre copilote exécutif en intelligence artificielle. Nous concevons votre plan stratégique et optimisons votre entreprise grâce à l’IA.",
-    panelTitle: "DÉBUT DE LA FORMATION · COPILOTE IA",
-
-    chipsLabel: "Je veux commencer par :",
-    btnAutomation: "Automatiser des tâches",
-    btnAutomationText:
-      "Je veux utiliser l’IA pour automatiser des tâches répétitives.",
-    btnDecisions: "Décisions exécutives",
-    btnDecisionsText:
-      "Je veux que l’IA m’aide à prendre de meilleures décisions.",
-    btnBusiness: "Nouvelle activité",
-    btnBusinessText:
-      "Je veux lancer une nouvelle activité grâce à l’IA générative.",
-    btnMaster: "Maîtriser l’IA quotidienne",
-    btnMasterText:
-      "Je veux maîtriser ChatGPT et l’IA au quotidien.",
-
-    contentLabel: "Contenu :",
-    btnSlides: "Diapositives",
-    btnSlidesText:
-      "Montrez-moi les diapositives de la formation exécutive en IA appliquée.",
-    btnSummary: "Résumé IA",
-    btnSummaryText:
-      "Donnez-moi un résumé téléchargeable avec les points clés.",
-
-    chatName: "Esteborg IA",
-    chatRole: "Copilote Exécutif IA",
-    inputPlaceholder:
-      "Dites-moi ce que vous souhaitez accomplir avec l’IA dans les 90 prochains jours...",
-
-    footerTokenTitle: "Tokken Esteborg Members",
-    footerTokenText:
-      "Si vous n’avez pas de token, obtenez-le ici : https://membersvip.esteborg.live/#miembrosvip",
-
-    voiceToggleLabel: "Voix Esteborg IA activée",
-    voicePillLabel: "🎧 Voix Esteborg IA",
-    sendButtonLabel: "ENVOYER",
-
-    statusInitialWithToken:
-      "Tokken détecté · utilisé automatiquement.",
-    statusInitialNoToken: "Demo active.",
-    statusTokenManual:
-      "Tokken collé manuellement.",
-    statusTokenValid: "Mode Members actif.",
-    statusTokenInvalid:
-      "Tokken invalide · mode demo.",
-    statusDemoEnded: "Demo terminée.",
-    statusDemoActive: "Demo active.",
-    statusListening: "Écoute...",
-    statusProcessingSpeech: "Traitement...",
-    statusMicError: "Erreur micro.",
-    statusTextCaptured: "Texte capturé.",
-    statusTTSOn: "Voix activée.",
-    statusTTSOff: "Voix désactivée.",
-    statusLangCurrent: "Langue changée en français.",
-
-    tokenPasteReply:
-      "Parfait, j’ai votre Tokken. Quel objectif IA souhaitez-vous atteindre ?",
-    tokenWelcomeMessage:
-      "Votre Tokken Esteborg Members est validé. Travaillons sur vos scénarios d’IA.",
-
-    welcomeMessage:
-      "Ravi de vous voir ici ! 😊 Avant de commencer, j’ai besoin de votre Tokken Esteborg Members.\n\n" +
-      "Obtenez-le ici : https://membersvip.esteborg.live/#miembrosvip\n\n" +
-      "Choisissez ensuite votre langue ci-dessus (ES, EN, PT, FR, IT, DE)."
-  },
-
-  it: {
-    bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
-    bannerSub:
-      "Formazione executive in IA applicata per liberare tutto il tuo potenziale.",
-    bannerDesc:
-      "Esteborg IA è il tuo copilota esecutivo di intelligenza artificiale. Disegniamo il tuo piano strategico e ottimizziamo la tua azienda con l’IA.",
-    panelTitle: "INIZIO DEL TRAINING · COPILOTA IA",
-
-    chipsLabel: "Voglio iniziare da:",
-    btnAutomation: "Automatizzare compiti",
-    btnAutomationText:
-      "Voglio usare l’IA per automatizzare attività ripetitive.",
-    btnDecisions: "Decisioni executive",
-    btnDecisionsText:
-      "Voglio che l’IA mi aiuti a prendere decisioni migliori.",
-    btnBusiness: "Nuova linea di business",
-    btnBusinessText:
-      "Voglio lanciare una nuova linea di business sfruttando l’IA generativa.",
-    btnMaster: "Dominare IA quotidiana",
-    btnMasterText:
-      "Voglio dominare ChatGPT e l’IA nel mio lavoro quotidiano.",
-
-    contentLabel: "Materiale:",
-    btnSlides: "Slide",
-    btnSlidesText:
-      "Mostrami le slide del training executive in IA applicata.",
-    btnSummary: "Sintesi IA",
-    btnSummaryText:
-      "Dammi una sintesi scaricabile con i punti chiave.",
-
-    chatName: "Esteborg IA",
-    chatRole: "Copilota Esecutivo IA",
-    inputPlaceholder:
-      "Dimmi cosa vuoi ottenere con l’IA nei prossimi 90 giorni...",
-
-    footerTokenTitle: "Tokken Esteborg Members",
-    footerTokenText:
-      "Se non hai un token, ottienilo qui: https://membersvip.esteborg.live/#miembrosvip",
-
-    voiceToggleLabel: "Voce Esteborg IA attivata",
-    voicePillLabel: "🎧 Voce Esteborg IA",
-    sendButtonLabel: "INVIA",
-
-    statusInitialWithToken:
-      "Tokken rilevato · utilizzo automatico.",
-    statusInitialNoToken: "Demo attiva.",
-    statusTokenManual:
-      "Tokken incollato manualmente.",
-    statusTokenValid: "Modalità Members attiva.",
-    statusTokenInvalid: "Tokken non valido.",
-    statusDemoEnded: "Demo terminata.",
-    statusDemoActive: "Demo attiva.",
-    statusListening: "Ascolto...",
-    statusProcessingSpeech: "Elaborazione...",
-    statusMicError: "Errore microfono.",
-    statusTextCaptured: "Testo acquisito.",
-    statusTTSOn: "Voce attivata.",
-    statusTTSOff: "Voce disattivata.",
-    statusLangCurrent: "Lingua cambiata in italiano.",
-
-    tokenPasteReply:
-      "Perfetto, ho il tuo Tokken. Cosa vuoi ottenere con l’IA?",
-    tokenWelcomeMessage:
-      "Tokken valido. Lavoriamo sui tuoi scenari concreti.",
-
-    welcomeMessage:
-      "Felice di vederti! 😊 Per iniziare ho bisogno del tuo Tokken.\n\n" +
-      "Ottienilo qui: https://membersvip.esteborg.live/#miembrosvip\n\n" +
-      "Poi scegli la lingua sopra (ES, EN, PT, FR, IT, DE)."
-  },
-
-  de: {
-    bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
-    bannerSub:
-      "Executive-Training in angewandter KI, um dein volles Potenzial freizusetzen.",
-    bannerDesc:
-      "Esteborg IA ist dein Executive-KI-Copilot. Wir entwickeln deinen Strategieplan und optimieren dein Unternehmen mit KI.",
-    panelTitle: "TRAININGSSTART · KI-COPILOT",
-
-    chipsLabel: "Ich möchte beginnen mit:",
-    btnAutomation: "Aufgaben automatisieren",
-    btnAutomationText:
-      "Ich möchte KI nutzen, um wiederkehrende Aufgaben zu automatisieren.",
-    btnDecisions: "Executive-Entscheidungen",
-    btnDecisionsText:
-      "Ich möchte bessere Entscheidungen mithilfe von KI treffen.",
-    btnBusiness: "Neue Geschäftslinie",
-    btnBusinessText:
-      "Ich möchte eine neue Geschäftslinie mit generativer KI starten.",
-    btnMaster: "KI im Alltag beherrschen",
-    btnMasterText:
-      "Ich möchte ChatGPT und KI im Arbeitsalltag meistern.",
-
-    contentLabel: "Material:",
-    btnSlides: "Folien",
-    btnSlidesText:
-      "Zeig mir die Folien des Executive-Trainings in angewandter KI.",
-    btnSummary: "KI-Zusammenfassung",
-    btnSummaryText:
-      "Gib mir eine herunterladbare Zusammenfassung der wichtigsten Punkte.",
-
-    chatName: "Esteborg IA",
-    chatRole: "Executive KI-Copilot",
-    inputPlaceholder:
-      "Erzähl mir, was du in den nächsten 90 Tagen mit KI erreichen möchtest...",
-
-    footerTokenTitle: "Tokken Esteborg Members",
-    footerTokenText:
-      "Wenn du noch keinen Token hast, bekommst du ihn hier: https://membersvip.esteborg.live/#miembrosvip",
-
-    voiceToggleLabel: "Esteborg IA-Stimme aktiviert",
-    voicePillLabel: "🎧 Esteborg IA-Stimme",
-    sendButtonLabel: "SENDEN",
-
-    statusInitialWithToken:
-      "Tokken erkannt · automatische Nutzung.",
-    statusInitialNoToken: "Demo aktiv.",
-    statusTokenManual:
-      "Tokken manuell eingetragen.",
-    statusTokenValid: "Members-Modus aktiv.",
-    statusTokenInvalid: "Tokken ungültig.",
-    statusDemoEnded: "Demo beendet.",
-    statusDemoActive: "Demo aktiv.",
-    statusListening: "Ich höre zu...",
-    statusProcessingSpeech: "Verarbeite...",
-    statusMicError: "Mikrofonfehler.",
-    statusTextCaptured: "Text erfasst.",
-    statusTTSOn: "Stimme aktiviert.",
-    statusTTSOff: "Stimme deaktiviert.",
-    statusLangCurrent: "Sprache auf Deutsch geändert.",
-
-    tokenPasteReply:
-      "Perfekt, ich habe deinen Tokken. Was möchtest du mit KI erreichen?",
-    tokenWelcomeMessage:
-      "Tokken gültig. Lass uns an echten KI-Szenarien arbeiten.",
-
-    welcomeMessage:
-      "Schön, dich hier zu sehen! 😊 Bevor wir starten, brauche ich deinen Tokken.\n\n" +
-      "Hier bekommst du ihn: https://membersvip.esteborg.live/#miembrosvip\n\n" +
-      "Dann wähle oben deine Sprache (ES, EN, PT, FR, IT, DE)."
-  }
-};
-
-  const LANG_INSTRUCTIONS = {
-  es: "A partir de ahora responde SIEMPRE en español latino ejecutivo, claro y directo. Nunca cambies de idioma.",
-  en: "From now on you MUST answer ALWAYS in professional American English. Do not switch languages.",
-  pt: "A partir de agora, responda SEMPRE em português brasileiro profissional. Não mude de idioma.",
-  fr: "À partir de maintenant, répondez TOUJOURS en français professionnel. Ne changez pas de langue.",
-  it: "D'ora in poi rispondi SEMPRE in italiano professionale. Non cambiare lingua.",
-  de: "Antworte ab jetzt IMMER auf professionellem Deutsch. Wechsle die Sprache nicht."
-};
-
-  function t(key, langOverride) {
-    const lang = langOverride || currentLang || "es";
-    const pack = I18N[lang] || I18N.es;
-    return pack[key] || I18N.es[key] || "";
-  }
-
-  // ========== TOKEN VIP ==========
-  let VIP_TOKEN = null;
-  let hasShownTokenWelcome = false;
-
-  function getVIPTokenFromURL() {
-    try {
-      const params = new URLSearchParams(window.location.search || "");
-      const raw =
-        params.get("tokken") ||
-        params.get("access_token") ||
-        params.get("token") ||
-        "";
-      const trimmed = (raw || "").trim();
-      console.log(
-        "[IA] Tokken detectado en URL:",
-        trimmed ? trimmed.slice(0, 40) + "..." : "(ninguno)"
-      );
-      return trimmed || null;
-    } catch (e) {
-      console.warn("[IA] Error leyendo URL:", e);
-      return null;
-    }
-  }
-
-  window.addEventListener("message", (event) => {
-    if (!event.data || event.data.type !== "esteborg-token") return;
-    const tokken = (event.data.tokken || "").trim();
-    if (!tokken) return;
-    VIP_TOKEN = tokken;
-    console.log("[IA] Tokken recibido por postMessage:", VIP_TOKEN.slice(0, 40) + "...");
-    try {
-      localStorage.setItem(VIP_STORAGE_KEY, VIP_TOKEN);
-    } catch (e) {
-      console.warn("[IA] No pude guardar Tokken desde postMessage:", e);
-    }
-  });
-
-  // ========== DOM & STATE ==========
-  let currentLang = "es";
-  let history = [];
-  let isSending = false;
-  let currentAudio = null;
-  let recognition = null;
-  let isRecording = false;
-
-  const $ = (id) => document.getElementById(id);
-
-  function getEls() {
-    return {
-      bannerMainEl: $("i-banner-main"),
-      bannerSubEl: $("i-banner-sub"),
-      bannerDescEl: $("i-banner-desc"),
-      panelTitleEl: $("i-panel-title"),
-      chipsLabelEl: $("i-chips-label"),
-      contentLabelEl: $("i-content-label"),
-      chatNameEl: $("i-chat-name"),
-      chatRoleEl: $("i-chat-role"),
-      inputEl: $("user-input"),
-      sendBtn: $("send-btn"),
-      micBtn: $("mic-btn"),
-      statusLine: $("status-line"),
-      chatLog: $("chat-log"),
-      ttsToggle: $("tts-toggle"),
-      voiceToggleLabel: $("i-voice-toggle-label"),
-      voicePill: $("i-voice-pill"),
-      footerTokenTitleEl: $("i-footer-token-title"),
-      footerTokenTextEl: $("i-footer-token-text"),
-      langOptions: document.querySelectorAll(".lang-option"),
-      starterBtns: document.querySelectorAll(".chip-btn.starter"),
-      contentBtns: document.querySelectorAll(".content-btn.content")
+    const WELCOME = {
+      es: "¡Perfecto! Vamos a trabajar tu entrenamiento ejecutivo en IA. Antes de empezar, necesito tu Tokken Esteborg Members para validar tu acceso. Una vez validado, diseñaremos juntos tu plan: automatización, nuevas líneas de negocio y mejora de tus decisiones ejecutivas.",
+      en: "Great to have you here. Before we start your executive AI training I’ll need your Esteborg Members token to validate access. Once it’s validated, we’ll design your plan together: automation, new business lines and stronger executive decisions.",
+      pt: "Que bom ter você aqui. Antes de começarmos seu treinamento executivo em IA, preciso do seu Tokken Esteborg Members para validar o acesso. Depois de validado, vamos desenhar juntos seu plano: automação, novos negócios e decisões executivas mais fortes.",
+      fr: "Ravi de te voir ici. Avant de commencer ton entraînement exécutif en IA, j’ai besoin de ton Tokken Esteborg Members pour valider ton accès. Une fois validé, nous construirons ensemble ton plan : automatisation, nouveaux business et meilleures décisions exécutives.",
+      it: "Felice di vederti qui. Prima di iniziare il tuo training esecutivo in IA ho bisogno del tuo Tokken Esteborg Members per validare l’accesso. Una volta validato, disegneremo insieme il tuo piano: automazione, nuove linee di business e decisioni esecutive più forti.",
+      de: "Schön, dass du hier bist. Bevor wir mit deinem Executive-AI-Training beginnen, brauche ich dein Esteborg Members Tokken zur Zugangvalidierung. Danach entwerfen wir gemeinsam deinen Plan: Automatisierung, neue Geschäftsmodelle und stärkere Management-Entscheidungen."
     };
-  }
 
-  const els = {};
-function buildBackendHistory() {
-  const langMsg = LANG_INSTRUCTIONS[currentLang];
-  if (!langMsg) return history;
+    const TYPING_TEXT = {
+      es: "Escribiendo…",
+      en: "Typing…",
+      pt: "Digitando…",
+      fr: "Écriture…",
+      it: "Scrivendo…",
+      de: "Schreibt…"
+    };
 
-  // Creamos una copia nueva con un mensaje de sistema al inicio
-  return [
-    { role: "system", content: langMsg },
-    ...history
-  ];
-}
+    const STT_LOCALE = {
+      es: "es-MX",
+      en: "en-US",
+      pt: "pt-BR",
+      fr: "fr-FR",
+      it: "it-IT",
+      de: "de-DE"
+    };
 
-  // ========== UI ==========
-  function applyUILanguage() {
-    const s = (key) => t(key);
+    // =========================
+    // STATE
+    // =========================
 
-    if (els.bannerMainEl) els.bannerMainEl.textContent = s("bannerMain");
-    if (els.bannerSubEl) els.bannerSubEl.textContent = s("bannerSub");
-    if (els.bannerDescEl) els.bannerDescEl.textContent = s("bannerDesc");
-    if (els.panelTitleEl) els.panelTitleEl.textContent = s("panelTitle");
+    let currentLang =
+      localStorage.getItem("esteborg_ia_lang") && LANGS.includes(localStorage.getItem("esteborg_ia_lang"))
+        ? localStorage.getItem("esteborg_ia_lang")
+        : "es";
 
-    if (els.chipsLabelEl) els.chipsLabelEl.textContent = s("chipsLabel");
-    if (els.contentLabelEl) els.contentLabelEl.textContent = s("contentLabel");
+    let history = [];
+    let ttsAudio = null;
+    let isSending = false;
 
-    if (els.chatNameEl) els.chatNameEl.textContent = s("chatName");
-    if (els.chatRoleEl) els.chatRoleEl.textContent = s("chatRole");
+    // Tokken Members: URL o localStorage
+    let membersToken = null;
+    (function initToken() {
+      const url = new URL(window.location.href);
+      const urlToken = url.searchParams.get("access_token");
+      const stored = localStorage.getItem("esteborg_token_members");
 
-    if (els.inputEl) els.inputEl.placeholder = s("inputPlaceholder");
+      if (urlToken) {
+        membersToken = urlToken;
+        localStorage.setItem("esteborg_token_members", urlToken);
+      } else if (stored) {
+        membersToken = stored;
+      }
+    })();
 
-    if (els.footerTokenTitleEl)
-      els.footerTokenTitleEl.textContent = s("footerTokenTitle");
-    if (els.footerTokenTextEl)
-      els.footerTokenTextEl.textContent = s("footerTokenText");
+    // =========================
+    // DOM refs
+    // =========================
 
-    if (els.voiceToggleLabel)
-      els.voiceToggleLabel.textContent = s("voiceToggleLabel");
-    if (els.voicePill) els.voicePill.textContent = s("voicePillLabel");
-    if (els.sendBtn) els.sendBtn.textContent = s("sendButtonLabel");
+    const chatLog = document.getElementById("chat-log");
+    const userInput = document.getElementById("user-input");
+    const sendBtn = document.getElementById("send-btn");
+    const micBtn = document.getElementById("mic-btn");
+    const voiceToggle = document.getElementById("voice-toggle");
+    const langPills = Array.from(document.querySelectorAll(".lang-pill"));
+    const chipButtons = Array.from(document.querySelectorAll(".chip-btn"));
 
-    if (els.statusLine) {
-      const spans = els.statusLine.querySelectorAll("span");
-      if (spans.length > 1) spans[1].textContent = s("statusInitialNoToken");
+    // =========================
+    // UTILS
+    // =========================
+
+    function scrollChatToBottom() {
+      chatLog.scrollTop = chatLog.scrollHeight;
     }
 
-    const btnAuto = $("i-btn-automation");
-    const btnDec = $("i-btn-decisions");
-    const btnBiz = $("i-btn-business");
-    const btnMaster = $("i-btn-master");
-    const btnSlides = $("i-btn-slides");
-    const btnSummary = $("i-btn-summary");
-
-    if (btnAuto) {
-      btnAuto.textContent = s("btnAutomation");
-      btnAuto.dataset.text = s("btnAutomationText");
+    function cleanForTTS(text) {
+      return text
+        .replace(/[\n\r]+/g, " ")
+        .replace(/[.,;:!?¡¿"'“”(){}\[\]<>«»]/g, "")
+        .replace(/\s{2,}/g, " ")
+        .trim();
     }
-    if (btnDec) {
-      btnDec.textContent = s("btnDecisions");
-      btnDec.dataset.text = s("btnDecisionsText");
-    }
-    if (btnBiz) {
-      btnBiz.textContent = s("btnBusiness");
-      btnBiz.dataset.text = s("btnBusinessText");
-    }
-    if (btnMaster) {
-      btnMaster.textContent = s("btnMaster");
-      btnMaster.dataset.text = s("btnMasterText");
-    }
-    if (btnSlides) {
-      btnSlides.textContent = s("btnSlides");
-      btnSlides.dataset.text = s("btnSlidesText");
-    }
-    if (btnSummary) {
-      btnSummary.textContent = s("btnSummary");
-      btnSummary.dataset.text = s("btnSummaryText");
-    }
-  }
 
-  function setStatus(keyOrText) {
-    if (!els.statusLine) return;
-    const spans = els.statusLine.querySelectorAll("span");
-    const txt =
-      typeof keyOrText === "string" ? t(keyOrText) : String(keyOrText || "");
-    if (spans.length > 1) spans[1].textContent = txt;
-    else els.statusLine.textContent = txt;
-  }
+    function addMessage(role, content, { speak = false } = {}) {
+      const row = document.createElement("div");
+      row.className = "msg-row";
 
-  function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
-  }
+      const roleLabel = document.createElement("div");
+      roleLabel.className = "msg-role";
+      roleLabel.textContent =
+        role === "user"
+          ? "TÚ"
+          : role === "assistant"
+          ? "ESTEBORG IA"
+          : "SISTEMA";
 
-  function appendMessage(role, content) {
-    if (!els.chatLog) return;
+      const bubble = document.createElement("div");
+      bubble.className = `msg-bubble ${role}`;
+      bubble.textContent = content;
 
-    const raw = content || "";
-    const processed = raw.replace(/^###\s*/gm, "");
-    const safe = escapeHtml(processed);
-
-    const row = document.createElement("div");
-    row.className = "msg-row " + (role === "user" ? "user" : "assistant");
-
-    const tag = document.createElement("div");
-    tag.className = "msg-tag " + (role === "user" ? "user" : "assistant");
-    tag.textContent = role === "user" ? "Tú" : t("chatName");
-
-    const bubble = document.createElement("div");
-    bubble.className = "msg-bubble";
-    bubble.innerHTML = '<div class="msg-text">' + safe + "</div>";
-    if (role === "user") {
+      row.appendChild(roleLabel);
       row.appendChild(bubble);
-      row.appendChild(tag);
-    } else {
-      row.appendChild(tag);
-      row.appendChild(bubble);
+      chatLog.appendChild(row);
+      scrollChatToBottom();
+
+      if (role === "user" || role === "assistant") {
+        history.push({ role: role === "user" ? "user" : "assistant", content });
+        if (history.length > 20) {
+          history = history.slice(-20);
+        }
+      }
+
+      if (role === "assistant" && speak && voiceToggle.checked) {
+        playTTS(content).catch(() => {});
+      }
+
+      return bubble;
     }
 
-    els.chatLog.appendChild(row);
-    els.chatLog.scrollTop = els.chatLog.scrollHeight;
-  }
+    function setLanguage(lang) {
+      if (!LANGS.includes(lang)) return;
 
-  // ========== TTS ==========
-  function stopTTS() {
-    if (currentAudio) {
+      currentLang = lang;
+      localStorage.setItem("esteborg_ia_lang", lang);
+
+      langPills.forEach((pill) =>
+        pill.classList.toggle("active", pill.dataset.lang === lang)
+      );
+
+      // Mensaje del sistema de cambio de idioma
+      const msg =
+        lang === "es"
+          ? "Idioma cambiado a Español."
+          : lang === "en"
+          ? "Language switched to English."
+          : lang === "pt"
+          ? "Idioma alterado para Português."
+          : lang === "fr"
+          ? "Langue changée en Français."
+          : lang === "it"
+          ? "Lingua cambiata in Italiano."
+          : "Sprache auf Deutsch umgestellt.";
+      addMessage("system", msg, { speak: false });
+    }
+
+    // =========================
+    // TTS
+    // =========================
+
+    async function playTTS(text) {
       try {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-      } catch (_) {}
+        stopTTS();
+        const cleaned = cleanForTTS(text);
+        if (!cleaned) return;
+
+        const response = await fetch(
+          "https://api.elevenlabs.io/v1/text-to-speech/" + ELEVEN_VOICE_ID,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "xi-api-key": ELEVEN_API_KEY
+            },
+            body: JSON.stringify({
+              text: cleaned,
+              model_id: "eleven_multilingual_v2",
+              voice_settings: {
+                stability: 0.5,
+                similarity_boost: 0.75
+              }
+            })
+          }
+        );
+
+        if (!response.ok) return;
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        ttsAudio = new Audio(url);
+        ttsAudio.play();
+      } catch (err) {
+        console.error("[TTS ERROR]", err);
+      }
     }
-  }
 
-  async function playTTS(text) {
-  if (!els.ttsToggle || !els.ttsToggle.checked) return;
-  if (!text) return;
+    function stopTTS() {
+      if (ttsAudio) {
+        try {
+          ttsAudio.pause();
+          ttsAudio.currentTime = 0;
+        } catch (e) {}
+        ttsAudio = null;
+      }
+    }
 
-  try {
-    let cleaned = text
-      .replace(/\.\.\./g, " ")
-      .replace(/[.,;:!?¡¿(){}\[\]"“”‘’]/g, " ")
-      .replace(/-/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-
-    if (cleaned.length > 450) cleaned = cleaned.slice(0, 450);
-
-    const res = await fetch(TTS_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        text: cleaned,
-        voiceId: "IdhxxSTaAg80CTeSgScm"
-      })
+    voiceToggle.addEventListener("change", () => {
+      if (!voiceToggle.checked) {
+        stopTTS();
+      }
     });
 
-    if (!res.ok) {
-      console.error("[TTS] error:", await res.text());
-      return;
-    }
+    // =========================
+    // STT
+    // =========================
 
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-
-    stopTTS();
-    currentAudio = new Audio(url);
-    currentAudio.play().catch((err) => {
-      console.warn("[TTS] no se pudo reproducir:", err);
-    });
-  } catch (e) {
-    console.error("[TTS] error general:", e);
-  }
-}
-
-  // ========== SPEECH ==========
-  function getSpeechLangCode(lang) {
-    switch (lang) {
-      case "en":
-        return "en-US";
-      case "pt":
-        return "pt-BR";
-      case "fr":
-        return "fr-FR";
-      case "it":
-        return "it-IT";
-      case "de":
-        return "de-DE";
-      default:
-        return "es-MX";
-    }
-  }
-
-  function initSpeechRecognition() {
-    const SR =
-      window.SpeechRecognition || window.webkitSpeechRecognition || null;
-    if (!SR || !els.micBtn) return;
-
-    recognition = new SR();
-    recognition.lang = getSpeechLangCode(currentLang);
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-
-    recognition.onstart = () => {
-      isRecording = true;
-      els.micBtn.classList.add("active");
-      setStatus("statusListening");
-    };
-    recognition.onend = () => {
-      isRecording = false;
-      els.micBtn.classList.remove("active");
-      setStatus("statusProcessingSpeech");
-    };
-    recognition.onerror = (e) => {
-      isRecording = false;
-      els.micBtn.classList.remove("active");
-      console.warn("[IA] Speech error:", e);
-      setStatus("statusMicError");
-    };
-    recognition.onresult = (e) => {
-      const transcript = e.results[0][0].transcript.trim();
-      if (transcript && els.inputEl) {
-        els.inputEl.value = transcript;
-        setStatus("statusTextCaptured");
-      }
-    };
-  }
-
-  function toggleMic() {
-    if (!recognition) return;
-    try {
-      if (!isRecording) recognition.start();
-      else recognition.stop();
-    } catch (err) {
-      console.warn("[IA] No se pudo iniciar reconocimiento:", err);
-    }
-  }
-
-  // ========== BACKEND ==========
-  async function sendToBackend(userText) {
-    const tokenToSend = VIP_TOKEN || getVIPTokenFromURL();
-    console.log(
-      "[IA] Enviando mensaje:",
-      userText,
-      "Tokken:",
-      tokenToSend ? tokenToSend.slice(0, 40) + "..." : "(null)"
-    );
-
-    stopTTS();
-    isSending = true;
-    if (els.sendBtn) els.sendBtn.disabled = true;
-    if (els.inputEl) els.inputEl.disabled = true;
-    if (els.micBtn) els.micBtn.disabled = true;
-
-    try {
-      const resp = await fetch(API_BASE + MODULE_PATH, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    message: userText,
-    rawToken: tokenToSend,
-    userName: null,
-    history: buildBackendHistory(), // ← aquí va la magia
-    lang: currentLang               // mantenemos el lang que ya usabas
-  })
-});
-
-      console.log("[IA] Respuesta HTTP:", resp.status);
-      if (!resp.ok) throw new Error("HTTP " + resp.status);
-
-      const data = await resp.json();
-      console.log("[IA] Payload backend:", data);
-
-      const reply =
-        data.reply ||
-        data.message ||
-        "No tengo una respuesta en este momento, intenta de nuevo.";
-
-      appendMessage("assistant", reply);
-      history.push({ role: "assistant", content: reply });
-
-      if (data.tokenStatus === "valid") {
-        setStatus("statusTokenValid");
-        if (!hasShownTokenWelcome) {
-          const tokenMsg = t("tokenWelcomeMessage");
-          appendMessage("assistant", tokenMsg);
-          history.push({ role: "assistant", content: tokenMsg });
-          hasShownTokenWelcome = true;
-        }
-      } else if (data.tokenStatus === "invalid") {
-        setStatus("statusTokenInvalid");
-      } else if (data.demoStatus === "ended") {
-        setStatus("statusDemoEnded");
-      } else {
-        setStatus("statusDemoActive");
-      }
-
-      await playTTS(reply);
-    } catch (err) {
-      console.error("[IA] Error:", err);
-      appendMessage(
-        "assistant",
-        "Hubo un problema al conectar con el servidor. Intenta de nuevo en unos segundos."
-      );
-      setStatus("statusDemoActive");
-    } finally {
-      isSending = false;
-      if (els.sendBtn) els.sendBtn.disabled = false;
-      if (els.inputEl) els.inputEl.disabled = false;
-      if (els.micBtn) els.micBtn.disabled = false;
-      if (els.inputEl) els.inputEl.focus();
-    }
-  }
-
-  async function handleSend(fromText) {
-    if (isSending) return;
-
-    const baseText =
-      fromText != null
-        ? fromText
-        : (els.inputEl && els.inputEl.value) || "";
-    const text = baseText.trim();
-    if (!text) return;
-
-    const candidate = text.replace(/\s+/g, "");
-    const looksLikeTokken =
-      /^[A-Za-z0-9+/=_-]{40,}$/.test(candidate) && !candidate.includes(".");
-
-    if (fromText == null && looksLikeTokken) {
-      VIP_TOKEN = candidate;
-      console.log(
-        "[IA] Tokken pegado (interceptado, no se manda al backend):",
-        VIP_TOKEN.slice(0, 40) + "..."
-      );
+    async function startSTT() {
       try {
-        localStorage.setItem(VIP_STORAGE_KEY, VIP_TOKEN);
-      } catch (e) {
-        console.warn("[IA] No pude guardar Tokken en localStorage:", e);
-      }
-      appendMessage("assistant", t("tokenPasteReply"));
-      setStatus("statusTokenManual");
-      if (els.inputEl) els.inputEl.value = "";
-      return;
-    }
+        const SpeechRecognition =
+          window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) return;
 
-    appendMessage("user", text);
-    history.push({ role: "user", content: text });
-    if (els.inputEl) els.inputEl.value = "";
+        const recognition = new SpeechRecognition();
+        recognition.lang = STT_LOCALE[currentLang] || "es-MX";
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
 
-    await sendToBackend(text);
-  }
-
-  // ========== SESIÓN ==========
-  function startSession(updateStatus) {
-    if (typeof updateStatus === "undefined") updateStatus = true;
-
-    if (els.chatLog) els.chatLog.innerHTML = "";
-    history = [];
-    stopTTS();
-
-    const welcome = t("welcomeMessage");
-    appendMessage("assistant", welcome);
-    playTTS(welcome);
-
-    try {
-      const stored = localStorage.getItem(VIP_STORAGE_KEY);
-      if (stored) {
-        VIP_TOKEN = stored.trim();
-        console.log("[IA] Tokken recuperado de localStorage");
-      } else {
-        VIP_TOKEN = getVIPTokenFromURL();
-      }
-    } catch (e) {
-      console.warn("[IA] No pude leer localStorage:", e);
-      VIP_TOKEN = getVIPTokenFromURL();
-    }
-
-    if (updateStatus) {
-      if (VIP_TOKEN) setStatus("statusInitialWithToken");
-      else setStatus("statusInitialNoToken");
-    }
-  }
-
-  // ========== RESIZE PARA CARRD ==========
-  function sendHeight() {
-    const height = document.body.scrollHeight;
-    window.parent.postMessage(
-      { type: "esteborg-resize", height: height },
-      "*"
-    );
-  }
-
-  window.addEventListener("load", sendHeight);
-  window.addEventListener("resize", sendHeight);
-  setInterval(sendHeight, 600);
-
-  // ========== INIT ==========
-  window.addEventListener("DOMContentLoaded", () => {
-    Object.assign(els, getEls());
-    applyUILanguage();
-
-    if (els.starterBtns) {
-      els.starterBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const txt = btn.dataset.text || btn.textContent || "";
-          handleSend(txt);
+        return await new Promise((resolve, reject) => {
+          recognition.onresult = (event) => {
+            resolve(event.results[0][0].transcript);
+          };
+          recognition.onerror = (event) => {
+            reject(event.error);
+          };
+          recognition.start();
         });
+      } catch (err) {
+        console.error("[STT ERROR]", err);
+      }
+    }
+
+    // =========================
+    // NETWORK
+    // =========================
+
+    async function sendToBackend(text) {
+      const payload = {
+        message: text,
+        token: membersToken || null,
+        userName: null,
+        history,
+        lang: currentLang
+      };
+
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
       });
+
+      if (!res.ok) {
+        throw new Error("Error HTTP " + res.status);
+      }
+
+      return await res.json();
     }
 
-    if (els.contentBtns) {
-      els.contentBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const txt = btn.dataset.text || btn.textContent || "";
-          handleSend(txt);
-        });
+    // =========================
+    // EVENTOS
+    // =========================
+
+    async function handleSend() {
+      if (isSending) return;
+      const text = userInput.value.trim();
+      if (!text) return;
+
+      isSending = true;
+      stopTTS();
+
+      const userBubble = addMessage("user", text, { speak: false });
+      userInput.value = "";
+
+      const typingBubble = addMessage("assistant", TYPING_TEXT[currentLang], {
+        speak: false
       });
-    }
 
-    if (els.sendBtn) {
-      els.sendBtn.addEventListener("click", () => handleSend());
-    }
-
-    if (els.inputEl) {
-      els.inputEl.addEventListener("keydown", (ev) => {
-        if (ev.key === "Enter" && !ev.shiftKey) {
-          ev.preventDefault();
-          handleSend();
+      try {
+        const data = await sendToBackend(text);
+        const aiText = data && data.message ? data.message : "(Sin respuesta)";
+        typingBubble.textContent = aiText;
+        if (voiceToggle.checked) {
+          playTTS(aiText).catch(() => {});
         }
+      } catch (err) {
+        console.error("[BACKEND ERROR]", err);
+        typingBubble.textContent =
+          "Hubo un error al conectar con Esteborg IA. Intenta de nuevo en unos segundos.";
+      } finally {
+        isSending = false;
+      }
+    }
+
+    // click enviar
+    sendBtn.addEventListener("click", handleSend);
+
+    // enter para enviar
+    userInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        handleSend();
+      }
+    });
+
+    // mic STT
+    micBtn.addEventListener("click", async () => {
+      const transcript = await startSTT();
+      if (transcript) {
+        userInput.value = (userInput.value + " " + transcript).trim();
+      }
+    });
+
+    // idiomas
+    langPills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        const lang = pill.dataset.lang;
+        setLanguage(lang);
       });
-    }
+    });
 
-    if (els.langOptions && els.langOptions.length) {
-      els.langOptions.forEach((opt) => {
-        opt.addEventListener("click", () => {
-          const lang = opt.dataset.lang;
-          if (!lang || lang === currentLang) return;
-
-          currentLang = lang;
-          els.langOptions.forEach((o) =>
-            o.classList.toggle("active", o === opt)
-          );
-
-          applyUILanguage();
-          setStatus("statusLangCurrent");
-          startSession(false);
-        });
+    // chips
+    chipButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const prompt = btn.getAttribute("data-prompt") || btn.textContent;
+        userInput.value = prompt;
+        userInput.focus();
       });
+    });
+
+    // =========================
+    // INIT
+    // =========================
+
+    function initLanguageUI() {
+      langPills.forEach((pill) =>
+        pill.classList.toggle("active", pill.dataset.lang === currentLang)
+      );
     }
 
-    initSpeechRecognition();
-    if (els.micBtn) {
-      els.micBtn.addEventListener("click", toggleMic);
+    function initWelcome() {
+      const alreadyWelcomed =
+        sessionStorage.getItem("esteborg_ia_welcome_done") === "1";
+      if (!alreadyWelcomed) {
+        addMessage("assistant", WELCOME[currentLang], { speak: false });
+        sessionStorage.setItem("esteborg_ia_welcome_done", "1");
+      }
     }
 
-    if (els.ttsToggle && els.voicePill) {
-  // Switch ON/OFF
-  els.ttsToggle.addEventListener("change", () => {
-    if (!els.ttsToggle.checked) {
-      // Usuario APAGA la voz → detenemos el audio actual
-      stopTTS();
-    }
-    setStatus(els.ttsToggle.checked ? "statusTTSOn" : "statusTTSOff");
-  });
-
-  // Píldora "Voz Esteborg IA"
-  els.voicePill.addEventListener("click", () => {
-    els.ttsToggle.checked = !els.ttsToggle.checked;
-
-    if (!els.ttsToggle.checked) {
-      // Usuario la apaga desde la píldora → también paramos el audio
-      stopTTS();
-    }
-
-    setStatus(els.ttsToggle.checked ? "statusTTSOn" : "statusTTSOff");
-  });
-}
-
-    startSession(true);
-  });
-})();
-</script>
-
+    (function init() {
+      initLanguageUI();
+      initWelcome();
+      if (membersToken) {
+        addMessage(
+          "system",
+          "Tokken Esteborg Members detectado. Lo usaré automáticamente en tu entrenamiento.",
+          { speak: false }
+        );
+      }
+    })();
+  </script>
 </body>
 </html>
