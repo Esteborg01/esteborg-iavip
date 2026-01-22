@@ -615,6 +615,79 @@
         height: 34px;
       }
     }
+    /* ============================
+   DESKTOP OPTIMIZATION BOOST
+   Hace más grande la ventana del chat
+   ============================ */
+@media (min-width: 1024px) {
+
+  /* Reduce padding general superior */
+  body {
+    padding-top: 12px !important;
+  }
+
+  /* Contenedor principal más ajustado */
+  .app {
+    gap: 8px;
+  }
+
+  /* Sección de “inicio del entrenamiento”, chips, material */
+  .shell,
+  .training-section,
+  .chips-row,
+  .materials-row {
+    margin-bottom: 8px !important;
+  }
+
+  /* Reduce altura de chips/botones */
+  .chips-row button,
+  .materials-row button {
+    padding: 6px 14px !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* Reduce tamaño del título/slogan */
+  .hero-title {
+    font-size: 1.3rem !important;
+    margin-bottom: 4px !important;
+  }
+
+  .hero-sub {
+    font-size: 0.85rem !important;
+    max-width: 520px !important;
+  }
+
+  /* --- AQUI VIENE LA MAGIA DEL CHAT GRANDE --- */
+
+  .chat-card {
+    flex: 1 !important;            /* ocupa mayor espacio vertical */
+    min-height: 650px !important;  /* tamaño base más grande */
+    max-height: 78vh !important;   /* nunca se sale de pantalla */
+    margin-top: 4px !important;
+  }
+
+  .chat-inner {
+    min-height: 0 !important;
+  }
+
+  /* Chat box ahora es gigante */
+  .chat-box {
+    flex: 1 !important;
+    min-height: 450px !important;  /* antes era como 240 */
+    max-height: 63vh !important;
+  }
+
+  /* Entrada de texto más compacta */
+  .input-row {
+    margin-top: 6px !important;
+  }
+
+  #userMsg {
+    font-size: 0.85rem !important;
+    padding: 8px 14px !important;
+  }
+
+}
   </style>
 </head>
 
