@@ -1002,14 +1002,56 @@
     }
   };
 
-  const WELCOME = {
-    es: "¡Perfecto! Vamos a trabajar tu entrenamiento ejecutivo en IA. Antes de empezar, necesito tu Tokken Esteborg Members para validar tu acceso. Una vez validado, diseñaremos juntos tu plan: automatización, nuevas líneas de negocio y mejora de tus decisiones ejecutivas.",
-    en: "Great to have you here. Before we start your executive AI training I’ll need your Esteborg Members token to validate access. Once it’s validated, we’ll design your plan together: automation, new business lines and stronger executive decisions.",
-    pt: "Que bom ter você aqui. Antes de começarmos seu treinamento executivo em IA, preciso do seu Tokken Esteborg Members para validar o acesso. Depois de validado, vamos desenhar juntos seu plano: automação, novos negócios e decisões executivas mais fortes.",
-    fr: "Ravi de te voir ici. Avant de commencer ton entraînement exécutif en IA, j’ai besoin de ton Tokken Esteborg Members pour valider ton accès. Une fois validé, nous construirons ensemble ton plan : automatisation, nouveaux business et meilleures décisions exécutives.",
-    it: "Felice di vederti qui. Prima di iniziare il tuo training esecutivo in IA ho bisogno del tuo Tokken Esteborg Members per validare l’accesso. Una volta validato, disegneremo insieme il tuo piano: automazione, nuove linee di business e decisioni esecutive più forti.",
-    de: "Schön, dass du hier bist. Bevor wir mit deinem Executive-AI-Training beginnen, brauche ich dein Esteborg Members Tokken zur Zugangvalidierung. Danach entwerfen wir gemeinsam deinen Plan: Automatisierung, neue Geschäftsmodelle und stärkere Management-Entscheidungen."
-  };
+ const WELCOME = {
+  es: `¡Qué gusto saludarte! 😊 Antes de entrar a tu entrenamiento necesito tu Tokken Esteborg Members para validar tu acceso.
+
+Si aún no tienes token, puedes obtenerlo o recuperarlo en: https://membersvip.esteborg.live/#miembrosvip
+
+Una vez que tengas tu Tokken, pégalo aquí o accede desde tu panel Members VIP. Después elige el idioma en la parte superior (ES, EN, PT, FR, IT, DE) y comenzamos.`,
+  en: `Great to see you here! 😊 Before we start your training I need your Esteborg Members Tokken to validate your access.
+
+If you don’t have a token yet, you can get or recover it at: https://membersvip.esteborg.live/#miembrosvip
+
+Once you have your Tokken, paste it here or access from your Members VIP panel. Then choose the language at the top (ES, EN, PT, FR, IT, DE) and we’ll start.`,
+  pt: `Que bom te ver por aqui! 😊 Antes de começar o seu treinamento eu preciso do seu Tokken Esteborg Members para validar o acesso.
+
+Se você ainda não tem token, pode obtê-lo ou recuperá-lo em: https://membersvip.esteborg.live/#miembrosvip
+
+Quando tiver o seu Tokken, cole aqui ou acesse a partir do seu painel Members VIP. Depois escolha o idioma na parte superior (ES, EN, PT, FR, IT, DE) e começamos.`,
+  fr: `Ravi de te voir ici ! 😊 Avant de commencer ta formation, j’ai besoin de ton Tokken Esteborg Members pour valider ton accès.
+
+Si tu n’as pas encore de token, tu peux l’obtenir ou le récupérer ici : https://membersvip.esteborg.live/#miembrosvip
+
+Une fois que tu as ton Tokken, colle-le ici ou accède depuis ton panneau Members VIP. Ensuite choisis la langue en haut (ES, EN, PT, FR, IT, DE) et on démarre.`,
+  it: `Che bello vederti qui! 😊 Prima di iniziare il tuo allenamento ho bisogno del tuo Tokken Esteborg Members per validare l’accesso.
+
+Se non hai ancora il token, puoi ottenerlo o recuperarlo su: https://membersvip.esteborg.live/#miembrosvip
+
+Quando avrai il tuo Tokken, incollalo qui oppure accedi dal tuo pannello Members VIP. Poi scegli la lingua in alto (ES, EN, PT, FR, IT, DE) e iniziamo.`,
+  de: `Schön, dich hier zu sehen! 😊 Bevor wir mit deinem Training starten, brauche ich dein Esteborg Members Tokken, um deinen Zugang zu validieren.
+
+Wenn du noch kein Token hast, kannst du es hier erhalten oder wiederherstellen: https://membersvip.esteborg.live/#miembrosvip
+
+Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP-Panel darauf zu. Danach wählst du oben die Sprache (ES, EN, PT, FR, IT, DE) und wir legen los.`
+};
+
+   function welcomeKeyFor(lang) {
+  return `esteborg_ia_welcome_${lang}`;
+}
+
+function hasShownWelcome(lang) {
+  try {
+    return sessionStorage.getItem(welcomeKeyFor(lang)) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function markWelcomeShown(lang) {
+  try {
+    sessionStorage.setItem(welcomeKeyFor(lang), "1");
+  } catch {}
+}
 
   const TYPING_TEXT = {
     es: "Escribiendo…",
@@ -1181,19 +1223,25 @@
   }
 
   function setLanguage(lang) {
-    if (!LANGS.includes(lang)) return;
-    currentLang = lang;
-    localStorage.setItem("esteborg_ia_lang", lang);
+  if (!LANGS.includes(lang)) return;
+  currentLang = lang;
+  localStorage.setItem("esteborg_ia_lang", lang);
 
-    langPills.forEach((pill) =>
-      pill.classList.toggle("active", pill.dataset.lang === lang)
-    );
+  langPills.forEach((pill) =>
+    pill.classList.toggle("active", pill.dataset.lang === lang)
+  );
 
-    applyUILanguage();
+  applyUILanguage();
 
-    const pack = I18N[currentLang] || I18N.es;
-    addMessage("system", pack.systemLangChanged, { speak: false });
+  const pack = I18N[currentLang] || I18N.es;
+  addMessage("system", pack.systemLangChanged, { speak: false });
+
+  // Mensaje de Tokken en el idioma seleccionado (solo una vez por idioma)
+  if (!hasShownWelcome(currentLang)) {
+    addMessage("assistant", WELCOME[currentLang], { speak: false });
+    markWelcomeShown(currentLang);
   }
+}
 
   // =========================
   // TTS
@@ -1463,13 +1511,11 @@
   }
 
   function initWelcome() {
-    const alreadyWelcomed =
-      sessionStorage.getItem("esteborg_ia_welcome_done") === "1";
-    if (!alreadyWelcomed) {
-      addMessage("assistant", WELCOME[currentLang], { speak: false });
-      sessionStorage.setItem("esteborg_ia_welcome_done", "1");
-    }
+  if (!hasShownWelcome(currentLang)) {
+    addMessage("assistant", WELCOME[currentLang], { speak: false });
+    markWelcomeShown(currentLang);
   }
+}
 
   (function init() {
     initLanguageUI();
