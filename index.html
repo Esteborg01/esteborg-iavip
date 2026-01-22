@@ -692,10 +692,21 @@
   }
 
   .msg-bubble {
-    max-width: 70% !important;        /* antes 88%, ahora más estrecha */
-    font-size: 15px !important;       /* baja un poquito la letra */
+    max-width: 70% !important;
     line-height: 1.5 !important;
+    border-radius: 14px !important;
+    font-size: 15px !important;
   }
+  
+  .msg-row.user .msg-bubble {
+    max-width: 60% !important;            /* más reducida */
+    padding: 8px 12px !important;         /* más compacta */
+    border-radius: 14px 14px 4px 14px !important; /* estilo WhatsApp */
+    background: linear-gradient(135deg, #f1ca63, #f6e29e) !important;
+    color: #1c1407 !important;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,0.4),
+      0 0 0 1px rgba(0,0,0,0.6) !important;
 
   /* Opcional: separa un poco las filas de mensajes largos */
   .msg-row {
@@ -835,6 +846,48 @@
   .demo-note {
     margin-top: 4px !important;
     font-size: 0.72rem !important;
+  }
+}
+  @media (min-width: 1200px) {
+
+  /* Ajustes globales de burbujas */
+  .msg-bubble {
+    max-width: 70% !important;
+    line-height: 1.5 !important;
+    border-radius: 14px !important;
+    font-size: 15px !important;
+  }
+
+  /* 🌟 Burbujas del Usuario — más compactas, más "chat" */
+  .msg-row.user .msg-bubble {
+    max-width: 60% !important;            /* más reducida */
+    padding: 8px 12px !important;         /* más compacta */
+    border-radius: 14px 14px 4px 14px !important; /* estilo WhatsApp */
+    background: linear-gradient(135deg, #f1ca63, #f6e29e) !important;
+    color: #1c1407 !important;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,0.4),
+      0 0 0 1px rgba(0,0,0,0.6) !important;
+  }
+
+  /* 🌟 Burbujas del Asistente — más amplias, más "pro" */
+  .msg-row.assistant .msg-bubble {
+    max-width: 75% !important;            /* ligeramente más amplia */
+    padding: 10px 14px !important;
+    border-radius: 14px 14px 14px 4px !important; /* estilo Telegram */
+    background: radial-gradient(circle at top left,
+      rgba(17,18,32,0.98),
+      rgba(11,12,24,0.98)) !important;
+    border: 1px solid rgba(135,134,202,0.55) !important;
+    box-shadow:
+      0 8px 20px rgba(0,0,0,0.55),
+      inset 0 0 0 1px rgba(5,5,12,0.7) !important;
+  }
+
+  /* Espaciado entre filas */
+  .msg-row {
+    gap: 6px !important;
+    margin-bottom: 10px !important;
   }
 }
 
