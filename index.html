@@ -688,6 +688,142 @@
   }
 
 }
+    /* ============================================
+   EXECUTIVE ULTRA DESKTOP LAYOUT
+   Chat gigante, encabezado compacto
+   ============================================ */
+@media (min-width: 1200px) {
+
+  /* Layout general más limpio y centrado */
+  body {
+    padding: 10px 28px 18px !important;
+  }
+
+  .app {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* ---------- ENCABEZADO / SHELL ---------- */
+
+  .shell {
+    padding: 12px 18px 14px !important;
+    border-radius: 24px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .banner-header {
+    margin-bottom: 4px !important;
+  }
+
+  .banner-title-main {
+    font-size: 0.95rem !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  .banner-title-sub {
+    font-size: 1.5rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 4px !important;
+  }
+
+  .banner-description {
+    font-size: 0.85rem !important;
+    max-width: 560px !important;
+  }
+
+  /* ---------- PANELES SUPERIORES ---------- */
+
+  .panel {
+    padding: 10px 14px 10px !important;
+    margin-top: 6px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .panel-title {
+    font-size: 0.78rem !important;
+    letter-spacing: 0.18em !important;
+    margin-bottom: 4px !important;
+  }
+
+  .chips-row,
+  .content-row {
+    margin-top: 4px !important;
+    row-gap: 4px !important;
+  }
+
+  .chips-row .chip-btn,
+  .content-row .chip-btn {
+    padding: 5px 12px !important;
+    font-size: 0.78rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .chips-row .chip-btn .chip-dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  /* Botones de material (Slides / Executive summary) más compactos */
+  .material-chips .chip-btn {
+    padding: 4px 11px !important;
+    font-size: 0.76rem !important;
+  }
+
+  /* ---------- BLOQUE DE CHAT GIGANTE ---------- */
+
+  .chat-container {
+    margin-top: 6px !important;
+  }
+
+  .chat-card {
+    margin-top: 2px !important;
+    border-radius: 26px !important;
+    flex: 1 !important;
+    min-height: 720px !important;     /* altura base grande */
+    max-height: 84vh !important;      /* no se sale de pantalla */
+  }
+
+  .chat-inner {
+    min-height: 0 !important;
+  }
+
+  /* Área de mensajes enorme */
+  #chat-log,
+  .chat-box {
+    flex: 1 !important;
+    min-height: 480px !important;
+    max-height: 66vh !important;
+  }
+
+  /* Fila input + botón más pegada al chat */
+  .input-row {
+    margin-top: 6px !important;
+  }
+
+  #user-input,
+  #userMsg {
+    font-size: 0.85rem !important;
+    padding: 8px 14px !important;
+  }
+
+  #send-btn,
+  #sendBtn {
+    min-width: 140px !important;
+    padding-inline: 16px !important;
+  }
+
+  /* Línea de estatus / demo / tokken más compacta */
+  .status-row,
+  .demo-note {
+    margin-top: 4px !important;
+    font-size: 0.72rem !important;
+  }
+}
+
   </style>
 </head>
 
