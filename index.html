@@ -1043,6 +1043,16 @@
   let ttsAudio = null;
   let isSending = false;
 
+   function looksLikeToken(str) {
+    if (!str) return false;
+    const s = str.trim();
+    if (s.length < 40) return false;
+    // Típico formato JWT: 3 segmentos separados por puntos
+    if (s.split(".").length >= 3) return true;
+    // Fallback: cadena larga alfanumérica tipo token
+    return /^[A-Za-z0-9\-_]+$/.test(s) && s.length > 80;
+  }
+
   // =========================
   // DOM
   // =========================
@@ -1315,16 +1325,38 @@
   // HANDLE SEND
   // =========================
 
-  async function handleSend(forcedText) {
+    async function handleSend(forcedText) {
     if (isSending) return;
 
-    const text = (forcedText || userInput.value || "").trim();
-    if (!text) return;
+    const rawText = (forcedText || userInput.value || "").trim();
+    if (!rawText) return;
 
+    // Mostramos lo que escribió el usuario tal cual
     stopTTS();
-    addMessage("user", text);
+    addMessage("user", rawText);
     userInput.value = "";
     userInput.style.height = "44px";
+
+    // Si aún no tenemos Tokken y el texto parece JWT, lo guardamos
+    let textToSend = rawText;
+    if (!VIP_TOKEN && looksLikeToken(rawText)) {
+      VIP_TOKEN = rawText;
+      try {
+        localStorage.setItem(VIP_STORAGE_KEY, VIP_TOKEN);
+      } catch (e) {
+        console.warn("[IA] No pude guardar Tokken en localStorage:", e);
+      }
+
+      addMessage(
+        "system",
+        "Tokken Esteborg Members recibido. Lo usaré automáticamente en tu entrenamiento.",
+        { speak: false }
+      );
+
+      // Al backend ya no le mandamos el JWT, solo una frase de validación
+      textToSend =
+        "Valida mi Tokken Esteborg Members y confirma que tengo acceso VIP para iniciar mi entrenamiento ejecutivo en IA.";
+    }
 
     isSending = true;
     if (sendBtn) sendBtn.disabled = true;
@@ -1336,7 +1368,7 @@
     );
 
     try {
-      const data = await sendToBackend(text);
+      const data = await sendToBackend(textToSend);
       const reply =
         (data &&
           (data.reply || data.message || data.response || data.content)) ||
