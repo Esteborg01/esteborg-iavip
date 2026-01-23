@@ -453,6 +453,193 @@
       color: rgba(94,234,212,0.95);
       text-decoration: none;
     }
+
+        /* =========================
+       AJUSTES ESPECÍFICOS PARA CELULAR
+       (clonando feeling de COM7 + tamaño tipo este chat)
+       ========================== */
+
+    /* Tablets y teléfonos grandes */
+    @media (max-width: 720px) {
+      body {
+        padding: 8px 0 18px;
+        align-items: stretch;
+      }
+
+      #app {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .shell {
+        max-width: 100%;
+        border-radius: 0;
+        padding: 14px 10px 12px;
+      }
+
+      .banner-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .banner-title-sub {
+        font-size: 19px; /* un poquito más grande en cel */
+      }
+
+      .banner-description {
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .panel {
+        padding: 12px 10px 10px;
+      }
+
+      .panel-title {
+        font-size: 12px;
+      }
+
+      .chips-row,
+      .content-row {
+        row-gap: 6px;
+      }
+
+      #chat-log {
+        max-height: none;
+        min-height: 260px;
+        font-size: 14px; /* tamaño tipo chat */
+      }
+
+      .message .bubble {
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      #user-input {
+        font-size: 14px;
+        min-height: 48px;
+      }
+
+      .status-line {
+        font-size: 12px;
+      }
+
+      .voice-row {
+        font-size: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+
+      .footer-right {
+        text-align: left;
+      }
+    }
+
+    /* Móviles chicos (iPhone SE / Android pequeño) */
+    @media (max-width: 480px) {
+      body {
+        padding: 0;
+      }
+
+      #app {
+        padding: 12px 0 16px;
+      }
+
+      .shell {
+        padding: 10px 8px 12px;
+      }
+
+      .banner-title-main {
+        font-size: 11px;
+        letter-spacing: 0.14em;
+      }
+
+      .banner-title-sub {
+        font-size: 18px;
+      }
+
+      .panel {
+        margin-top: 10px;
+      }
+
+      .chips-row,
+      .content-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .chip-btn,
+      .content {
+        width: 100%;
+        justify-content: center;
+        white-space: normal;
+        text-align: center;
+      }
+
+      .chat-container {
+        margin-top: 8px;
+      }
+
+      .chat-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      .chat-language-pill {
+        align-self: flex-start;
+      }
+
+      #chat-log {
+        max-height: none;
+        min-height: 240px;
+      }
+
+      .input-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+      }
+
+      #user-input {
+        min-height: 56px;
+      }
+
+      .mic-button,
+      .send-button {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .mic-button {
+        font-size: 18px;
+      }
+
+      .status-line {
+        margin-top: 6px;
+        font-size: 12px;
+      }
+
+      .voice-row {
+        margin-top: 6px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+
+      .footer-row {
+        margin-top: 10px;
+      }
+    }
+
   </style>
 </head>
 
