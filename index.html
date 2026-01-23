@@ -1575,7 +1575,6 @@
         opt.addEventListener("click", () => {
           const lang = opt.getAttribute("data-lang") || "es";
           applyUILanguage(lang);
-          renderWelcomeMessage();
 
           const chatLog = document.getElementById("chat-log");
           if (chatLog && lang === "es") {
@@ -1647,31 +1646,20 @@
     }
 
     // ========== INIT ==========
-    function renderWelcomeMessage() {
-  const chatLog = document.getElementById("chat-log");
-  if (!chatLog) return;
-
-  let first = document.getElementById("welcome-msg");
-  if (!first) {
-    first = document.createElement("div");
-    first.id = "welcome-msg";
-    first.className = "message assistant";
-
-    const bubble = document.createElement("div");
-    bubble.className = "message-bubble";
-    bubble.id = "welcome-bubble";
-    first.appendChild(bubble);
-
-    chatLog.appendChild(first);
-  }
-
-  const bubble = document.getElementById("welcome-bubble");
-  if (bubble) bubble.textContent = t("welcomeMessage", currentLang);
-}
+    (function initEsteborgApp() {
+      const chatLog = document.getElementById("chat-log");
+      if (chatLog) {
+        const first = document.createElement("div");
+        first.className = "message assistant";
+        const bubble = document.createElement("div");
+        bubble.className = "message-bubble";
+        bubble.textContent = t("welcomeMessage");
+        first.appendChild(bubble);
+        chatLog.appendChild(first);
+      }
 
       initializeToken();
       applyUILanguage("es");
-      renderWelcomeMessage();
       initLanguageSwitcher();
       initChips();
       initSend();
