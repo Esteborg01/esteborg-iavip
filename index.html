@@ -1,4 +1,828 @@
-<script>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Esteborg IA · Entrenamiento ejecutivo en IA aplicada</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      height: 100%;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Inter", sans-serif;
+      background: radial-gradient(circle at top, #28224b 0, #050509 55%, #020208 100%);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 16px 8px 32px;
+      overflow-y: auto;
+    }
+
+    #app {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .shell {
+      position: relative;
+      width: 100%;
+      max-width: 980px;
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background:
+        radial-gradient(circle at top left, rgba(94, 234, 212, 0.12), transparent 50%),
+        radial-gradient(circle at bottom right, rgba(129, 140, 248, 0.25), transparent 55%),
+        linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
+      box-shadow:
+        0 22px 60px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+      padding: 18px 16px 14px;
+      overflow: hidden;
+    }
+
+    .shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(236, 72, 153, 0.16), transparent 52%),
+        radial-gradient(circle at 100% 0%, rgba(56, 189, 248, 0.16), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      background: radial-gradient(circle at 50% -20%, rgba(148, 163, 184, 0.3), transparent 60%);
+      opacity: 0.4;
+      pointer-events: none;
+      mix-blend-mode: soft-light;
+    }
+
+    .shell > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .banner-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .banner-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 30% 0, #a855f7, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      color: #f9fafb;
+      box-shadow:
+        0 0 0 1px rgba(129, 140, 248, 0.7),
+        0 10px 30px rgba(79, 70, 229, 0.65);
+    }
+
+    .banner-title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .banner-title-main {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(156, 163, 175, 0.95);
+    }
+
+    .banner-title-sub {
+      font-size: 20px;
+      font-weight: 650;
+      letter-spacing: 0.02em;
+      color: rgba(243, 244, 246, 0.98);
+    }
+
+    .banner-description {
+      font-size: 13px;
+      line-height: 1.5;
+      color: rgba(156, 163, 175, 0.95);
+      margin-bottom: 10px;
+      max-width: 780px;
+    }
+
+    .panel {
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.1), rgba(15, 23, 42, 0.98)),
+        radial-gradient(circle at bottom right, rgba(129, 140, 248, 0.22), rgba(15, 23, 42, 1));
+      box-shadow:
+        inset 0 0 0 1px rgba(15, 23, 42, 0.95),
+        0 18px 40px rgba(15, 23, 42, 0.95);
+      padding: 14px 14px 12px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .panel-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(229, 231, 235, 0.98);
+    }
+
+    .panel-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      border: 1px solid rgba(52, 211, 153, 0.6);
+      color: #a7f3d0;
+      background: radial-gradient(circle at top left, rgba(16, 185, 129, 0.35), rgba(15, 23, 42, 0.98));
+      padding: 4px 8px 3px;
+      border-radius: 999px;
+    }
+
+    .panel-badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: radial-gradient(circle at center, #22c55e, #15803d);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.85);
+    }
+
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 11px;
+      color: rgba(156, 163, 175, 0.95);
+    }
+
+    .chips-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(107, 114, 128, 0.96);
+      margin-right: 2px;
+      white-space: nowrap;
+    }
+
+    .chip-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 6px 11px;
+      font-size: 11px;
+      background:
+        radial-gradient(circle at top left, rgba(30, 64, 175, 0.55), rgba(15, 23, 42, 0.98));
+      color: rgba(229, 231, 235, 0.98);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.08s ease;
+      white-space: nowrap;
+    }
+
+    .chip-btn.starter {
+      border-color: rgba(248, 250, 252, 0.9);
+      background:
+        radial-gradient(circle at top left, rgba(251, 191, 36, 0.35), rgba(15, 23, 42, 0.98));
+      box-shadow: 0 12px 30px rgba(251, 191, 36, 0.2);
+    }
+
+    .chip-btn:hover {
+      border-color: rgba(248, 250, 252, 1);
+      background:
+        radial-gradient(circle at top left, rgba(129, 140, 248, 0.5), rgba(15, 23, 42, 0.98));
+      transform: translateY(-0.5px);
+      box-shadow: 0 10px 26px rgba(129, 140, 248, 0.45);
+    }
+
+    .chip-btn:active {
+      transform: translateY(0.4px);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.95);
+    }
+
+    .chip-btn::after {
+      content: "↗";
+      font-size: 9px;
+      opacity: 0.7;
+    }
+
+    .content-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 11px;
+      color: rgba(156, 163, 175, 0.95);
+    }
+
+    .content-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(107, 114, 128, 0.96);
+      margin-right: 2px;
+      white-space: nowrap;
+    }
+
+    .content {
+      border-radius: 999px;
+      border: 1px solid rgba(59, 130, 246, 0.9);
+      padding: 6px 11px;
+      font-size: 11px;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.24), rgba(15, 23, 42, 0.98));
+      color: rgba(229, 231, 235, 0.98);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.08s ease;
+      white-space: nowrap;
+    }
+
+    .content:hover {
+      border-color: rgba(96, 165, 250, 1);
+      background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.45), rgba(15, 23, 42, 0.98));
+      transform: translateY(-0.5px);
+      box-shadow: 0 12px 32px rgba(37, 99, 235, 0.65);
+    }
+
+    .content:active {
+      transform: translateY(0.4px);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.95);
+    }
+
+    .content::after {
+      content: "↗";
+      font-size: 9px;
+      opacity: 0.7;
+    }
+
+    .chat-container {
+      margin-top: 8px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.28), rgba(15, 23, 42, 0.98)),
+        radial-gradient(circle at bottom right, rgba(8, 47, 73, 0.9), rgba(15, 23, 42, 1));
+      box-shadow:
+        inset 0 0 0 1px rgba(15, 23, 42, 0.98),
+        0 18px 40px rgba(15, 23, 42, 0.98);
+      padding: 10px 10px 9px;
+    }
+
+    .chat-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .chat-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chat-node {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #a855f7, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      box-shadow:
+        0 0 0 1px rgba(129, 140, 248, 0.7),
+        0 10px 26px rgba(79, 70, 229, 0.6);
+      color: #f9fafb;
+    }
+
+    .chat-title {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .chat-title div {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: rgba(229, 231, 235, 0.98);
+    }
+
+    .chat-title small {
+      font-size: 11px;
+      color: rgba(156, 163, 175, 0.95);
+    }
+
+    .chat-language-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background:
+        radial-gradient(circle at top left, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.98));
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.98);
+    }
+
+    .lang-option {
+      padding: 1px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      cursor: pointer;
+    }
+
+    .lang-option.active {
+      border-color: rgba(96, 165, 250, 1);
+      background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.88), rgba(37, 99, 235, 0.98));
+      color: #f9fafb;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.8);
+    }
+
+    #chat-log {
+      margin-top: 6px;
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
+      border: 1px solid rgba(30, 64, 175, 0.7);
+      box-shadow:
+        inset 0 0 0 1px rgba(15, 23, 42, 0.98),
+        0 14px 34px rgba(15, 23, 42, 0.96);
+      padding: 8px 10px 9px;
+      max-height: 430px;
+      min-height: 200px;
+      overflow-y: auto;
+      font-size: 13px;
+      color: rgba(229, 231, 235, 0.98);
+    }
+
+    .message {
+      display: flex;
+      margin-bottom: 8px;
+    }
+
+    .message.assistant {
+      justify-content: flex-start;
+    }
+
+    .message.user {
+      justify-content: flex-end;
+    }
+
+    .bubble {
+      max-width: 94%;
+      padding: 7px 10px;
+      border-radius: 11px;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .assistant .bubble {
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.96), rgba(30, 64, 175, 0.98));
+      border: 1px solid rgba(191, 219, 254, 0.9);
+      color: #f9fafb;
+      box-shadow:
+        0 12px 30px rgba(37, 99, 235, 0.75),
+        0 0 0 1px rgba(15, 23, 42, 0.96);
+    }
+
+    .user .bubble {
+      background:
+        radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
+      border: 1px solid rgba(148, 163, 184, 0.95);
+      color: rgba(229, 231, 235, 0.98);
+      box-shadow:
+        0 12px 30px rgba(15, 23, 42, 0.98),
+        0 0 0 1px rgba(15, 23, 42, 0.98);
+    }
+
+    .input-row {
+      margin-top: 6px;
+      display: flex;
+      gap: 6px;
+      align-items: flex-end;
+    }
+
+    #user-input {
+      flex: 1;
+      min-height: 44px;
+      max-height: 120px;
+      resize: vertical;
+      padding: 7px 9px;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      background:
+        radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
+      color: rgba(229, 231, 235, 0.98);
+      font-size: 13px;
+      outline: none;
+      box-shadow:
+        inset 0 0 0 1px rgba(15, 23, 42, 0.98),
+        0 10px 26px rgba(15, 23, 42, 0.96);
+    }
+
+    #user-input::placeholder {
+      color: rgba(107, 114, 128, 0.96);
+    }
+
+    .mic-button,
+    .send-button {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      padding: 8px 11px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      background:
+        radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
+      color: rgba(229, 231, 235, 0.98);
+      box-shadow:
+        0 10px 26px rgba(15, 23, 42, 0.96),
+        0 0 0 1px rgba(15, 23, 42, 0.96);
+      flex-shrink: 0;
+    }
+
+    .mic-button {
+      width: 36px;
+      padding: 0;
+      font-size: 18px;
+    }
+
+    .send-button {
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.96), rgba(30, 64, 175, 0.98));
+      border-color: rgba(191, 219, 254, 0.9);
+      box-shadow:
+        0 12px 30px rgba(37, 99, 235, 0.8),
+        0 0 0 1px rgba(15, 23, 42, 0.96);
+    }
+
+    .mic-button:hover,
+    .send-button:hover {
+      transform: translateY(-0.5px);
+      box-shadow:
+        0 14px 34px rgba(15, 23, 42, 0.98),
+        0 0 0 1px rgba(15, 23, 42, 0.98);
+    }
+
+    .mic-button:active,
+    .send-button:active {
+      transform: translateY(0.4px);
+      box-shadow:
+        0 8px 20px rgba(15, 23, 42, 0.98),
+        0 0 0 1px rgba(15, 23, 42, 0.98);
+    }
+
+    .status-line {
+      margin-top: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: rgba(148, 163, 184, 0.95);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: radial-gradient(circle at center, #22c55e, #15803d);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.85);
+    }
+
+    .voice-row {
+      margin-top: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      color: rgba(148, 163, 184, 0.95);
+    }
+
+    .voice-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .voice-toggle input[type="checkbox"] {
+      width: 30px;
+      height: 16px;
+      appearance: none;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      background:
+        radial-gradient(circle at top left, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 1));
+      position: relative;
+      cursor: pointer;
+      outline: none;
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.98);
+    }
+
+    .voice-toggle input[type="checkbox"]::after {
+      content: "";
+      position: absolute;
+      top: 1px;
+      left: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #e5e7eb, #9ca3af);
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.4),
+        0 4px 10px rgba(15, 23, 42, 0.9);
+      transition: transform 0.16s ease;
+    }
+
+    .voice-toggle input[type="checkbox"]:checked::after {
+      transform: translateX(12px);
+      background: radial-gradient(circle at 30% 0, #a855f7, #6366f1);
+    }
+
+    .voice-pill {
+      border-radius: 999px;
+      border: 1px solid rgba(129, 140, 248, 0.9);
+      padding: 4px 9px;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background:
+        radial-gradient(circle at top left, rgba(129, 140, 248, 0.25), rgba(15, 23, 42, 0.98));
+      color: rgba(229, 231, 235, 0.98);
+      box-shadow:
+        0 10px 24px rgba(129, 140, 248, 0.6),
+        0 0 0 1px rgba(15, 23, 42, 0.95);
+    }
+
+    .footer-row {
+      margin-top: 6px;
+      padding-top: 7px;
+      border-top: 1px solid rgba(148, 163, 184, 0.5);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      color: rgba(107, 114, 128, 0.96);
+    }
+
+    .footer-left {
+      max-width: 70%;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .footer-right {
+      text-align: right;
+    }
+
+    .footer-row a {
+      color: #a5b4fc;
+      text-decoration: none;
+    }
+
+    .footer-row a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        padding: 14px 12px 10px;
+        border-radius: 20px;
+      }
+
+      .panel {
+        padding: 12px 10px 10px;
+      }
+
+      .panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      .footer-left {
+        max-width: 100%;
+      }
+
+      #chat-log {
+        max-height: 380px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="shell">
+      <div class="banner-header">
+        <div class="banner-avatar">E</div>
+        <div class="banner-title">
+          <div class="banner-title-main" id="i-banner-main">
+            ESTEBORG EXECUTIVE · MEMBERS VIP
+          </div>
+          <div class="banner-title-sub" id="i-banner-sub">
+            Programa ejecutivo · Coach profesional de Inteligencia Artificial
+          </div>
+        </div>
+      </div>
+
+      <div class="banner-description" id="i-banner-desc">
+        Esteborg IA – Despliega todo tu poder es tu programa ejecutivo para dominar la
+        Inteligencia Artificial aplicada. En 3 meses (versión acelerada) pasarás de
+        principiante a avanzado con práctica guiada y certificación
+        <strong>AI Executive & Prompt Engineer by Esteborg Institute</strong>.
+        Acceso exclusivo mediante Tokken Esteborg Members, disponible en varios idiomas.
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title" id="i-panel-title">
+            Mini entrenamiento · Esteborg IA – Despliega todo tu poder
+          </div>
+          <div class="panel-badge">
+            <span class="dot"></span>
+            <span>Members VIP</span>
+          </div>
+        </div>
+
+        <!-- CHIPS: SESIÓN -->
+        <div class="chips-row">
+          <span class="chips-label" id="i-chips-label">Comenzar entrenamiento:</span>
+          <button
+            class="chip-btn starter"
+            id="i-btn-lesson"
+            data-text="Quiero aprender Inteligencia Artificial desde cero y empezar por el Módulo 1: Fundamentos de la IA."
+          >
+            Aprender IA desde cero
+          </button>
+          <button
+            class="chip-btn starter"
+            id="i-btn-emotion"
+            data-text="Quiero aplicar la IA en mi trabajo o negocio y diseñar contigo un plan práctico con tareas concretas."
+          >
+            Aplicar IA en mi trabajo
+          </button>
+          <button
+            class="chip-btn starter"
+            id="i-btn-challenge"
+            data-text="Quiero dominar ChatGPT y otros modelos generativos para crear contenido, ideas y automatizaciones."
+          >
+            Dominar ChatGPT y otras IA
+          </button>
+        </div>
+
+        <!-- CHIPS: CONTENIDO -->
+        <div class="content-row">
+          <span class="content-label" id="i-content-label">Herramientas del programa:</span>
+          <button
+            class="content"
+            id="i-btn-slides"
+            data-text="Muéstrame la estructura completa del programa Esteborg IA – Despliega todo tu poder: módulos, duración, objetivos y resultados."
+          >
+            Ver estructura del programa
+          </button>
+          <button
+            class="content"
+            id="i-btn-summary"
+            data-text="Quiero que me ayudes a automatizar tareas con IA usando herramientas no-code, agentes y flujos inteligentes para mi trabajo diario."
+          >
+            Automatizar tareas con IA
+          </button>
+        </div>
+
+        <!-- CHAT -->
+        <div class="chat-container">
+          <div class="chat-header-row">
+            <div class="chat-header-left">
+              <div class="chat-node">E</div>
+              <div class="chat-title">
+                <div id="i-chat-name">Esteborg</div>
+                <small id="i-chat-role">Coach profesional de Inteligencia Artificial</small>
+              </div>
+            </div>
+
+            <div class="chat-language-pill">
+              <span class="lang-option active" data-lang="es">ES</span>
+              <span class="lang-option" data-lang="en">EN</span>
+              <span class="lang-option" data-lang="pt">PT</span>
+              <span class="lang-option" data-lang="fr">FR</span>
+              <span class="lang-option" data-lang="it">IT</span>
+              <span class="lang-option" data-lang="de">DE</span>
+            </div>
+          </div>
+
+          <div id="chat-log"></div>
+
+          <div class="input-row">
+            <textarea
+              id="user-input"
+              placeholder="Cuéntame qué quieres lograr con la Inteligencia Artificial en tu trabajo, negocio o proyectos..."
+            ></textarea>
+            <button id="mic-btn" class="mic-button" title="Hablar con voz">🎙️</button>
+            <button id="send-btn" class="send-button">ENVIAR</button>
+          </div>
+
+          <div class="status-line" id="status-line">
+            <span class="status-dot"></span>
+            <span>Preparando tu entrenamiento con Esteborg IA...</span>
+          </div>
+
+          <div class="voice-row">
+            <label class="voice-toggle">
+              <input type="checkbox" id="tts-toggle" />
+              <span id="i-voice-toggle-label">Voz Esteborg activada</span>
+            </label>
+            <div class="voice-pill" id="i-voice-pill">🎧 Voz Esteborg</div>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer-row">
+          <div class="footer-left">
+            <strong id="i-footer-token-title">Tokken Esteborg Members</strong>
+            <span id="i-footer-token-text">
+              Si aún no tienes token, puedes obtenerlo o recuperarlo en:
+              https://membersvip.esteborg.live/#miembrosvip
+            </span>
+          </div>
+          <div class="footer-right">
+            Propiedad de Esteban Manuel González Cárdenas · Esteborg<br />
+            <a href="https://esteborg.com" target="_blank" rel="noopener noreferrer">
+              esteborg.com
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ <script>
 // ========== CONFIG ==========
 const API_BASE = "https://esteborg88full-backend-modular.onrender.com";
 const MODULE_PATH = "/api/modules/iavipcom";
