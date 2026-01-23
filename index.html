@@ -1478,94 +1478,140 @@ const I18N = {
     }
 
     async function sendMessage(optionalText) {
-      let text = (optionalText || inputEl.value || "").trim();
-      if (!text || isSending) return;
+  let text = (optionalText || inputEl.value || "").trim();
+  if (!text || isSending) return;
 
-      const candidate = text.replace(/\s+/g, "");
-      const looksLikeTokken =
-        /^[A-Za-z0-9+/=_-]{40,}$/.test(candidate);
+  const candidate = text.replace(/\s+/g, "");
+  const looksLikeTokken = /^[A-Za-z0-9+/=_-]{40,}$/.test(candidate);
 
-      if (looksLikeTokken && !text.includes(" ")) {
-        VIP_TOKEN = candidate;
-        try {
-          localStorage.setItem(VIP_STORAGE_KEY, VIP_TOKEN);
-        } catch (e) {}
-        appendMessage("user", text);
-        appendMessage("assistant", t("tokenPasteReply"));
-        setStatus(t("statusTokenManual"));
-        if (inputEl) inputEl.value = "";
-        return;
-      }
+  // Si parece Tokken (una sola “palabra” larga) lo guardamos y NO llamamos al backend
+  if (looksLikeTokken && !text.includes(" ")) {
+    VIP_TOKEN = candidate;
+    try {
+      localStorage.setItem(VIP_STORAGE_KEY, VIP_TOKEN);
+    } catch (e) {}
+    appendMessage("user", text);
+    appendMessage("assistant", t("tokenPasteReply"));
+    setStatus(t("statusTokenManual"));
+    if (inputEl) inputEl.value = "";
+    return;
+  }
 
-      appendMessage("user", text);
-      if (inputEl) inputEl.value = "";
-      setStatus("Enviando mensaje...");
-      isSending = true;
+  appendMessage("user", text);
+  if (inputEl) inputEl.value = "";
+  setStatus("Enviando mensaje...");
+  isSending = true;
 
-      try {
-        const res = await fetch(API_BASE + MODULE_PATH, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message: text,
-            lang: currentLang,
-            history,
-            tokken: VIP_TOKEN || null,
-            vipToken: VIP_TOKEN || null
-          })
-        });
+  try {
+    const res = await fetch(API_BASE + MODULE_PATH, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: text,
+        lang: currentLang,
+        history,
+        tokken: VIP_TOKEN || null,
+        vipToken: VIP_TOKEN || null
+      })
+    });
 
-        if (!res.ok) {
-          appendMessage(
-            "assistant",
-            "Hubo un problema al conectar con Esteborg IA. Intenta de nuevo en unos momentos."
-          );
-          setStatus("Error de conexión con el módulo IA.");
-          return;
+    if (!res.ok) {
+      appendMessage(
+        "assistant",
+        "Hubo un problema al conectar con Esteborg IA. Intenta de nuevo en unos momentos."
+      );
+      setStatus("Error de conexión con el módulo IA.");
+      return;
+    }
+
+    const data = await res.json();
+
+    // 1) Leer estado VIP que manda el backend
+    const vipStatus = data.vip_status ?? data.vipStatus ?? null;
+
+    // 2) Tomar respuesta base del backend
+    let reply =
+      data.reply ||
+      data.assistant ||
+      data.assistantReply ||
+      data.message ||
+      data.output ||
+      "Listo, sigamos con tu entrenamiento de IA.";
+
+    // 3) Si YA HAY TOKKEN VÁLIDO y el backend todavía habla de “Tokken Esteborg Members”,
+    //    reemplazamos ese discurso por un mensaje de “ya está validado, ahora enfoquémonos en el entrenamiento”.
+    if (VIP_TOKEN && (vipStatus === "valid" || vipStatus === true)) {
+      const lower = (reply || "").toLowerCase();
+
+      if (lower.includes("tokken esteborg members")) {
+        switch (currentLang) {
+          case "en":
+            reply =
+              "Your Esteborg Members Token is already validated ✅.\n" +
+              "Let’s focus on your AI training now. Tell me who you are and what you want to achieve with AI in the next 90 days.";
+            break;
+          case "pt":
+            reply =
+              "Seu Tokken Esteborg Members já está validado ✅.\n" +
+              "Agora vamos focar no seu treinamento em IA. Diga-me quem você é e o que quer alcançar com IA nos próximos 90 dias.";
+            break;
+          case "fr":
+            reply =
+              "Ton Tokken Esteborg Members est déjà validé ✅.\n" +
+              "Concentrons-nous maintenant sur ton entraînement en IA. Dis-moi qui tu es et ce que tu veux accomplir avec l’IA dans les 90 prochains jours.";
+            break;
+          case "it":
+            reply =
+              "Il tuo Tokken Esteborg Members è già stato validato ✅.\n" +
+              "Adesso concentriamoci sul tuo training di IA. Dimmi chi sei e cosa vuoi ottenere con l’IA nei prossimi 90 giorni.";
+            break;
+          case "de":
+            reply =
+              "Dein Esteborg Members Tokken ist bereits validiert ✅.\n" +
+              "Lass uns jetzt auf dein KI-Training fokussieren. Sag mir, wer du bist und was du in den nächsten 90 Tagen mit KI erreichen möchtest.";
+            break;
+          default: // es
+            reply =
+              "Tu Tokken Esteborg Members ya está validado ✅.\n" +
+              "Ahora enfoquémonos en tu entrenamiento en IA. Cuéntame cómo te llamas y qué quieres lograr con IA en los próximos 90 días.";
         }
-
-        const data = await res.json();
-        const reply =
-          data.reply ||
-          data.assistant ||
-          data.assistantReply ||
-          data.message ||
-          data.output ||
-          "Listo, sigamos con tu entrenamiento de IA.";
-
-        appendMessage("assistant", reply);
-        playTTS(reply);
-
-        history.push({ role: "user", content: text });
-        history.push({ role: "assistant", content: reply });
-
-        const vipStatus =
-          data.vip_status ?? data.vipStatus ?? null;
-        if (vipStatus === "valid" || vipStatus === true) {
-          setStatus(t("statusTokenValid"));
-          if (!hasShownTokenWelcome && VIP_TOKEN) {
-            appendMessage("assistant", t("tokenWelcomeMessage"));
-            playTTS(t("tokenWelcomeMessage"));
-            hasShownTokenWelcome = true;
-          }
-        } else if (vipStatus === "invalid" || vipStatus === false) {
-          setStatus(t("statusTokenInvalid"));
-        } else if (!VIP_TOKEN) {
-          setStatus(t("statusDemoActive"));
-        } else {
-          setStatus(t("statusInitialWithToken"));
-        }
-      } catch (e) {
-        console.error("[IA] Error general sendMessage:", e);
-        appendMessage(
-          "assistant",
-          "Tuvimos un problema de red. Verifica tu conexión e intenta de nuevo."
-        );
-        setStatus("Error de red al conectar con Esteborg IA.");
-      } finally {
-        isSending = false;
       }
     }
+
+    // 4) Mostrar respuesta final y TTS
+    appendMessage("assistant", reply);
+    playTTS(reply);
+
+    // 5) Guardar en historial
+    history.push({ role: "user", content: text });
+    history.push({ role: "assistant", content: reply });
+
+    // 6) Actualizar estado en la barra inferior
+    if (VIP_TOKEN && (vipStatus === "valid" || vipStatus === true)) {
+      setStatus(t("statusTokenValid"));
+      if (!hasShownTokenWelcome) {
+        appendMessage("assistant", t("tokenWelcomeMessage"));
+        playTTS(t("tokenWelcomeMessage"));
+        hasShownTokenWelcome = true;
+      }
+    } else if (vipStatus === "invalid" || vipStatus === false) {
+      setStatus(t("statusTokenInvalid"));
+    } else if (!VIP_TOKEN) {
+      setStatus(t("statusDemoActive"));
+    } else {
+      setStatus(t("statusInitialWithToken"));
+    }
+  } catch (e) {
+    console.error("[IA] Error general sendMessage:", e);
+    appendMessage(
+      "assistant",
+      "Tuvimos un problema de red. Verifica tu conexión e intenta de nuevo."
+    );
+    setStatus("Error de red al conectar con Esteborg IA.");
+  } finally {
+    isSending = false;
+  }
+}
   </script>
 </body>
 </html>
