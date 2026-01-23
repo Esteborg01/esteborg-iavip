@@ -1431,18 +1431,23 @@ function bootstrapTokenStatus() {
 
 async function sendMessage(text) {
   if (!text || isSending) return;
+
   const trimmed = text.trim();
   if (!trimmed) return;
 
   const inputEl = $("user-input");
+
+  // 1) pintar mensaje del usuario
   appendMessage("user", trimmed);
   history.push({ role: "user", content: trimmed });
   if (inputEl) inputEl.value = "";
 
+  // 2) detectar si el usuario pegó un Tokken “crudo”
   const tokenFromContent = detectTokenInContent(trimmed);
   if (tokenFromContent) {
     saveVIPToken(tokenFromContent);
     setStatus(t("statusTokenManual"));
+
     const reply = t("tokenPasteReply");
     appendMessage("assistant", reply);
     history.push({ role: "assistant", content: reply });
@@ -1452,14 +1457,20 @@ async function sendMessage(text) {
   isSending = true;
 
   try {
+    // 3) Determinar el Tokken efectivo (URL o localStorage)
     const storedToken = getVIPTokenFromStorage();
     const urlToken = getVIPTokenFromURL();
     const effectiveToken = urlToken || storedToken || null;
 
+    // 4) Payload COMPATIBLE con el backend (igual que Com7)
     const payload = {
-      messages: history,
-      lang: window.currentLang || "es",
-      tokken: effectiveToken || undefined,
+      message: trimmed,
+      history,                          // historial completo
+      lang: window.currentLang || "es", // idioma actual
+      rawToken: effectiveToken || null, // lo que el backend espera
+      // por si en el futuro usan otros nombres:
+      tokken: effectiveToken || null,
+      access_token: effectiveToken || null,
       source: "iframe-iavipcom"
     };
 
@@ -1479,20 +1490,30 @@ async function sendMessage(text) {
     }
 
     const data = await res.json();
-    const answer = data && (data.reply || data.message || data.content || "");
-    const tokStatus = data && (data.tokenStatus || data.tokkenStatus || "unknown");
+    const answer =
+      (data && (data.reply || data.message || data.content)) || "";
 
+    const tokStatus =
+      data && (data.tokenStatus || data.tokkenStatus || "unknown");
+
+    // 5) pintar respuesta del coach de IA
     if (answer) {
       appendMessage("assistant", answer);
       history.push({ role: "assistant", content: answer });
       speakText(answer);
     }
 
+    // 6) actualizar estado de Tokken según backend
     if (tokStatus === "valid") {
       setStatus(t("statusTokenValid"));
     } else if (tokStatus === "invalid" || tokStatus === "expired") {
       setStatus(t("statusTokenInvalid"));
+    } else if (data && data.demoStatus === "ended") {
+      setStatus(t("statusDemoEnded"));
+    } else if (data && data.demoStatus) {
+      setStatus(t("statusDemoActive"));
     }
+
   } catch (e) {
     console.error("[API] Error general:", e);
     const msg =
@@ -1501,7 +1522,6 @@ async function sendMessage(text) {
     history.push({ role: "assistant", content: msg });
   } finally {
     isSending = false;
-    const inputEl = $("user-input");
     if (inputEl) inputEl.focus();
   }
 }
