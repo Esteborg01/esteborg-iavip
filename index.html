@@ -753,164 +753,386 @@
     const MODULE_PATH = "/api/modules/iavipcom";
     const TTS_URL = API_BASE + "/api/voice";
 
-    // ========= I18N BASE ES =========
-    const I18N_ES = {
-      bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
-      bannerSub: "Programa ejecutivo · Coach profesional de Inteligencia Artificial",
-      bannerDesc:
-        "Esteborg IA – Despliega todo tu poder es tu programa ejecutivo para usar la Inteligencia Artificial como ventaja en tu trabajo, negocio y vida.",
-      panelTitle: "Mini entrenamiento · Esteborg IA – Despliega todo tu poder",
-      chipsLabel: "Comenzar entrenamiento:",
-      btnLesson: "Aprender IA desde cero",
-      btnLessonText:
-        "Quiero aprender Inteligencia Artificial desde cero con un programa ejecutivo paso a paso.",
-      btnEmotion: "Aplicar IA en mi trabajo",
-      btnEmotionText:
-        "Quiero aplicar IA en mi trabajo y proyectos reales.",
-      btnChallenge: "Dominar ChatGPT y otras IA",
-      btnChallengeText:
-        "Quiero dominar ChatGPT y otras IA como herramientas estratégicas.",
-      contentLabel: "Herramientas del programa:",
-      btnSlides: "Estructura del programa",
-      btnSlidesText:
-        "Muéstrame la estructura completa del programa Esteborg IA – Despliega todo tu poder.",
-      btnSummary: "Automatizar tareas con IA",
-      btnSummaryText:
-        "Ayúdame a automatizar tareas con IA para ahorrar tiempo y energía.",
-      inputPlaceholder:
-        "Cuéntame qué quieres lograr con la Inteligencia Artificial...",
-      footerTokenTitle: "Tokken Esteborg Members",
-      footerTokenText:
-        "Si aún no tienes token, puedes obtenerlo o recuperarlo en: https://membersvip.esteborg.live/#miembrosvip",
-      chatName: "Esteborg",
-      chatRole: "Coach profesional de Inteligencia Artificial",
-      voiceToggleLabel: "Voz Esteborg activada",
-      voicePillLabel: "🎧 Voz Esteborg",
-      sendButtonLabel: "ENVIAR",
-      statusInitialWithToken:
-        "Detecté un Tokken en la URL o guardado · lo usaré automáticamente en tu entrenamiento.",
-      statusInitialNoToken:
-        "Demo activa · si generas tu Tokken VIP en Members, lo usaré automáticamente.",
-      statusTokenManual:
-        "Tokken pegado manualmente · usaré ese Tokken en tu entrenamiento.",
-      statusTokenValid: "Modo Members activo · Tokken VIP válido.",
-      statusTokenInvalid:
-        "Tokken inválido o expirado · usando modo demo. Genera uno nuevo en Members.",
-      statusDemoEnded:
-        "Demo finalizada · renueva tu acceso para seguir con Esteborg IA.",
-      statusDemoActive:
-        "Demo activa · si generas tu Tokken VIP en Members, lo usaré automáticamente.",
-      statusListening: "Escuchando... habla ahora.",
-      statusProcessingSpeech: "Procesando lo que dijiste...",
-      statusMicError:
-        "Hubo un problema con el micrófono, intenta de nuevo.",
-      statusTextCaptured:
-        "Texto capturado, puedes enviarlo o editarlo.",
-      statusTTSOn: "Voz Esteborg activada.",
-      statusTTSOff: "Voz Esteborg desactivada.",
-      statusLangCurrent: "Idioma cambiado a español.",
-      tokenPasteReply:
-        "Perfecto, ya tengo tu Tokken Esteborg Members ✅\nAhora dime: ¿quieres que trabajemos en español, inglés, portugués, francés, italiano o alemán?",
-      tokenWelcomeMessage:
-        "✅ Tu Tokken Esteborg Members está validado.\nEstás en modo Members VIP, así que podemos trabajar tus entrenamientos de IA con acceso completo.",
-      welcomeMessage:
-        "¡Qué gusto saludarte! 😊 Antes de entrar a tu entrenamiento necesito tu Tokken Esteborg Members para validar tu acceso.\n\n" +
-        "Si aún no tienes token, puedes obtenerlo o recuperarlo en: https://membersvip.esteborg.live/#miembrosvip\n\n" +
-        "Una vez que tengas tu Tokken, pégalo aquí o accede desde tu panel Members VIP. Después elige el idioma en la parte superior (ES, EN, PT, FR, IT, DE) y comenzamos."
-    };
+   // ========== I18N COMPLETO ES / EN / PT / FR / IT / DE ==========
+const I18N = {
+  es: {
+    bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
+    bannerSub: "Programa ejecutivo · Coach profesional de Inteligencia Artificial",
+    bannerDesc:
+      "Esteborg IA – Despliega todo tu poder es tu programa ejecutivo para dominar la Inteligencia Artificial aplicada. En 3 meses (versión acelerada) pasarás de principiante a avanzado con práctica guiada y certificación AI Executive & Prompt Engineer by Esteborg Institute. Acceso exclusivo mediante Tokken Esteborg Members.",
+    panelTitle: "Mini entrenamiento · Esteborg IA – Despliega todo tu poder",
+    chipsLabel: "Comenzar entrenamiento:",
+    btnLesson: "Aprender IA desde cero",
+    btnLessonText:
+      "Quiero aprender Inteligencia Artificial desde cero y empezar por el Módulo 1: Fundamentos de la IA.",
+    btnEmotion: "Aplicar IA en mi trabajo",
+    btnEmotionText:
+      "Quiero aplicar la IA en mi trabajo o negocio y diseñar contigo un plan práctico con tareas concretas.",
+    btnChallenge: "Dominar ChatGPT y otras IA",
+    btnChallengeText:
+      "Quiero dominar ChatGPT y otros modelos generativos para crear contenido, ideas y automatizaciones.",
+    contentLabel: "Herramientas del programa:",
+    btnSlides: "Ver estructura del programa",
+    btnSlidesText:
+      "Muéstrame la estructura completa del programa Esteborg IA – Despliega todo tu poder: módulos, duración, objetivos y resultados.",
+    btnSummary: "Automatizar tareas con IA",
+    btnSummaryText:
+      "Quiero que me ayudes a automatizar tareas con IA usando herramientas no-code, agentes y flujos inteligentes para mi trabajo diario.",
+    inputPlaceholder:
+      "Cuéntame qué quieres lograr con la Inteligencia Artificial en tu trabajo, negocio o proyectos...",
+    footerTokenTitle: "Tokken Esteborg Members",
+    footerTokenText:
+      "Si aún no tienes token, puedes obtenerlo o recuperarlo en: https://membersvip.esteborg.live/#miembrosvip",
+    chatName: "Esteborg",
+    chatRole: "Coach profesional de Inteligencia Artificial",
+    voiceToggleLabel: "Voz Esteborg activada",
+    voicePillLabel: "🎧 Voz Esteborg",
+    sendButtonLabel: "ENVIAR",
+    statusInitialWithToken:
+      "Detecté un Tokken en la URL o guardado · lo usaré automáticamente en tu entrenamiento premium.",
+    statusInitialNoToken:
+      "Acceso pendiente · necesitas tu Tokken Esteborg Members para activar el entrenamiento completo.",
+    statusTokenManual:
+      "Tokken pegado manualmente · usaré ese Tokken en tu entrenamiento.",
+    statusTokenValid: "Modo Members activo · Tokken VIP válido.",
+    statusTokenInvalid:
+      "Tokken inválido o expirado · genera uno nuevo en Members para continuar con tu entrenamiento.",
+    statusDemoEnded:
+      "Tu acceso actual terminó · renueva tu Tokken Esteborg Members para seguir con Esteborg IA.",
+    statusDemoActive:
+      "Esperando Tokken Esteborg Members · cuando lo generes, lo usaré automáticamente.",
+    statusListening: "Escuchando... habla ahora.",
+    statusProcessingSpeech: "Procesando lo que dijiste...",
+    statusMicError:
+      "Hubo un problema con el micrófono, intenta de nuevo.",
+    statusTextCaptured:
+      "Texto capturado, puedes enviarlo o editarlo.",
+    statusTTSOn: "Voz Esteborg activada.",
+    statusTTSOff: "Voz Esteborg desactivada.",
+    statusLangCurrent: "Idioma cambiado a español.",
+    tokenPasteReply:
+      "Perfecto, ya tengo tu Tokken Esteborg Members ✅\nAhora dime: ¿quieres que construyamos tu entrenamiento en IA en \"español\", \"inglés\", \"portugués\", \"francés\", \"italiano\" o \"alemán\"?",
+    tokenWelcomeMessage:
+      "✅ Tu Tokken Esteborg Members está validado.\nEstás en modo Members VIP, así que trabajaremos tu programa Esteborg IA – Despliega todo tu poder con acceso completo a módulos, prácticas y certificación.",
+    welcomeMessage:
+      "¡Qué gusto saludarte! 😊 Antes de entrar a tu entrenamiento necesito tu Tokken Esteborg Members para validar tu acceso.\n\nSi aún no tienes token, puedes obtenerlo o recuperarlo en: https://membersvip.esteborg.live/#miembrosvip\n\nUna vez que tengas tu Tokken, pégalo aquí o accede desde tu panel Members VIP. Después elige el idioma en la parte superior (ES, EN, PT, FR, IT, DE) y comenzamos."
+  },
 
-    // ========= I18N BASE EN =========
-    const I18N_EN = {
-      bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
-      bannerSub: "Executive Program · AI Professional Coach",
-      bannerDesc:
-        "Esteborg IA – Unleash your power is your executive program to use Artificial Intelligence as a real advantage in your work, business and life.",
-      panelTitle: "Mini training · Esteborg IA – Unleash your power",
-      chipsLabel: "Start training:",
-      btnLesson: "Learn AI from scratch",
-      btnLessonText:
-        "I want to learn Artificial Intelligence from scratch with an executive, step-by-step program.",
-      btnEmotion: "Apply AI in my work",
-      btnEmotionText:
-        "I want to apply AI to my real work and projects.",
-      btnChallenge: "Master ChatGPT & other AIs",
-      btnChallengeText:
-        "I want to master ChatGPT and other AIs as strategic tools.",
-      contentLabel: "Program tools:",
-      btnSlides: "Program structure",
-      btnSlidesText:
-        "Show me the full structure of the Esteborg IA – Unleash your power program.",
-      btnSummary: "Automate tasks with AI",
-      btnSummaryText:
-        "Help me automate tasks with AI to save time and energy.",
-      inputPlaceholder:
-        "Tell me what you want to achieve with Artificial Intelligence...",
-      footerTokenTitle: "Esteborg Members Token",
-      footerTokenText:
-        "If you don’t have a token yet, you can get or recover it at: https://membersvip.esteborg.live/#miembrosvip",
-      chatName: "Esteborg",
-      chatRole: "AI professional coach",
-      voiceToggleLabel: "Esteborg voice enabled",
-      voicePillLabel: "🎧 Esteborg Voice",
-      sendButtonLabel: "SEND",
-      statusInitialWithToken:
-        "I detected a token in the URL or stored locally · I’ll use it automatically in your training.",
-      statusInitialNoToken:
-        "Demo mode is active · if you generate your VIP token in Members, I’ll use it automatically.",
-      statusTokenManual:
-        "Token pasted manually · I’ll use that token in your training.",
-      statusTokenValid: "Members mode active · VIP token valid.",
-      statusTokenInvalid:
-        "Invalid or expired token · using demo mode. Generate a new one in Members.",
-      statusDemoEnded:
-        "Demo finished · renew your access to continue with Esteborg IA.",
-      statusDemoActive:
-        "Demo mode active · if you generate your VIP token in Members, I’ll use it automatically.",
-      statusListening: "Listening... you can speak now.",
-      statusProcessingSpeech: "Processing what you said...",
-      statusMicError:
-        "There was a problem with the microphone, please try again.",
-      statusTextCaptured:
-        "Text captured, you can send or edit it.",
-      statusTTSOn: "Esteborg voice enabled.",
-      statusTTSOff: "Esteborg voice disabled.",
-      statusLangCurrent: "Language set to English.",
-      tokenPasteReply:
-        "Perfect, I’ve got your Esteborg Members Token ✅\nNow tell me: would you rather work in Spanish, English, Portuguese, French, Italian or German?",
-      tokenWelcomeMessage:
-        "✅ Your Esteborg Members Token is validated.\nYou’re in Members VIP mode, so we can work your AI trainings with full access.",
-      welcomeMessage:
-        "Great to have you here! 😊 Before we start your training I need your Esteborg Members Token to validate your access.\n\n" +
-        "If you don’t have a token yet, you can get or recover it at: https://membersvip.esteborg.live/#miembrosvip\n\n" +
-        "Once you have your token, paste it here or access through your Members VIP panel. Then choose the language at the top (ES, EN, PT, FR, IT, DE) and we begin."
-    };
+  en: {
+    bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
+    bannerSub: "Executive Program · Professional Artificial Intelligence Coach",
+    bannerDesc:
+      "Esteborg IA – Unleash all your power is your executive program to master applied Artificial Intelligence. In 3 months (accelerated version) you go from beginner to advanced with guided practice and the AI Executive & Prompt Engineer certification by Esteborg Institute. Access is exclusive via Esteborg Members Token.",
+    panelTitle: "Mini Training · Esteborg IA – Unleash all your power",
+    chipsLabel: "Start training:",
+    btnLesson: "Learn AI from scratch",
+    btnLessonText:
+      "I want to learn Artificial Intelligence from scratch and start with Module 1: AI Fundamentals.",
+    btnEmotion: "Apply AI to my work",
+    btnEmotionText:
+      "I want to apply AI to my job or business and design a practical, step-by-step plan with you.",
+    btnChallenge: "Master ChatGPT and other AIs",
+    btnChallengeText:
+      "I want to master ChatGPT and other generative models to create content, ideas and automations.",
+    contentLabel: "Program tools:",
+    btnSlides: "View program structure",
+    btnSlidesText:
+      "Show me the full structure of the Esteborg IA – Unleash all your power program: modules, duration, objectives and outcomes.",
+    btnSummary: "Automate tasks with AI",
+    btnSummaryText:
+      "Help me automate tasks with AI using no-code tools, agents and smart workflows in my daily work.",
+    inputPlaceholder:
+      "Tell me what you want to achieve with Artificial Intelligence in your work, business or projects...",
+    footerTokenTitle: "Esteborg Members Token",
+    footerTokenText:
+      "If you don’t have a token yet, you can get or recover it at: https://membersvip.esteborg.live/#miembrosvip",
+    chatName: "Esteborg",
+    chatRole: "Professional AI coach",
+    voiceToggleLabel: "Esteborg voice enabled",
+    voicePillLabel: "🎧 Esteborg Voice",
+    sendButtonLabel: "SEND",
+    statusInitialWithToken:
+      "I detected a token in the URL or stored locally · I’ll use it automatically in your premium training.",
+    statusInitialNoToken:
+      "Access pending · you need your Esteborg Members Token to activate the full training.",
+    statusTokenManual:
+      "Token pasted manually · I’ll use that token in your training.",
+    statusTokenValid: "Members mode active · VIP token valid.",
+    statusTokenInvalid:
+      "Invalid or expired token · generate a new one in Members to continue your training.",
+    statusDemoEnded:
+      "Your current access has ended · renew your Esteborg Members Token to continue with Esteborg IA.",
+    statusDemoActive:
+      "Waiting for your Esteborg Members Token · once you generate it, I’ll use it automatically.",
+    statusListening: "Listening... speak now.",
+    statusProcessingSpeech: "Processing what you said...",
+    statusMicError:
+      "There was a problem with the microphone, please try again.",
+    statusTextCaptured:
+      "Text captured, you can send or edit it.",
+    statusTTSOn: "Esteborg voice enabled.",
+    statusTTSOff: "Esteborg voice disabled.",
+    statusLangCurrent: "Language set to English.",
+    tokenPasteReply:
+      "Perfect, I’ve got your Esteborg Members Token ✅\nNow tell me: do you want us to build your AI training in Spanish, English, Portuguese, French, Italian or German?",
+    tokenWelcomeMessage:
+      "✅ Your Esteborg Members Token is validated.\nYou’re in Members VIP mode, so we’ll work through your Esteborg IA – Unleash all your power program with full access to modules, practice and certification.",
+    welcomeMessage:
+      "Great to have you here! 😊 Before we start your training I need your Esteborg Members Token to validate your access.\n\nIf you don’t have a token yet, you can get or recover it at: https://membersvip.esteborg.live/#miembrosvip\n\nOnce you have your token, paste it here or log in through your Members VIP panel. Then choose your language at the top (ES, EN, PT, FR, IT, DE) and we’ll get started."
+  },
 
-    // ========= I18N FINAL (sin usar I18N dentro de sí) =========
-    const I18N = {
-      es: I18N_ES,
-      en: I18N_EN,
-      pt: {
-        ...I18N_ES,
-        bannerSub: "Programa executivo · Coach profissional de Inteligência Artificial",
-        statusLangCurrent: "Idioma alterado para português."
-      },
-      fr: {
-        ...I18N_ES,
-        bannerSub: "Programme exécutif · Coach professionnel en Intelligence Artificielle",
-        statusLangCurrent: "Langue changée en français."
-      },
-      it: {
-        ...I18N_ES,
-        bannerSub: "Programma esecutivo · Coach professionale di Intelligenza Artificiale",
-        statusLangCurrent: "Lingua cambiata in italiano."
-      },
-      de: {
-        ...I18N_ES,
-        bannerSub: "Executive Programm · Professioneller KI-Coach",
-        statusLangCurrent: "Sprache auf Deutsch geändert."
-      }
-    };
+  pt: {
+    bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
+    bannerSub: "Programa executivo · Coach profissional de Inteligência Artificial",
+    bannerDesc:
+      "Esteborg IA – Liberte todo o seu poder é o seu programa executivo para dominar Inteligência Artificial aplicada. Em 3 meses (versão acelerada) você vai de iniciante a avançado com prática guiada e certificação AI Executive & Prompt Engineer pelo Esteborg Institute. Acesso exclusivo com Tokken Esteborg Members.",
+    panelTitle: "Mini treinamento · Esteborg IA – Liberte todo o seu poder",
+    chipsLabel: "Iniciar treinamento:",
+    btnLesson: "Aprender IA do zero",
+    btnLessonText:
+      "Quero aprender Inteligência Artificial do zero e começar pelo Módulo 1: Fundamentos de IA.",
+    btnEmotion: "Aplicar IA no meu trabalho",
+    btnEmotionText:
+      "Quero aplicar IA no meu trabalho ou negócio e desenhar com você um plano prático com tarefas concretas.",
+    btnChallenge: "Dominar ChatGPT e outras IAs",
+    btnChallengeText:
+      "Quero dominar o ChatGPT e outros modelos generativos para criar conteúdo, ideias e automações.",
+    contentLabel: "Ferramentas do programa:",
+    btnSlides: "Ver estrutura do programa",
+    btnSlidesText:
+      "Mostre-me a estrutura completa do programa Esteborg IA – Liberte todo o seu poder: módulos, duração, objetivos e resultados.",
+    btnSummary: "Automatizar tarefas com IA",
+    btnSummaryText:
+      "Quero que você me ajude a automatizar tarefas com IA usando ferramentas no-code, agentes e fluxos inteligentes no meu dia a dia.",
+    inputPlaceholder:
+      "Conte-me o que você quer alcançar com Inteligência Artificial no seu trabalho, negócio ou projetos...",
+    footerTokenTitle: "Tokken Esteborg Members",
+    footerTokenText:
+      "Se você ainda não tem token, pode obtê-lo ou recuperá-lo em: https://membersvip.esteborg.live/#miembrosvip",
+    chatName: "Esteborg",
+    chatRole: "Coach profissional de IA",
+    voiceToggleLabel: "Voz Esteborg ativada",
+    voicePillLabel: "🎧 Voz Esteborg",
+    sendButtonLabel: "ENVIAR",
+    statusInitialWithToken:
+      "Detectei um Tokken na URL ou salvo · vou usá-lo automaticamente no seu treinamento premium.",
+    statusInitialNoToken:
+      "Acesso pendente · você precisa do seu Tokken Esteborg Members para ativar o treinamento completo.",
+    statusTokenManual:
+      "Tokken colado manualmente · vou usar esse Tokken no seu treinamento.",
+    statusTokenValid: "Modo Members ativo · Tokken VIP válido.",
+    statusTokenInvalid:
+      "Tokken inválido ou expirado · gere um novo no Members para continuar o seu treinamento.",
+    statusDemoEnded:
+      "Seu acesso atual terminou · renove o seu Tokken Esteborg Members para continuar com o Esteborg IA.",
+    statusDemoActive:
+      "Aguardando seu Tokken Esteborg Members · quando você gerar, vou usá-lo automaticamente.",
+    statusListening: "Ouvindo... pode falar agora.",
+    statusProcessingSpeech: "Processando o que você disse...",
+    statusMicError:
+      "Ocorreu um problema com o microfone, tente novamente.",
+    statusTextCaptured:
+      "Texto capturado, você pode enviar ou editar.",
+    statusTTSOn: "Voz Esteborg ativada.",
+    statusTTSOff: "Voz Esteborg desativada.",
+    statusLangCurrent: "Idioma alterado para português.",
+    tokenPasteReply:
+      "Perfeito, já tenho o seu Tokken Esteborg Members ✅\nAgora me diga: você quer construir o seu treinamento em IA em espanhol, inglês, português, francês, italiano ou alemão?",
+    tokenWelcomeMessage:
+      "✅ Seu Tokken Esteborg Members está validado.\nVocê está em modo Members VIP, então vamos trabalhar o seu programa Esteborg IA – Liberte todo o seu poder com acesso completo a módulos, práticas e certificação.",
+    welcomeMessage:
+      "Que bom ter você aqui! 😊 Antes de começarmos o treinamento, preciso do seu Tokken Esteborg Members para validar o acesso.\n\nSe você ainda não tem token, pode obtê-lo ou recuperá-lo em: https://membersvip.esteborg.live/#miembrosvip\n\nQuando tiver o Tokken, cole aqui ou acesse pelo seu painel Members VIP. Depois escolha o idioma na parte superior (ES, EN, PT, FR, IT, DE) e começamos."
+  },
 
+  fr: {
+    bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
+    bannerSub: "Programme exécutif · Coach professionnel en Intelligence Artificielle",
+    bannerDesc:
+      "Esteborg IA – Déploie tout ton pouvoir est ton programme exécutif pour maîtriser l’Intelligence Artificielle appliquée. En 3 mois (version accélérée) tu passes de débutant à avancé avec pratique guidée et certification AI Executive & Prompt Engineer par Esteborg Institute. Accès exclusif via Tokken Esteborg Members.",
+    panelTitle: "Mini-entraînement · Esteborg IA – Déploie tout ton pouvoir",
+    chipsLabel: "Commencer l’entraînement :",
+    btnLesson: "Apprendre l’IA depuis zéro",
+    btnLessonText:
+      "Je veux apprendre l’Intelligence Artificielle depuis zéro et commencer par le Module 1 : Fondamentaux de l’IA.",
+    btnEmotion: "Appliquer l’IA à mon travail",
+    btnEmotionText:
+      "Je veux appliquer l’IA à mon travail ou mon entreprise et concevoir avec toi un plan pratique avec des actions concrètes.",
+    btnChallenge: "Maîtriser ChatGPT et autres IA",
+    btnChallengeText:
+      "Je veux maîtriser ChatGPT et d’autres modèles génératifs pour créer du contenu, des idées et des automatisations.",
+    contentLabel: "Outils du programme :",
+    btnSlides: "Voir la structure du programme",
+    btnSlidesText:
+      "Montre-moi la structure complète du programme Esteborg IA – Déploie tout ton pouvoir : modules, durée, objectifs et résultats.",
+    btnSummary: "Automatiser des tâches avec l’IA",
+    btnSummaryText:
+      "Aide-moi à automatiser des tâches avec l’IA en utilisant des outils no-code, des agents et des flux intelligents dans mon travail quotidien.",
+    inputPlaceholder:
+      "Dis-moi ce que tu veux atteindre avec l’Intelligence Artificielle dans ton travail, ton entreprise ou tes projets...",
+    footerTokenTitle: "Tokken Esteborg Members",
+    footerTokenText:
+      "Si tu n’as pas encore de tokken, tu peux l’obtenir ou le récupérer sur : https://membersvip.esteborg.live/#miembrosvip",
+    chatName: "Esteborg",
+    chatRole: "Coach professionnel en IA",
+    voiceToggleLabel: "Voix Esteborg activée",
+    voicePillLabel: "🎧 Voix Esteborg",
+    sendButtonLabel: "ENVOYER",
+    statusInitialWithToken:
+      "J’ai détecté un Tokken dans l’URL ou en mémoire · je l’utiliserai automatiquement dans ton entraînement premium.",
+    statusInitialNoToken:
+      "Accès en attente · tu as besoin de ton Tokken Esteborg Members pour activer l’entraînement complet.",
+    statusTokenManual:
+      "Tokken collé manuellement · j’utiliserai ce Tokken dans ton entraînement.",
+    statusTokenValid: "Mode Members actif · Tokken VIP valide.",
+    statusTokenInvalid:
+      "Tokken invalide ou expiré · génère-en un nouveau dans Members pour continuer ton entraînement.",
+    statusDemoEnded:
+      "Ton accès actuel est terminé · renouvelle ton Tokken Esteborg Members pour continuer avec Esteborg IA.",
+    statusDemoActive:
+      "En attente de ton Tokken Esteborg Members · dès que tu le génères, je l’utiliserai automatiquement.",
+    statusListening: "J’écoute… parle maintenant.",
+    statusProcessingSpeech: "Je traite ce que tu as dit...",
+    statusMicError:
+      "Il y a eu un problème avec le micro, réessaie.",
+    statusTextCaptured:
+      "Texte capturé, tu peux l’envoyer ou le modifier.",
+    statusTTSOn: "Voix Esteborg activée.",
+    statusTTSOff: "Voix Esteborg désactivée.",
+    statusLangCurrent: "Langue changée en français.",
+    tokenPasteReply:
+      "Parfait, j’ai déjà ton Tokken Esteborg Members ✅\nDis-moi maintenant : veux-tu que nous construisions ton entraînement en IA en espagnol, anglais, portugais, français, italien ou allemand ?",
+    tokenWelcomeMessage:
+      "✅ Ton Tokken Esteborg Members est validé.\nTu es en mode Members VIP, nous allons donc travailler ton programme Esteborg IA – Déploie tout ton pouvoir avec accès complet aux modules, pratiques et certification.",
+    welcomeMessage:
+      "Ravi de te retrouver ! 😊 Avant de démarrer ton entraînement, j’ai besoin de ton Tokken Esteborg Members pour valider ton accès.\n\nSi tu n’as pas encore de tokken, tu peux l’obtenir ou le récupérer sur : https://membersvip.esteborg.live/#miembrosvip\n\nUne fois que tu l’as, colle-le ici ou connecte-toi via ton panneau Members VIP. Choisis ensuite la langue en haut (ES, EN, PT, FR, IT, DE) et on commence."
+  },
+
+  it: {
+    bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
+    bannerSub: "Programma executive · Coach professionale di Intelligenza Artificiale",
+    bannerDesc:
+      "Esteborg IA – Sprigiona tutto il tuo potere è il tuo programma executive per dominare l’Intelligenza Artificiale applicata. In 3 mesi (versione accelerata) passi da principiante ad avanzato con pratica guidata e certificazione AI Executive & Prompt Engineer by Esteborg Institute. Accesso esclusivo tramite Tokken Esteborg Members.",
+    panelTitle: "Mini training · Esteborg IA – Sprigiona tutto il tuo potere",
+    chipsLabel: "Inizia l’allenamento:",
+    btnLesson: "Imparare l’IA da zero",
+    btnLessonText:
+      "Voglio imparare l’Intelligenza Artificiale da zero e iniziare dal Modulo 1: Fondamenti di IA.",
+    btnEmotion: "Applicare l’IA al mio lavoro",
+    btnEmotionText:
+      "Voglio applicare l’IA al mio lavoro o business e progettare con te un piano pratico con attività concrete.",
+    btnChallenge: "Dominare ChatGPT e altre IA",
+    btnChallengeText:
+      "Voglio dominare ChatGPT e altri modelli generativi per creare contenuti, idee e automazioni.",
+    contentLabel: "Strumenti del programma:",
+    btnSlides: "Vedi la struttura del programma",
+    btnSlidesText:
+      "Fammi vedere la struttura completa del programma Esteborg IA – Sprigiona tutto il tuo potere: moduli, durata, obiettivi e risultati.",
+    btnSummary: "Automatizzare compiti con l’IA",
+    btnSummaryText:
+      "Aiutami ad automatizzare compiti con l’IA usando strumenti no-code, agenti e flussi intelligenti nel mio lavoro quotidiano.",
+    inputPlaceholder:
+      "Raccontami cosa vuoi ottenere con l’Intelligenza Artificiale nel tuo lavoro, business o progetti...",
+    footerTokenTitle: "Tokken Esteborg Members",
+    footerTokenText:
+      "Se non hai ancora un tokken, puoi ottenerlo o recuperarlo su: https://membersvip.esteborg.live/#miembrosvip",
+    chatName: "Esteborg",
+    chatRole: "Coach professionale di IA",
+    voiceToggleLabel: "Voce Esteborg attivata",
+    voicePillLabel: "🎧 Voce Esteborg",
+    sendButtonLabel: "INVIA",
+    statusInitialWithToken:
+      "Ho rilevato un Tokken nell’URL o salvato in locale · lo userò automaticamente nel tuo training premium.",
+    statusInitialNoToken:
+      "Accesso in sospeso · hai bisogno del tuo Tokken Esteborg Members per attivare il training completo.",
+    statusTokenManual:
+      "Tokken incollato manualmente · userò quel Tokken nel tuo training.",
+    statusTokenValid: "Modalità Members attiva · Tokken VIP valido.",
+    statusTokenInvalid:
+      "Tokken non valido o scaduto · genera un nuovo tokken in Members per continuare il training.",
+    statusDemoEnded:
+      "Il tuo accesso attuale è terminato · rinnova il tuo Tokken Esteborg Members per continuare con Esteborg IA.",
+    statusDemoActive:
+      "In attesa del tuo Tokken Esteborg Members · quando lo generi, lo userò automaticamente.",
+    statusListening: "Ti ascolto… parla ora.",
+    statusProcessingSpeech: "Sto elaborando ciò che hai detto...",
+    statusMicError:
+      "Si è verificato un problema con il microfono, riprova.",
+    statusTextCaptured:
+      "Testo acquisito, puoi inviarlo o modificarlo.",
+    statusTTSOn: "Voce Esteborg attivata.",
+    statusTTSOff: "Voce Esteborg disattivata.",
+    statusLangCurrent: "Lingua impostata su italiano.",
+    tokenPasteReply:
+      "Perfetto, ho già il tuo Tokken Esteborg Members ✅\nOra dimmi: vuoi costruire il tuo training di IA in spagnolo, inglese, portoghese, francese, italiano o tedesco?",
+    tokenWelcomeMessage:
+      "✅ Il tuo Tokken Esteborg Members è stato validato.\nSei in modalità Members VIP, quindi lavoreremo sul tuo programma Esteborg IA – Sprigiona tutto il tuo potere con accesso completo a moduli, pratica e certificazione.",
+    welcomeMessage:
+      "Felice di vederti qui! 😊 Prima di iniziare il training ho bisogno del tuo Tokken Esteborg Members per validare l’accesso.\n\nSe non hai ancora il tokken, puoi ottenerlo o recuperarlo su: https://membersvip.esteborg.live/#miembrosvip\n\nQuando lo hai, incollalo qui o accedi dal tuo pannello Members VIP. Poi scegli la lingua in alto (ES, EN, PT, FR, IT, DE) e partiamo."
+  },
+
+  de: {
+    bannerMain: "ESTEBORG EXECUTIVE · MEMBERS VIP",
+    bannerSub: "Executive-Programm · Professioneller Coach für Künstliche Intelligenz",
+    bannerDesc:
+      "Esteborg IA – Entfalte deine ganze Kraft ist dein Executive-Programm, um angewandte Künstliche Intelligenz zu meistern. In 3 Monaten (Speed-Version) gehst du von Anfänger zu Fortgeschritten mit geführter Praxis und dem Zertifikat AI Executive & Prompt Engineer vom Esteborg Institute. Exklusiver Zugang über den Esteborg Members Tokken.",
+    panelTitle: "Mini-Training · Esteborg IA – Entfalte deine ganze Kraft",
+    chipsLabel: "Training starten:",
+    btnLesson: "KI von Grund auf lernen",
+    btnLessonText:
+      "Ich möchte Künstliche Intelligenz von Grund auf lernen und mit Modul 1: Grundlagen der KI starten.",
+    btnEmotion: "KI in meiner Arbeit einsetzen",
+    btnEmotionText:
+      "Ich möchte KI in meinem Job oder Unternehmen einsetzen und mit dir einen praktischen Plan mit konkreten Schritten entwickeln.",
+    btnChallenge: "ChatGPT und andere KI meistern",
+    btnChallengeText:
+      "Ich möchte ChatGPT und andere generative Modelle meistern, um Inhalte, Ideen und Automatisierungen zu erstellen.",
+    contentLabel: "Programm-Werkzeuge:",
+    btnSlides: "Programmstruktur ansehen",
+    btnSlidesText:
+      "Zeig mir die vollständige Struktur des Programms Esteborg IA – Entfalte deine ganze Kraft: Module, Dauer, Ziele und Ergebnisse.",
+    btnSummary: "Aufgaben mit KI automatisieren",
+    btnSummaryText:
+      "Hilf mir, Aufgaben mit KI zu automatisieren – mit No-Code-Tools, Agenten und intelligenten Workflows in meinem Arbeitsalltag.",
+    inputPlaceholder:
+      "Erzähl mir, was du mit Künstlicher Intelligenz in deiner Arbeit, deinem Business oder deinen Projekten erreichen möchtest...",
+    footerTokenTitle: "Tokken Esteborg Members",
+    footerTokenText:
+      "Wenn du noch keinen Tokken hast, kannst du ihn hier erhalten oder wiederherstellen: https://membersvip.esteborg.live/#miembrosvip",
+    chatName: "Esteborg",
+    chatRole: "Professioneller KI-Coach",
+    voiceToggleLabel: "Esteborg-Stimme aktiviert",
+    voicePillLabel: "🎧 Esteborg-Stimme",
+    sendButtonLabel: "SENDEN",
+    statusInitialWithToken:
+      "Ich habe einen Tokken in der URL oder lokal gespeichert gefunden · ich verwende ihn automatisch in deinem Premium-Training.",
+    statusInitialNoToken:
+      "Zugang ausstehend · du brauchst deinen Esteborg Members Tokken, um das vollständige Training zu aktivieren.",
+    statusTokenManual:
+      "Tokken manuell eingefügt · ich verwende diesen Tokken in deinem Training.",
+    statusTokenValid: "Members-Modus aktiv · VIP-Tokken gültig.",
+    statusTokenInvalid:
+      "Tokken ungültig oder abgelaufen · erstelle einen neuen in Members, um dein Training fortzusetzen.",
+    statusDemoEnded:
+      "Dein aktueller Zugang ist abgelaufen · erneuere deinen Esteborg Members Tokken, um mit Esteborg IA weiterzumachen.",
+    statusDemoActive:
+      "Warte auf deinen Esteborg Members Tokken · sobald du ihn erzeugst, verwende ich ihn automatisch.",
+    statusListening: "Ich höre zu… sprich jetzt.",
+    statusProcessingSpeech: "Ich verarbeite, was du gesagt hast...",
+    statusMicError:
+      "Es gab ein Problem mit dem Mikrofon, bitte versuche es erneut.",
+    statusTextCaptured:
+      "Text erfasst, du kannst ihn senden oder bearbeiten.",
+    statusTTSOn: "Esteborg-Stimme aktiviert.",
+    statusTTSOff: "Esteborg-Stimme deaktiviert.",
+    statusLangCurrent: "Sprache auf Deutsch gestellt.",
+    tokenPasteReply:
+      "Perfekt, ich habe deinen Esteborg Members Tokken ✅\nSag mir jetzt: Sollen wir dein KI-Training auf Spanisch, Englisch, Portugiesisch, Französisch, Italienisch oder Deutsch aufbauen?",
+    tokenWelcomeMessage:
+      "✅ Dein Esteborg Members Tokken ist gültig.\nDu bist im Members-VIP-Modus, daher arbeiten wir dein Esteborg IA – Entfalte deine ganze Kraft Programm mit vollem Zugang zu Modulen, Praxis und Zertifizierung durch.",
+    welcomeMessage:
+      "Schön, dass du hier bist! 😊 Bevor wir mit deinem Training beginnen, brauche ich deinen Esteborg Members Tokken, um deinen Zugang zu validieren.\n\nWenn du noch keinen Tokken hast, kannst du ihn hier erhalten oder wiederherstellen: https://membersvip.esteborg.live/#miembrosvip\n\nSobald du den Tokken hast, füge ihn hier ein oder logge dich über dein Members-VIP-Panel ein. Wähle dann oben die Sprache (ES, EN, PT, FR, IT, DE) und wir starten."
+  }
+};
     // ========= ESTADO GLOBAL =========
     let currentLang = "es";
     let history = [];
