@@ -1412,19 +1412,22 @@ function showWelcomeMessage() {
 function bootstrapTokenStatus() {
   const urlToken = getVIPTokenFromURL();
   const storedToken = getVIPTokenFromStorage();
+  const effectiveToken = urlToken || storedToken || null;
 
+  // Si viene desde la URL, lo guardamos para próximas sesiones
   if (urlToken) {
     saveVIPToken(urlToken);
-    setStatus(t("statusInitialWithToken"));
-    const msg = t("tokenWelcomeMessage");
-    appendMessage("assistant", msg);
-    history.push({ role: "assistant", content: msg });
-  } else if (storedToken) {
-    setStatus(t("statusInitialWithToken"));
+  }
+
+  if (effectiveToken) {
+    // Ya hay Tokken (URL o guardado) → lo damos por válido en el front
+    setStatus(t("statusTokenValid"));
+
     const msg = t("tokenWelcomeMessage");
     appendMessage("assistant", msg);
     history.push({ role: "assistant", content: msg });
   } else {
+    // No hay Tokken aún
     setStatus(t("statusInitialNoToken"));
   }
 }
@@ -1437,40 +1440,48 @@ async function sendMessage(text) {
 
   const inputEl = $("user-input");
 
-  // 1) pintar mensaje del usuario
+  // 1) Pintar mensaje del usuario
   appendMessage("user", trimmed);
   history.push({ role: "user", content: trimmed });
   if (inputEl) inputEl.value = "";
 
-  // 2) detectar si el usuario pegó un Tokken “crudo”
+  // 2) Detectar si lo que pegó el usuario es un Tokken “crudo”
   const tokenFromContent = detectTokenInContent(trimmed);
   if (tokenFromContent) {
+    // Guardamos el Tokken para próximas llamadas
     saveVIPToken(tokenFromContent);
-    setStatus(t("statusTokenManual"));
 
-    const reply = t("tokenPasteReply");
-    appendMessage("assistant", reply);
-    history.push({ role: "assistant", content: reply });
-    speakText(reply);
+    // En el front: ya estás en modo Members
+    setStatus(t("statusTokenValid"));
+
+    // Mensaje de bienvenida Members
+    const welcome = t("tokenWelcomeMessage");
+    appendMessage("assistant", welcome);
+    history.push({ role: "assistant", content: welcome });
+
+    // Mensaje de “ya tengo tu Tokken, ahora dime qué quieres”
+    const follow = t("tokenPasteReply");
+    appendMessage("assistant", follow);
+    history.push({ role: "assistant", content: follow });
+
+    speakText(welcome + "\n\n" + follow);
+    // IMPORTANTE: no mandamos este texto como prompt al backend
+    return;
   }
 
   isSending = true;
 
   try {
-    // 3) Determinar el Tokken efectivo (URL o localStorage)
+    // 3) Tokken efectivo (URL o guardado)
     const storedToken = getVIPTokenFromStorage();
     const urlToken = getVIPTokenFromURL();
     const effectiveToken = urlToken || storedToken || null;
 
-    // 4) Payload COMPATIBLE con el backend (igual que Com7)
     const payload = {
       message: trimmed,
-      history,                          // historial completo
-      lang: window.currentLang || "es", // idioma actual
-      rawToken: effectiveToken || null, // lo que el backend espera
-      // por si en el futuro usan otros nombres:
-      tokken: effectiveToken || null,
-      access_token: effectiveToken || null,
+      history,
+      lang: window.currentLang || "es",
+      rawToken: effectiveToken || null,
       source: "iframe-iavipcom"
     };
 
@@ -1496,14 +1507,14 @@ async function sendMessage(text) {
     const tokStatus =
       data && (data.tokenStatus || data.tokkenStatus || "unknown");
 
-    // 5) pintar respuesta del coach de IA
+    // 4) Respuesta del coach
     if (answer) {
       appendMessage("assistant", answer);
       history.push({ role: "assistant", content: answer });
       speakText(answer);
     }
 
-    // 6) actualizar estado de Tokken según backend
+    // 5) Actualizar estado de Tokken según backend (si manda algo)
     if (tokStatus === "valid") {
       setStatus(t("statusTokenValid"));
     } else if (tokStatus === "invalid" || tokStatus === "expired") {
@@ -1512,8 +1523,10 @@ async function sendMessage(text) {
       setStatus(t("statusDemoEnded"));
     } else if (data && data.demoStatus) {
       setStatus(t("statusDemoActive"));
+    } else if (effectiveToken) {
+      // Si el backend no manda tokenStatus pero sí tenemos Tokken → lo damos por bueno en el front
+      setStatus(t("statusTokenValid"));
     }
-
   } catch (e) {
     console.error("[API] Error general:", e);
     const msg =
