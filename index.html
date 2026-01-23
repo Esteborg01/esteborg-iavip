@@ -828,6 +828,58 @@ const API_BASE = "https://esteborg88full-backend-modular.onrender.com";
 const MODULE_PATH = "/api/modules/iavipcom";
 const TTS_URL = API_BASE + "/api/voice";
 
+/// ========== TOKEN VIP ==========
+let VIP_TOKEN = null;
+const VIP_STORAGE_KEY = "esteborg_vip_token";
+
+function getVIPTokenFromURL() {
+  const params = new URLSearchParams(window.location.search || "");
+  const raw =
+    params.get("tokken") ||
+    params.get("access_token") ||
+    params.get("token") ||
+    "";
+  const trimmed = (raw || "").trim();
+  console.log(
+    "[IA] Tokken detectado en URL:",
+    trimmed ? trimmed.slice(0, 40) + "..." : "(ninguno)"
+  );
+  return trimmed || null;
+}
+
+// Tokken que llega del iframe padre (Members / Outseta)
+window.addEventListener("message", (event) => {
+  if (!event.data || event.data.type !== "esteborg-token") return;
+  const tokken = (event.data.tokken || "").trim();
+  if (!tokken) return;
+  VIP_TOKEN = tokken;
+  console.log(
+    "[IA] Tokken recibido por postMessage:",
+    VIP_TOKEN.slice(0, 40) + "..."
+  );
+  try {
+    localStorage.setItem(VIP_STORAGE_KEY, VIP_TOKEN);
+  } catch (e) {
+    console.warn("[IA] No pude guardar Tokken desde postMessage:", e);
+  }
+});
+
+// Tokken inicial: localStorage → URL
+document.addEventListener("DOMContentLoaded", () => {
+  try {
+    const stored = localStorage.getItem(VIP_STORAGE_KEY);
+    if (stored && stored.trim()) {
+      VIP_TOKEN = stored.trim();
+      console.log("[IA] Tokken recuperado de localStorage");
+    } else {
+      VIP_TOKEN = getVIPTokenFromURL();
+    }
+  } catch (e) {
+    console.warn("[IA] No pude leer localStorage:", e);
+    VIP_TOKEN = getVIPTokenFromURL();
+  }
+});
+   
 // ========== I18N ==========
 const I18N = {
   es: {
@@ -1432,109 +1484,108 @@ function bootstrapTokenStatus() {
   }
 }
 
-async function sendMessage(text) {
+async function sendMessage(optionalText) {
+  let text = (optionalText || (inputEl && inputEl.value) || "").trim();
   if (!text || isSending) return;
 
-  const trimmed = text.trim();
-  if (!trimmed) return;
+  // 1) ¿Parece Tokken pegado?
+  const candidate = text.replace(/\s+/g, "");
+  const looksLikeTokken =
+    /^[A-Za-z0-9+/=_-]{40,}$/.test(candidate) && !candidate.includes(".");
 
-  const inputEl = $("user-input");
+  // Si el usuario pegó el Tokken en el chat, NO lo mandamos al backend
+  if (!optionalText && looksLikeTokken) {
+    VIP_TOKEN = candidate;
+    console.log(
+      "[IA] Tokken pegado (interceptado, no se manda al backend):",
+      VIP_TOKEN.slice(0, 40) + "..."
+    );
+    try {
+      localStorage.setItem(VIP_STORAGE_KEY, VIP_TOKEN);
+    } catch (e) {
+      console.warn("[IA] No pude guardar Tokken en localStorage:", e);
+    }
 
-  // 1) Pintar mensaje del usuario
-  appendMessage("user", trimmed);
-  history.push({ role: "user", content: trimmed });
-  if (inputEl) inputEl.value = "";
+    appendMessage("assistant", t("tokenPasteReply"));
+    setStatus(t("statusTokenManual"));
 
-  // 2) Detectar si lo que pegó el usuario es un Tokken “crudo”
-  const tokenFromContent = detectTokenInContent(trimmed);
-  if (tokenFromContent) {
-    // Guardamos el Tokken para próximas llamadas
-    saveVIPToken(tokenFromContent);
-
-    // En el front: ya estás en modo Members
-    setStatus(t("statusTokenValid"));
-
-    // Mensaje de bienvenida Members
-    const welcome = t("tokenWelcomeMessage");
-    appendMessage("assistant", welcome);
-    history.push({ role: "assistant", content: welcome });
-
-    // Mensaje de “ya tengo tu Tokken, ahora dime qué quieres”
-    const follow = t("tokenPasteReply");
-    appendMessage("assistant", follow);
-    history.push({ role: "assistant", content: follow });
-
-    speakText(welcome + "\n\n" + follow);
-    // IMPORTANTE: no mandamos este texto como prompt al backend
+    if (inputEl) inputEl.value = "";
     return;
   }
 
+  // 2) Tokken que se enviará al backend (igual que Com7)
+  const tokenToSend = VIP_TOKEN || getVIPTokenFromURL();
+
+  stopTTS && stopTTS();
+
   isSending = true;
+  if (sendBtn) sendBtn.disabled = true;
+  if (inputEl) inputEl.disabled = true;
+  if (micBtn) micBtn.disabled = true;
+
+  appendMessage("user", text);
+  history.push({ role: "user", content: text });
+  if (inputEl) inputEl.value = "";
 
   try {
-    // 3) Tokken efectivo (URL o guardado)
-    const storedToken = getVIPTokenFromStorage();
-    const urlToken = getVIPTokenFromURL();
-    const effectiveToken = urlToken || storedToken || null;
-
-    const payload = {
-      message: trimmed,
-      history,
-      lang: window.currentLang || "es",
-      rawToken: effectiveToken || null,
-      source: "iframe-iavipcom"
-    };
-
-    const res = await fetch(API_BASE + MODULE_PATH, {
+    setStatus("Conectando con Esteborg...");
+    const resp = await fetch(API_BASE + MODULE_PATH, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({
+        message: text,
+        rawToken: tokenToSend, // 👈 aquí viaja el Tokken real a /iavipcom
+        userName: null,
+        history,
+        lang: currentLang,
+      }),
     });
 
-    if (!res.ok) {
-      console.error("[API] Error HTTP", res.status, await res.text());
-      const msg =
-        "Hubo un problema al procesar tu entrenamiento. Intenta otra vez en unos momentos o revisa tu Tokken Members.";
-      appendMessage("assistant", msg);
-      history.push({ role: "assistant", content: msg });
-      return;
-    }
+    console.log("[IA] Respuesta HTTP:", resp.status);
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
 
-    const data = await res.json();
-    const answer =
-      (data && (data.reply || data.message || data.content)) || "";
+    const data = await resp.json();
+    console.log("[IA] Payload backend:", data);
 
-    const tokStatus =
-      data && (data.tokenStatus || data.tokkenStatus || "unknown");
+    const reply =
+      data.reply ||
+      "No tengo una respuesta en este momento, intenta de nuevo.";
 
-    // 4) Respuesta del coach
-    if (answer) {
-      appendMessage("assistant", answer);
-      history.push({ role: "assistant", content: answer });
-      speakText(answer);
-    }
+    appendMessage("assistant", reply);
+    history.push({ role: "assistant", content: reply });
 
-    // 5) Actualizar estado de Tokken según backend (si manda algo)
-    if (tokStatus === "valid") {
+    // 3) Manejo del estado de Tokken (clonado de Com7)
+    if (data.tokenStatus === "valid") {
       setStatus(t("statusTokenValid"));
-    } else if (tokStatus === "invalid" || tokStatus === "expired") {
+
+      if (!hasShownTokenWelcome) {
+        const tokenMsg = t("tokenWelcomeMessage");
+        appendMessage("assistant", tokenMsg);
+        history.push({ role: "assistant", content: tokenMsg });
+        hasShownTokenWelcome = true;
+      }
+    } else if (data.tokenStatus === "invalid") {
       setStatus(t("statusTokenInvalid"));
-    } else if (data && data.demoStatus === "ended") {
+    } else if (data.demoStatus === "ended") {
       setStatus(t("statusDemoEnded"));
-    } else if (data && data.demoStatus) {
+    } else {
       setStatus(t("statusDemoActive"));
-    } else if (effectiveToken) {
-      // Si el backend no manda tokenStatus pero sí tenemos Tokken → lo damos por bueno en el front
-      setStatus(t("statusTokenValid"));
     }
-  } catch (e) {
-    console.error("[API] Error general:", e);
-    const msg =
-      "Ocurrió un error inesperado al llamar al módulo de IA. Intenta nuevamente.";
-    appendMessage("assistant", msg);
-    history.push({ role: "assistant", content: msg });
+
+    if (ttsToggle && ttsToggle.checked) {
+      playTTS(reply);
+    }
+  } catch (err) {
+    console.error("[IA] Error al enviar mensaje:", err);
+    appendMessage(
+      "assistant",
+      "Hubo un problema al conectar con Esteborg. Intenta de nuevo en unos segundos."
+    );
   } finally {
     isSending = false;
+    if (sendBtn) sendBtn.disabled = false;
+    if (inputEl) inputEl.disabled = false;
+    if (micBtn) micBtn.disabled = false;
     if (inputEl) inputEl.focus();
   }
 }
