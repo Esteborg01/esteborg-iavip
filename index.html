@@ -1535,10 +1535,13 @@ const I18N = {
       data.output ||
       "Listo, sigamos con tu entrenamiento de IA.";
 
-    // 👇 Filtro duro:
-    // Si YA tenemos Tokken en el front y la respuesta vuelve a hablar de “Tokken Esteborg Members”,
-    // reescribimos ese texto por uno de “ya está validado, hablemos de tu entrenamiento”.
-    if (VIP_TOKEN) {
+    // 👇 Filtro “anti-perico”:
+    // Solo si:
+    //   - YA tenemos Tokken en el front
+    //   - ES EL PRIMER TURNO (history.length === 0)
+    //   - y la respuesta vuelve a hablar de “Tokken Esteborg Members”
+    // entonces la cambiamos por un mensaje más útil.
+    if (VIP_TOKEN && history.length === 0) {
       const lower = (reply || "").toLowerCase();
       if (lower.includes("tokken esteborg members")) {
         switch (currentLang) {
@@ -1579,7 +1582,7 @@ const I18N = {
     appendMessage("assistant", reply);
     playTTS(reply);
 
-    // Historial para contexto
+    // Historial para contexto (después de ESTE punto history.length >= 2)
     history.push({ role: "user", content: text });
     history.push({ role: "assistant", content: reply });
 
