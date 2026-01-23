@@ -1484,7 +1484,7 @@ const I18N = {
   const candidate = text.replace(/\s+/g, "");
   const looksLikeTokken = /^[A-Za-z0-9+/=_-]{40,}$/.test(candidate);
 
-  // Si parece Tokken (una sola “palabra” larga) lo guardamos y NO llamamos al backend
+  // Si parece Tokken (una sola “palabra” larga), lo guardamos y NO llamamos al backend
   if (looksLikeTokken && !text.includes(" ")) {
     VIP_TOKEN = candidate;
     try {
@@ -1526,10 +1526,7 @@ const I18N = {
 
     const data = await res.json();
 
-    // 1) Leer estado VIP que manda el backend
-    const vipStatus = data.vip_status ?? data.vipStatus ?? null;
-
-    // 2) Tomar respuesta base del backend
+    // Respuesta base del backend
     let reply =
       data.reply ||
       data.assistant ||
@@ -1538,11 +1535,11 @@ const I18N = {
       data.output ||
       "Listo, sigamos con tu entrenamiento de IA.";
 
-    // 3) Si YA HAY TOKKEN VÁLIDO y el backend todavía habla de “Tokken Esteborg Members”,
-    //    reemplazamos ese discurso por un mensaje de “ya está validado, ahora enfoquémonos en el entrenamiento”.
-    if (VIP_TOKEN && (vipStatus === "valid" || vipStatus === true)) {
+    // 👇 Filtro duro:
+    // Si YA tenemos Tokken en el front y la respuesta vuelve a hablar de “Tokken Esteborg Members”,
+    // reescribimos ese texto por uno de “ya está validado, hablemos de tu entrenamiento”.
+    if (VIP_TOKEN) {
       const lower = (reply || "").toLowerCase();
-
       if (lower.includes("tokken esteborg members")) {
         switch (currentLang) {
           case "en":
@@ -1578,28 +1575,24 @@ const I18N = {
       }
     }
 
-    // 4) Mostrar respuesta final y TTS
+    // Mostrar respuesta final
     appendMessage("assistant", reply);
     playTTS(reply);
 
-    // 5) Guardar en historial
+    // Historial para contexto
     history.push({ role: "user", content: text });
     history.push({ role: "assistant", content: reply });
 
-    // 6) Actualizar estado en la barra inferior
-    if (VIP_TOKEN && (vipStatus === "valid" || vipStatus === true)) {
+    // Estado abajo: si hay Tokken, asumimos modo Members
+    if (VIP_TOKEN) {
       setStatus(t("statusTokenValid"));
       if (!hasShownTokenWelcome) {
         appendMessage("assistant", t("tokenWelcomeMessage"));
         playTTS(t("tokenWelcomeMessage"));
         hasShownTokenWelcome = true;
       }
-    } else if (vipStatus === "invalid" || vipStatus === false) {
-      setStatus(t("statusTokenInvalid"));
-    } else if (!VIP_TOKEN) {
-      setStatus(t("statusDemoActive"));
     } else {
-      setStatus(t("statusInitialWithToken"));
+      setStatus(t("statusInitialNoToken"));
     }
   } catch (e) {
     console.error("[IA] Error general sendMessage:", e);
