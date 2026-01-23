@@ -747,7 +747,7 @@
 
   <script>
     // ========== CONFIG ==========
-    const API_BASE = "https://esteborg-iavipcom.onrender.com";
+   const API_BASE = "https://esteborg88full-backend-modular.onrender.com";
     const MODULE_PATH = "/api/modules/iavipcom";
     const TTS_URL = API_BASE + "/api/voice";
 
@@ -1449,16 +1449,16 @@
 
       try {
         const resp = await fetch(API_BASE + MODULE_PATH, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message: text,
-            rawToken: tokenToSend,
-            userName: null,
-            history,
-            lang: currentLang,
-          }),
-        });
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    message: text,
+    rawToken: tokenToSend,
+    userName: null,
+    history,
+    lang: currentLang,
+  }),
+});
 
         console.log("[IA] Respuesta HTTP:", resp.status);
 
