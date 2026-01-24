@@ -1649,44 +1649,54 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
 
     // ========== UI / LENGUAJE ==========
     function applyLanguage(lang) {
-      if (!I18N[lang]) lang = "es";
-      currentLang = lang;
+  if (!I18N[lang]) lang = "es";
+  currentLang = lang;
 
-      // Textos principales
-      setText("i-banner-main", t("bannerMain"));
-      setText("i-banner-sub", t("bannerSub"));
-      setText("i-banner-desc", t("bannerDesc"));
-      setText("i-panel-title", t("panelTitle"));
-      setText("i-chips-label", t("chipsLabel"));
-      setText("i-content-label", t("contentLabel"));
-      setText("i-chat-name", t("chatName"));
-      setText("i-chat-role", t("chatRole"));
-      setText("i-footer-token-title", t("footerTokenTitle"));
-      const footerToken = $("i-footer-token-text");
-      if (footerToken) footerToken.textContent = t("footerTokenText");
+  // Textos principales
+  setText("i-banner-main", t("bannerMain"));
+  setText("i-banner-sub", t("bannerSub"));
+  setText("i-banner-desc", t("bannerDesc"));
+  setText("i-panel-title", t("panelTitle"));
+  setText("i-chips-label", t("chipsLabel"));
+  setText("i-content-label", t("contentLabel"));
+  setText("i-chat-name", t("chatName"));
+  setText("i-chat-role", t("chatRole"));
+  setText("i-footer-token-title", t("footerTokenTitle"));
+  const footerToken = $("i-footer-token-text");
+  if (footerToken) footerToken.textContent = t("footerTokenText");
 
-      const inputEl = $("user-input");
-      if (inputEl) {
-        inputEl.placeholder = t("inputPlaceholder");
-      }
-      const meta = $("status-line");
-      if (meta && I18N[currentLang].statusInitial) {
-        meta.textContent = t("statusInitial");
-      }
+  const inputEl = $("user-input");
+  if (inputEl) {
+    inputEl.placeholder = t("inputPlaceholder");
+  }
 
-      const voiceLabel = $("i-voice-toggle-label");
-      if (voiceLabel) voiceLabel.textContent = t("voiceToggleLabel");
-      const voicePill = $("i-voice-pill");
-      if (voicePill) voicePill.textContent = t("voicePill");
+  // Línea de estado inicial bajo el input
+  const meta = $("status-line");
+  if (meta && I18N[currentLang].statusInitial) {
+    meta.textContent = t("statusInitial");
+  }
 
-      // Idioma activo en el selector
-      document
-        .querySelectorAll(".lang-option")
-        .forEach((btn) => {
-          const btnLang = btn.getAttribute("data-lang");
-          btn.classList.toggle("active", btnLang === currentLang);
-        });
-    }
+  // Texto del switch de voz
+  const voiceLabel = $("i-voice-toggle-label");
+  if (voiceLabel) voiceLabel.textContent = t("voiceToggleLabel");
+  const voicePill = $("i-voice-pill");
+  if (voicePill) voicePill.textContent = t("voicePill");
+
+  // 🔹 Botones de chips (los que ves en la parte de arriba)
+  setText("i-btn-lesson", t("btnLesson"));
+  setText("i-btn-emotion", t("btnEmotion"));
+  setText("i-btn-challenge", t("btnChallenge"));
+  setText("i-btn-slides", t("btnSlides"));
+  setText("i-btn-summary", t("btnSummary"));
+
+  // Idioma activo en el selector
+  document
+    .querySelectorAll(".lang-option")
+    .forEach((btn) => {
+      const btnLang = btn.getAttribute("data-lang");
+      btn.classList.toggle("active", btnLang === currentLang);
+    });
+}
 
     function appendMessage(role, content) {
       const log = $("chat-log");
