@@ -1038,6 +1038,25 @@
     .footer-meta a:hover {
       text-decoration: underline;
     }
+
+    /* === Ajuste selector de idiomas ERPev para celular === */
+@media (max-width: 768px) {
+  .lang-selector {
+    display: flex;
+    flex-wrap: wrap;        /* que los botones se bajen a otra fila */
+    gap: 6px;
+    justify-content: flex-start;
+  }
+
+  .lang-selector .lang-option {
+    flex: 1 1 30%;          /* 2–3 botones por fila, como Com7 */
+    max-width: 90px;
+    padding: 4px 8px;
+    font-size: 11px;        /* un pelín más compacto en móvil */
+    text-align: center;
+  }
+}
+    
   </style>
 </head>
 <body>
