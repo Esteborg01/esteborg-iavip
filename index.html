@@ -242,7 +242,11 @@
         align-items: flex-end;
         text-align: right;
       }
-    }
+      
+      .banner-side .tag-sub {
+  max-width: 240px;
+  line-height: 1.25;
+}
 
     .tag-pill {
       display: inline-flex;
@@ -1719,13 +1723,11 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
   setText("i-chat-name", t("chatName"));
   setText("i-chat-role", t("chatRole"));
   setText("i-footer-token-title", t("footerTokenTitle"));
-
-  // 🔹 NUEVO: banner derecho + footer IA
   setText("i-access-pill-text", t("topAccessLabel"));
   setText("i-access-subtext", t("topAccessSubtext"));
   setText("i-program-pill-text", t("programSwitchLabel"));
   setText("i-footer-legal-text", t("footerOwnership"));
-
+  
   const footerToken = $("i-footer-token-text");
   if (footerToken) footerToken.textContent = t("footerTokenText");
 
