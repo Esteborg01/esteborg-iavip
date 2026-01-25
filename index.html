@@ -1072,21 +1072,25 @@
             </div>
           </div>
           <div class="banner-side">
-            <div class="tag-pill">
-              <span class="tag-dot"></span>
-              <span>Acceso exclusivo · Tokken Esteborg Members</span>
-            </div>
-            <div class="tag-sub">
-              Tu sesión se adapta según tu objetivo: aprender IA desde cero, aplicar IA en tu trabajo y automatizar tareas.
-            </div>
-            <div class="pill-btn">
-              <div class="pill-icon">
-                <div class="pill-icon-inner"></div>
-              </div>
-              <span>Programa Esteborg IA – Despliega todo tu poder</span>
-            </div>
-          </div>
-        </div>
+  <div class="tag-pill">
+    <span class="tag-dot"></span>
+    <span id="i-access-pill-text">
+      Acceso exclusivo · Tokken Esteborg Members
+    </span>
+  </div>
+  <div class="tag-sub" id="i-access-subtext">
+    Tu sesión se adapta según tu objetivo: aprender IA desde cero,
+    aplicar IA en tu trabajo y automatizar tareas.
+  </div>
+  <div class="pill-btn">
+    <div class="pill-icon">
+      <div class="pill-icon-inner"></div>
+    </div>
+    <span id="i-program-pill-text">
+      PROGRAMA ESTEBORG IA – DESPLIEGA TODO TU PODER
+    </span>
+  </div>
+</div>
 
         <div class="panel">
           <div class="panel-header">
@@ -1217,11 +1221,13 @@
                   >
                 </div>
               </div>
-              <div class="footer-meta">
-                <span>Propiedad de Esteban Manuel González Cárdenas · Esteborg</span>
-                <span>·</span>
-                <a href="https://esteborg.com" target="_blank">esteborg.com</a>
-              </div>
+            <div class="footer-meta">
+  <span id="i-footer-legal-text">
+    Propiedad de Esteban Manuel González Cárdenas · Esteborg
+  </span>
+  <span>·</span>
+  <a href="https://esteborg.com" target="_blank">esteborg.com</a>
+</div>
             </div>
           </div>
         </div>
@@ -1707,15 +1713,19 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
   setText("i-banner-main", t("bannerMain"));
   setText("i-banner-sub", t("bannerSub"));
   setText("i-banner-desc", t("bannerDesc"));
-  setText("i-access-pill", t("accessPill"));
-  setText("i-access-desc", t("accessDescription"));
-  setText("i-panel-title", t("panelTitle"));
   setText("i-panel-title", t("panelTitle"));
   setText("i-chips-label", t("chipsLabel"));
   setText("i-content-label", t("contentLabel"));
   setText("i-chat-name", t("chatName"));
   setText("i-chat-role", t("chatRole"));
   setText("i-footer-token-title", t("footerTokenTitle"));
+
+  // 🔹 NUEVO: banner derecho + footer IA
+  setText("i-access-pill-text", t("topAccessLabel"));
+  setText("i-access-subtext", t("topAccessSubtext"));
+  setText("i-program-pill-text", t("programSwitchLabel"));
+  setText("i-footer-legal-text", t("footerOwnership"));
+
   const footerToken = $("i-footer-token-text");
   if (footerToken) footerToken.textContent = t("footerTokenText");
 
