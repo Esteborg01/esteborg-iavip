@@ -1814,9 +1814,8 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
       // ¿Parece un Tokken pegado?
       const candidate = text.replace(/\s+/g, "");
       const looksLikeToken =
-        candidate.length > 40 &&
-        /^[A-Za-z0-9+/=_-]+$/.test(candidate) &&
-        !candidate.includes(".");
+  candidate.length > 40 &&
+  /^[A-Za-z0-9._+/=_-]+$/.test(candidate);
 
       if (!optionalText && looksLikeToken && !text.includes(" ")) {
         // Guardamos Tokken pero NO lo mandamos al backend
