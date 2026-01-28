@@ -1852,16 +1852,17 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
         const tokenToSend = VIP_TOKEN || getVIPTokenFromStorage() || null;
 
         const resp = await fetch(API_BASE + "/api/modules/iavipcom", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message: text,
-            rawToken: tokenToSend,
-            userName: null,
-            history,
-            lang: currentLang,
-          }),
-        });
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${tokenToSend}`,
+    "x-esteborg-token": tokenToSend
+  },
+  body: JSON.stringify({
+    messages: history,
+    language: currentLang
+  }),
+});
 
         if (!resp.ok) {
           throw new Error("HTTP " + resp.status);
