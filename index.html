@@ -1804,36 +1804,90 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
 
     // ========== ENVÍO DE MENSAJES ==========
     async function sendMessage(optionalText) {
-      const inputEl = $("user-input");
-      const sendBtn = $("send-btn");
-      const micBtn = $("mic-btn");
+  const inputEl = $("user-input");
+  const sendBtn = $("send-btn");
+  const micBtn = $("mic-btn");
 
-      let text = (optionalText || (inputEl && inputEl.value) || "").trim();
-      if (!text || isSending) return;
+  let text = (optionalText || (inputEl && inputEl.value) || "").trim();
+  if (!text || isSending) return;
 
-      // ¿Parece un Tokken pegado?
-      const candidate = text.replace(/\s+/g, "");
-      const looksLikeToken =
-  candidate.length > 40 &&
-  /^[A-Za-z0-9._+/=_-]+$/.test(candidate);
+  // ¿Parece un Tokken pegado?
+  const candidate = text.replace(/\s+/g, "");
+  const looksLikeToken =
+    candidate.length > 40 &&
+    /^[A-Za-z0-9+/=_-]+$/.test(candidate) &&
+    !candidate.includes(".");
 
-      if (!optionalText && looksLikeToken && !text.includes(" ")) {
-        // Guardamos Tokken pero NO lo mandamos al backend
-        saveVIPToken(candidate);
+  if (!optionalText && looksLikeToken && !text.includes(" ")) {
+    // Guardamos Tokken pero NO lo mandamos al backend
+    saveVIPToken(candidate);
 
-        appendMessage("user", text);
+    appendMessage("user", text);
 
-        // Mensaje de validación según idioma
-        const tokenMsg =
-          TOKEN_VALID_MESSAGES[currentLang] || TOKEN_VALID_MESSAGES.es;
-        appendMessage("assistant", tokenMsg);
-        history.push({ role: "assistant", content: tokenMsg });
-        playTTS(tokenMsg);
+    const tokenMsg = TOKEN_VALID_MESSAGES[currentLang] || TOKEN_VALID_MESSAGES.es;
+    appendMessage("assistant", tokenMsg);
+    history.push({ role: "assistant", content: tokenMsg });
+    playTTS(tokenMsg);
 
-        if (inputEl) inputEl.value = "";
-        setStatus("statusTokenValid");
-        return;
-      }
+    if (inputEl) inputEl.value = "";
+    setStatus("statusTokenValid");
+    return;
+  }
+
+  // Mensaje normal al backend
+  appendMessage("user", text);
+  history.push({ role: "user", content: text });
+  if (inputEl) inputEl.value = "";
+
+  isSending = true;
+  if (sendBtn) sendBtn.disabled = true;
+  if (inputEl) inputEl.disabled = true;
+  if (micBtn) micBtn.disabled = true;
+
+  setStatus("Conectando con Esteborg IA...");
+
+  try {
+    const tokenToSend = VIP_TOKEN || getVIPTokenFromStorage() || null;
+
+    const resp = await fetch(API_BASE + "/api/modules/iavipcom", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: text,
+        rawToken: tokenToSend,
+        userName: null,
+        history,
+        lang: currentLang,
+      }),
+    });
+
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
+
+    const data = await resp.json();
+    const reply =
+      data.reply || "No tengo una respuesta en este momento, intenta de nuevo.";
+
+    appendMessage("assistant", reply);
+    history.push({ role: "assistant", content: reply });
+    playTTS(reply);
+
+    if (data.tokenStatus === "valid") setStatus("statusTokenValid");
+    else if (data.tokenStatus === "invalid") setStatus("statusTokenInvalid");
+    else setStatus("statusInitial");
+  } catch (err) {
+    console.error("[IA] Error al enviar mensaje:", err);
+    appendMessage(
+      "assistant",
+      "Tuvimos un problema al conectar con Esteborg IA. Verifica tu conexión o intenta en unos momentos."
+    );
+  } finally {
+    isSending = false;
+    if (sendBtn) sendBtn.disabled = false;
+    if (inputEl) inputEl.disabled = false;
+    if (micBtn) micBtn.disabled = false;
+    if (inputEl) inputEl.focus();
+  }
+}
 
       // Mensaje normal al backend
       appendMessage("user", text);
