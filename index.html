@@ -1229,6 +1229,7 @@
     </div>
   </div>
   <script>
+    (async () => {
     // ========== CONFIG ==========
     const API_BASE = "https://esteborg88full-backend-modular.onrender.com";
     const TTS_URL = API_BASE + "/api/voice";
@@ -2106,7 +2107,7 @@ async function sendMessage(optionalText) {
           "Reconocimiento de voz no disponible en este navegador.";
       }
     });
-  
+  })().catch(console.error);
   </script>
 </body>
 </html>
