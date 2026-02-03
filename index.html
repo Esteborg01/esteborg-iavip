@@ -1213,11 +1213,10 @@
                 </div>
               </div>
               <div class="footer-meta">
-                <span id="i-footer-legal">
-                <span>Propiedad de Esteban Manuel González Cárdenas · Esteborg</span>
-                <span>·</span>
-                <a href="https://esteborg.com" target="_blank">esteborg.com</a>
-              </div>
+  <span id="i-footer-legal">Propiedad de Esteban Manuel González Cárdenas · Esteborg</span>
+  <span>·</span>
+  <a href="https://esteborg.com" target="_blank">esteborg.com</a>
+</div>
             </div>
           </div>
         </div>
@@ -1230,6 +1229,31 @@
     const API_BASE = "https://esteborg88full-backend-modular.onrender.com";
     const TTS_URL = API_BASE + "/api/voice";
     const MODULE_PATH = "/api/modules/iavipcom";
+    const SESSION_STORAGE_PREFIX = "esteborg_iavipcom_session_";
+
+    function getSessionKey() {
+  const tkn = (VIP_TOKEN || getVIPTokenFromStorage() || "").slice(0, 24);
+  return SESSION_STORAGE_PREFIX + (tkn || "anon");
+}
+
+function saveSession() {
+  try {
+    localStorage.setItem(getSessionKey(), JSON.stringify({
+      lang: currentLang,
+      history
+    }));
+  } catch (e) {}
+}
+
+function loadSession() {
+  try {
+    const raw = localStorage.getItem(getSessionKey());
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) {
+    return null;
+  }
+}
 
     // ========== I18N ==========
     const I18N = {
@@ -1677,17 +1701,26 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
     }
 
     function showWelcomeMessage() {
-      const log = $("chat-log");
-      if (!log) return;
+  const log = $("chat-log");
+  if (!log) return;
 
-      log.innerHTML = "";
-      history = [];
+  // si ya hay conversación guardada, restáurala (lo hacemos en el punto 4)
+  log.innerHTML = "";
 
-      const msg = WELCOME_MESSAGES[currentLang] || WELCOME_MESSAGES.es;
-      appendMessage("assistant", msg);
-      history.push({ role: "assistant", content: msg });
-      playTTS(msg);
-    }
+  const hasToken = !!(VIP_TOKEN || getVIPTokenFromStorage() || getVIPTokenFromURL());
+
+  history = [];
+
+  const msg = hasToken
+    ? (TOKEN_VALID_MESSAGES[currentLang] || TOKEN_VALID_MESSAGES.es)
+    : (WELCOME_MESSAGES[currentLang] || WELCOME_MESSAGES.es);
+
+  appendMessage("assistant", msg);
+  history.push({ role: "assistant", content: msg });
+
+  playTTS(msg);
+}
+
 
     // ========== UI / LENGUAJE ==========
     function applyLanguage(lang) {
@@ -1756,17 +1789,23 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
 
     // ========== CHAT ==========
     function appendMessage(role, content) {
-      const log = $("chat-log");
-      if (!log) return;
-      const wrapper = document.createElement("div");
-      wrapper.className = "message " + (role === "assistant" ? "assistant" : "user");
-      const bubble = document.createElement("div");
-      bubble.className = "bubble";
-      bubble.textContent = content;
-      wrapper.appendChild(bubble);
-      log.appendChild(wrapper);
-      log.scrollTop = log.scrollHeight;
-    }
+  const log = $("chat-log");
+  if (!log) return;
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "message " + (role === "assistant" ? "assistant" : "user");
+
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.textContent = content;
+
+  wrapper.appendChild(bubble);
+  log.appendChild(wrapper);
+  log.scrollTop = log.scrollHeight;
+
+  // guarda sesión
+  saveSession();
+}
 
     // ========== TTS ==========
     function stopTTS() {
@@ -1940,18 +1979,34 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
 
     // ========== INIT ==========
     document.addEventListener("DOMContentLoaded", () => {
-      applyLanguage("es");
-      bootstrapTokenStatus();
-      showWelcomeMessage();
+  applyLanguage("es");
+  bootstrapTokenStatus();
+
+  const session = loadSession();
+  if (session && Array.isArray(session.history) && session.history.length) {
+    history = session.history;
+    if (session.lang && I18N[session.lang]) applyLanguage(session.lang);
+
+    const log = $("chat-log");
+    log.innerHTML = "";
+    history.forEach(m => appendMessage(m.role, m.content));
+    if (VIP_TOKEN || getVIPTokenFromStorage()) setStatus("statusTokenValid");
+    else setStatus("statusInitial");
+  } else {
+    showWelcomeMessage();
+  }
 
       // Idiomas
       document.querySelectorAll(".lang-option").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const lang = btn.getAttribute("data-lang") || "es";
-          applyLanguage(lang);
-          showWelcomeMessage();
-          setStatus("statusInitial");
-        });
+  const lang = btn.getAttribute("data-lang") || "es";
+  applyLanguage(lang);
+
+  // NO reiniciar chat ni history
+  // solo actualiza el status según token
+  if (VIP_TOKEN || getVIPTokenFromStorage()) setStatus("statusTokenValid");
+  else setStatus("statusInitial");
+});
       });
 
       // Chips
