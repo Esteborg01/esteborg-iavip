@@ -7,6 +7,13 @@
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
   />
   <title>Esteborg IA – Despliega todo tu poder</title>
+
+  <!-- OUTSETA EMBED (pega aquí tu script real, tal cual lo tienes hoy; NO cambia UI) -->
+  <!-- <script src="https://cdn.outseta.com/outseta.min.js" data-options="..."></script> -->
+
+  <!-- ANALYTICS (pega aquí tu script real, tal cual lo tienes hoy; NO cambia UI) -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"></script> -->
+
   <style>
     :root {
       color-scheme: dark;
@@ -30,9 +37,7 @@
       --glow-ring: 0 0 0 1px rgba(129, 140, 248, 0.5), 0 0 35px rgba(79, 70, 229, 0.5);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -55,17 +60,8 @@
         radial-gradient(circle at bottom, rgba(15, 23, 42, 1), #020617 70%);
     }
 
-    @media (min-width: 768px) {
-      #app {
-        padding: 32px 16px 40px;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      #app {
-        padding: 40px;
-      }
-    }
+    @media (min-width: 768px) { #app { padding: 32px 16px 40px; } }
+    @media (min-width: 1024px) { #app { padding: 40px; } }
 
     .shell {
       width: 100%;
@@ -85,19 +81,8 @@
       overflow: hidden;
     }
 
-    @media (min-width: 768px) {
-      .shell {
-        padding: 22px 20px 22px;
-        gap: 18px;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .shell {
-        padding: 24px 22px 24px;
-        gap: 20px;
-      }
-    }
+    @media (min-width: 768px) { .shell { padding: 22px 20px 22px; gap: 18px; } }
+    @media (min-width: 1024px) { .shell { padding: 24px 22px 24px; gap: 20px; } }
 
     .shell::before {
       content: "";
@@ -112,19 +97,8 @@
       z-index: -1;
     }
 
-    .shell-inner {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    @media (min-width: 768px) {
-      .shell-inner {
-        gap: 20px;
-      }
-    }
+    .shell-inner { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 18px; }
+    @media (min-width: 768px) { .shell-inner { gap: 20px; } }
 
     .banner {
       display: flex;
@@ -140,12 +114,7 @@
         0 0 0 1px rgba(56, 189, 248, 0.3);
     }
 
-    @media (min-width: 640px) {
-      .banner {
-        padding: 14px 16px;
-      }
-    }
-
+    @media (min-width: 640px) { .banner { padding: 14px 16px; } }
     @media (min-width: 768px) {
       .banner {
         padding: 16px 18px 14px;
@@ -156,18 +125,8 @@
       }
     }
 
-    .banner-header {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .badge-row {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 4px;
-    }
+    .banner-header { display: flex; flex-direction: column; gap: 4px; }
+    .badge-row { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 4px; }
 
     .badge-main {
       display: inline-flex;
@@ -192,9 +151,7 @@
       box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.28), 0 0 24px rgba(34, 197, 94, 0.7);
     }
 
-    .badge-main span:last-child {
-      opacity: 0.9;
-    }
+    .badge-main span:last-child { opacity: 0.9; }
 
     .banner-title {
       font-size: 16px;
@@ -202,17 +159,9 @@
       letter-spacing: 0.03em;
       color: #f9fafb;
     }
+    @media (min-width: 768px) { .banner-title { font-size: 18px; } }
 
-    @media (min-width: 768px) {
-      .banner-title {
-        font-size: 18px;
-      }
-    }
-
-    .banner-sub {
-      font-size: 13px;
-      color: #cbd5f5;
-    }
+    .banner-sub { font-size: 13px; color: #cbd5f5; }
 
     .banner-desc {
       margin-top: 6px;
@@ -221,12 +170,7 @@
       max-width: 640px;
       line-height: 1.4;
     }
-
-    @media (min-width: 768px) {
-      .banner-desc {
-        font-size: 12.5px;
-      }
-    }
+    @media (min-width: 768px) { .banner-desc { font-size: 12.5px; } }
 
     .banner-side {
       display: flex;
@@ -235,13 +179,8 @@
       align-items: flex-start;
       margin-top: 10px;
     }
-
     @media (min-width: 768px) {
-      .banner-side {
-        margin-top: 0;
-        align-items: flex-end;
-        text-align: right;
-      }
+      .banner-side { margin-top: 0; align-items: flex-end; text-align: right; }
     }
 
     .tag-pill {
@@ -265,15 +204,9 @@
       box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.35), 0 0 16px rgba(22, 163, 74, 0.9);
     }
 
-    .tag-pill span:last-child {
-      opacity: 0.92;
-    }
+    .tag-pill span:last-child { opacity: 0.92; }
 
-    .tag-sub {
-      font-size: 11px;
-      color: #9ca3af;
-      max-width: 220px;
-    }
+    .tag-sub { font-size: 11px; color: #9ca3af; max-width: 220px; }
 
     .pill-btn {
       display: inline-flex;
@@ -294,28 +227,7 @@
         0 0 0 1px rgba(79, 70, 229, 0.6),
         0 12px 30px rgba(15, 23, 42, 0.9);
     }
-
-    .pill-btn span:last-child {
-      opacity: 0.95;
-    }
-
-    .pill-icon {
-      width: 14px;
-      height: 14px;
-      border-radius: 999px;
-      background: radial-gradient(circle at top left, #38bdf8, #1d4ed8);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.7);
-    }
-
-    .pill-icon-inner {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #e0f2fe;
-    }
+    .pill-btn span:last-child { opacity: 0.95; }
 
     .panel {
       display: flex;
@@ -323,19 +235,13 @@
       gap: 10px;
       padding: 14px 12px 12px;
       border-radius: 22px;
-      background:
-        radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
       border: 1px solid rgba(148, 163, 184, 0.45);
       box-shadow:
         0 18px 60px rgba(15, 23, 42, 0.95),
         0 0 0 1px rgba(30, 64, 175, 0.85);
     }
-
-    @media (min-width: 768px) {
-      .panel {
-        padding: 14px 14px 12px;
-      }
-    }
+    @media (min-width: 768px) { .panel { padding: 14px 14px 12px; } }
 
     .panel-header {
       display: flex;
@@ -352,9 +258,7 @@
       text-transform: uppercase;
       color: #9ca3af;
     }
-    .panel-title span {
-      color: #e5e7eb;
-    }
+    .panel-title span { color: #e5e7eb; }
 
     .pill-members {
       display: inline-flex;
@@ -379,36 +283,13 @@
       box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.35);
     }
 
-    .pill-members span:last-child {
-      opacity: 0.96;
-    }
-
-    .chips-row {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
+    .chips-row { display: flex; flex-direction: column; gap: 8px; }
     @media (min-width: 640px) {
-      .chips-row {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
+      .chips-row { flex-direction: row; align-items: center; justify-content: space-between; }
     }
 
-    .chips-label {
-      font-size: 12px;
-      color: #9ca3af;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-    }
-
-    .chips-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+    .chips-label { font-size: 12px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.09em; }
+    .chips-group { display: flex; flex-wrap: wrap; gap: 8px; }
 
     .chip-btn {
       position: relative;
@@ -458,14 +339,8 @@
       box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.45);
     }
 
-    .chip-label {
-      font-weight: 500;
-    }
-
-    .chip-kicker {
-      font-size: 10px;
-      opacity: 0.76;
-    }
+    .chip-label { font-weight: 500; }
+    .chip-kicker { font-size: 10px; opacity: 0.76; }
 
     .chip-btn.primary {
       background:
@@ -475,7 +350,6 @@
         0 14px 42px rgba(30, 64, 175, 0.95),
         0 0 0 1px rgba(37, 99, 235, 0.9);
     }
-
     .chip-btn.primary .chip-dot {
       background: radial-gradient(circle at top left, #22c55e, #16a34a);
       box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.4);
@@ -510,18 +384,8 @@
       }
     }
 
-    .subchips-label {
-      font-size: 11px;
-      color: #9ca3af;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-    }
-
-    .subchips-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+    .subchips-label { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.09em; }
+    .subchips-group { display: flex; flex-wrap: wrap; gap: 8px; }
 
     .subchip-btn {
       display: inline-flex;
@@ -567,14 +431,8 @@
       box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.4);
     }
 
-    .subchip-label {
-      font-size: 11px;
-    }
-
-    .subchip-kicker {
-      font-size: 10px;
-      opacity: 0.8;
-    }
+    .subchip-label { font-size: 11px; }
+    .subchip-kicker { font-size: 10px; opacity: 0.8; }
 
     .chat-card {
       margin-top: 4px;
@@ -590,12 +448,7 @@
       flex-direction: column;
       gap: 10px;
     }
-
-    @media (min-width: 768px) {
-      .chat-card {
-        padding: 12px;
-      }
-    }
+    @media (min-width: 768px) { .chat-card { padding: 12px; } }
 
     .chat-header {
       display: flex;
@@ -606,11 +459,7 @@
       border-bottom: 1px solid rgba(55, 65, 81, 0.7);
     }
 
-    .chat-id {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .chat-id { display: flex; align-items: center; gap: 8px; }
 
     .chat-avatar-circle {
       width: 32px;
@@ -626,17 +475,9 @@
         0 0 30px rgba(129, 140, 248, 0.7);
     }
 
-    .chat-avatar-letter {
-      font-size: 16px;
-      font-weight: 700;
-      color: #e5e7eb;
-    }
+    .chat-avatar-letter { font-size: 16px; font-weight: 700; color: #e5e7eb; }
 
-    .chat-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
+    .chat-meta { display: flex; flex-direction: column; gap: 2px; }
 
     .chat-meta-name {
       font-size: 12px;
@@ -646,50 +487,45 @@
       color: #cbd5f5;
     }
 
-    .chat-meta-role {
+    .chat-meta-role { font-size: 11px; color: #9ca3af; }
+
+    .chat-language-pill {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
+      border-radius: 999px;
+      padding: 3px 7px;
+      border: 1px solid rgba(248, 250, 252, 0.3);
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
       font-size: 11px;
-      color: #9ca3af;
+      color: rgba(229, 231, 235, 0.98);
     }
 
-    /* --- Selector de idioma (igual que IA / Com7) --- */
-.chat-language-pill {
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: wrap;           /* si no caben, saltan a segunda línea en móvil */
-  gap: 4px;
-  border-radius: 999px;
-  padding: 3px 7px;
-  border: 1px solid rgba(248, 250, 252, 0.3);
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
-  font-size: 11px;
-  color: rgba(229, 231, 235, 0.98);
-}
+    .lang-option {
+      padding: 1px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 10px;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: #9ca3af;
+      background: transparent;
+    }
 
-.lang-option {
-  padding: 1px 6px;
-  border-radius: 999px;
-  border: 1px solid rgba(55, 65, 81, 0.9);
-  font-size: 10px;
-  text-transform: uppercase;
-  cursor: pointer;
-  color: #9ca3af;
-  background: transparent;
-}
-
-.lang-option.active {
-  background: radial-gradient(circle at top left, rgba(59, 130, 246, 1), rgba(37, 99, 235, 1));
-  color: #f9fafb;
-  box-shadow:
-    0 0 0 1px rgba(191, 219, 254, 0.9),
-    0 0 20px rgba(37, 99, 235, 0.9);
-  transform: translateY(-0.5px);
-}
+    .lang-option.active {
+      background: radial-gradient(circle at top left, rgba(59, 130, 246, 1), rgba(37, 99, 235, 1));
+      color: #f9fafb;
+      box-shadow:
+        0 0 0 1px rgba(191, 219, 254, 0.9),
+        0 0 20px rgba(37, 99, 235, 0.9);
+      transform: translateY(-0.5px);
+    }
 
     .chat-log {
       margin-top: 6px;
       border-radius: 16px;
-      background:
-        radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
       border: 1px solid rgba(55, 65, 81, 0.85);
       padding: 10px;
       max-height: 360px;
@@ -699,36 +535,18 @@
       gap: 10px;
       scroll-behavior: smooth;
     }
+    @media (min-width: 768px) { .chat-log { padding: 10px 12px; max-height: 420px; } }
 
-    @media (min-width: 768px) {
-      .chat-log {
-        padding: 10px 12px;
-        max-height: 420px;
-      }
-    }
-
-    .message {
-      display: flex;
-      gap: 8px;
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
-    .message.assistant {
-      justify-content: flex-start;
-    }
-
-    .message.user {
-      justify-content: flex-end;
-    }
+    .message { display: flex; gap: 8px; font-size: 12px; line-height: 1.45; }
+    .message.assistant { justify-content: flex-start; }
+    .message.user { justify-content: flex-end; }
 
     .message .bubble {
       max-width: 92%;
       padding: 7px 9px;
       border-radius: 16px;
       border: 1px solid rgba(55, 65, 81, 0.88);
-      background:
-        radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
       color: #e5e7eb;
       box-shadow: 0 10px 24px rgba(15, 23, 42, 0.9);
       white-space: pre-wrap;
@@ -736,32 +554,17 @@
     }
 
     .message.user .bubble {
-      background:
-        radial-gradient(circle at top left, rgba(129, 140, 248, 0.32), rgba(30, 64, 175, 0.96));
+      background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.32), rgba(30, 64, 175, 0.96));
       border-color: rgba(129, 140, 248, 0.9);
       box-shadow:
         0 14px 32px rgba(30, 64, 175, 0.96),
         0 0 0 1px rgba(129, 140, 248, 0.9);
     }
 
-    .input-row {
-      margin-top: 6px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    .input-row { margin-top: 6px; display: flex; flex-direction: column; gap: 8px; }
+    @media (min-width: 640px) { .input-row { flex-direction: row; align-items: flex-end; } }
 
-    @media (min-width: 640px) {
-      .input-row {
-        flex-direction: row;
-        align-items: flex-end;
-      }
-    }
-
-    .input-wrapper {
-      flex: 1;
-      position: relative;
-    }
+    .input-wrapper { flex: 1; position: relative; }
 
     .input-wrapper textarea {
       width: 100%;
@@ -771,8 +574,7 @@
       padding: 10px 12px 28px;
       border-radius: 999px;
       border: 1px solid rgba(55, 65, 81, 0.9);
-      background:
-        radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
       color: #e5e7eb;
       font-size: 13px;
       line-height: 1.4;
@@ -782,28 +584,13 @@
         0 0 0 1px rgba(30, 64, 175, 0.9);
     }
 
-    .input-wrapper textarea::placeholder {
-      color: #6b7280;
-    }
+    .input-wrapper textarea::placeholder { color: #6b7280; }
 
-    .input-meta {
-      position: absolute;
-      left: 12px;
-      bottom: 7px;
-      font-size: 10px;
-      color: #6b7280;
-    }
+    .input-meta { position: absolute; left: 12px; bottom: 7px; font-size: 10px; color: #6b7280; }
 
-    .input-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      justify-content: flex-end;
-      margin-top: 4px;
-    }
+    .input-actions { display: flex; gap: 8px; align-items: center; justify-content: flex-end; margin-top: 4px; }
 
-    .mic-btn,
-    .send-btn {
+    .mic-btn, .send-btn {
       width: 46px;
       height: 46px;
       border-radius: 999px;
@@ -820,8 +607,7 @@
     }
 
     .mic-btn {
-      background:
-        radial-gradient(circle at top left, rgba(56, 189, 248, 0.25), rgba(37, 99, 235, 0.96));
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.25), rgba(37, 99, 235, 0.96));
       box-shadow:
         0 14px 40px rgba(30, 64, 175, 0.96),
         0 0 0 1px rgba(56, 189, 248, 0.8);
@@ -830,8 +616,7 @@
     .send-btn {
       flex: 1;
       max-width: 150px;
-      background:
-        radial-gradient(circle at top left, rgba(251, 191, 36, 0.14), rgba(245, 158, 11, 0.96));
+      background: radial-gradient(circle at top left, rgba(251, 191, 36, 0.14), rgba(245, 158, 11, 0.96));
       box-shadow:
         0 16px 40px rgba(180, 83, 9, 0.96),
         0 0 0 1px rgba(245, 158, 11, 0.9);
@@ -842,24 +627,21 @@
       text-transform: uppercase;
     }
 
-    .mic-btn:hover,
-    .send-btn:hover {
+    .mic-btn:hover, .send-btn:hover {
       transform: translateY(-1px);
       box-shadow:
         0 18px 46px rgba(15, 23, 42, 0.98),
         0 0 0 1px rgba(129, 140, 248, 0.9);
     }
 
-    .mic-btn:active,
-    .send-btn:active {
+    .mic-btn:active, .send-btn:active {
       transform: translateY(0);
       box-shadow:
         0 10px 26px rgba(15, 23, 42, 0.96),
         0 0 0 1px rgba(37, 99, 235, 0.85);
     }
 
-    .mic-icon,
-    .send-icon {
+    .mic-icon, .send-icon {
       width: 18px;
       height: 18px;
       border-radius: 999px;
@@ -873,36 +655,16 @@
     }
 
     .mic-btn.listening {
-      background:
-        radial-gradient(circle at top left, rgba(244, 63, 94, 0.22), rgba(220, 38, 38, 0.96));
+      background: radial-gradient(circle at top left, rgba(244, 63, 94, 0.22), rgba(220, 38, 38, 0.96));
       box-shadow:
         0 0 0 1px rgba(239, 68, 68, 0.8),
         0 20px 40px rgba(127, 29, 29, 0.95);
     }
 
-    .status-row {
-      margin-top: 4px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 11px;
-      color: #9ca3af;
-    }
+    .status-row { margin-top: 4px; display: flex; flex-direction: column; gap: 6px; font-size: 11px; color: #9ca3af; }
+    @media (min-width: 640px) { .status-row { flex-direction: row; align-items: center; justify-content: space-between; } }
 
-    @media (min-width: 640px) {
-      .status-row {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
-    }
-
-    .status-main {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
+    .status-main { display: flex; align-items: center; gap: 8px; }
     .status-dot {
       width: 8px;
       height: 8px;
@@ -911,20 +673,10 @@
       box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.35);
     }
 
-    .status-text {
-      color: #e5e7eb;
-    }
+    .status-text { color: #e5e7eb; }
 
-    .tts-toggle-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .tts-toggle-label {
-      font-size: 11px;
-      color: #9ca3af;
-    }
+    .tts-toggle-row { display: flex; align-items: center; gap: 8px; }
+    .tts-toggle-label { font-size: 11px; color: #9ca3af; }
 
     .tts-toggle-pill {
       display: inline-flex;
@@ -932,8 +684,7 @@
       gap: 6px;
       padding: 3px 9px;
       border-radius: 999px;
-      background:
-        radial-gradient(circle at top left, rgba(37, 99, 235, 0.65), rgba(15, 23, 42, 1));
+      background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.65), rgba(15, 23, 42, 1));
       border: 1px solid rgba(129, 140, 248, 0.8);
       color: #e5e7eb;
       font-size: 11px;
@@ -944,8 +695,7 @@
     }
 
     .tts-toggle-pill.off {
-      background:
-        radial-gradient(circle at top left, rgba(31, 41, 55, 0.98), rgba(15, 23, 42, 1));
+      background: radial-gradient(circle at top left, rgba(31, 41, 55, 0.98), rgba(15, 23, 42, 1));
       border-color: rgba(75, 85, 99, 0.9);
       color: #9ca3af;
       box-shadow:
@@ -970,8 +720,7 @@
       margin-top: 8px;
       padding: 10px 12px 6px;
       border-radius: 20px;
-      background:
-        radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 1));
       border: 1px solid rgba(55, 65, 81, 0.9);
       box-shadow:
         0 16px 46px rgba(15, 23, 42, 0.98),
@@ -983,73 +732,22 @@
       color: #9ca3af;
     }
 
-    .footer-row {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    .footer-row { display: flex; flex-direction: column; gap: 6px; }
+    @media (min-width: 640px) { .footer-row { flex-direction: row; justify-content: space-between; align-items: center; } }
+
+    .footer-token-title { font-weight: 600; color: #e5e7eb; }
+    .footer-token-text a { color: #a5b4fc; text-decoration: none; }
+    .footer-token-text a:hover { text-decoration: underline; }
+
+    .footer-meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 10px; color: #6b7280; }
+    .footer-meta span { opacity: 0.9; }
+    .footer-meta a { color: #9ca3af; text-decoration: none; }
+    .footer-meta a:hover { text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      .lang-selector { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-start; }
+      .lang-selector .lang-option { flex: 1 1 30%; max-width: 90px; padding: 4px 8px; font-size: 11px; text-align: center; }
     }
-
-    @media (min-width: 640px) {
-      .footer-row {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
-    }
-
-    .footer-token-title {
-      font-weight: 600;
-      color: #e5e7eb;
-    }
-
-    .footer-token-text a {
-      color: #a5b4fc;
-      text-decoration: none;
-    }
-
-    .footer-token-text a:hover {
-      text-decoration: underline;
-    }
-
-    .footer-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      font-size: 10px;
-      color: #6b7280;
-    }
-
-    .footer-meta span {
-      opacity: 0.9;
-    }
-
-    .footer-meta a {
-      color: #9ca3af;
-      text-decoration: none;
-    }
-
-    .footer-meta a:hover {
-      text-decoration: underline;
-    }
-
-    /* === Ajuste selector de idiomas ERPev para celular === */
-@media (max-width: 768px) {
-  .lang-selector {
-    display: flex;
-    flex-wrap: wrap;        /* que los botones se bajen a otra fila */
-    gap: 6px;
-    justify-content: flex-start;
-  }
-
-  .lang-selector .lang-option {
-    flex: 1 1 30%;          /* 2–3 botones por fila, como Com7 */
-    max-width: 90px;
-    padding: 4px 8px;
-    font-size: 11px;        /* un pelín más compacto en móvil */
-    text-align: center;
-  }
-}
-
   </style>
 </head>
 <body>
@@ -1069,17 +767,17 @@
             </div>
             <div class="banner-sub" id="i-banner-desc">Esteborg IA – Despliega todo tu poder es tu programa ejecutivo para usar la IA como ventaja real en tu trabajo, negocio y vida.</div>
           </div>
-         <div class="banner-side">
-  <div class="tag-pill">
-    <span class="tag-dot"></span>
-    <span id="i-access-pill">Acceso exclusivo · Tokken Esteborg Members</span>
-  </div>
-  <div class="tag-sub" id="i-access-desc">
-    Tu sesión se adapta según tu objetivo: aprender IA desde cero, aplicar IA en tu trabajo y automatizar tareas.
-  </div>
-<div class="pill-btn">
-  <span id="i-program-pill">PROGRAMA ESTEBORG IA – DESPLIEGA TODO TU PODER</span>
-</div>
+          <div class="banner-side">
+            <div class="tag-pill">
+              <span class="tag-dot"></span>
+              <span id="i-access-pill">Acceso exclusivo · Tokken Esteborg Members</span>
+            </div>
+            <div class="tag-sub" id="i-access-desc">
+              Tu sesión se adapta según tu objetivo: aprender IA desde cero, aplicar IA en tu trabajo y automatizar tareas.
+            </div>
+            <div class="pill-btn">
+              <span id="i-program-pill">PROGRAMA ESTEBORG IA – DESPLIEGA TODO TU PODER</span>
+            </div>
           </div>
         </div>
 
@@ -1102,17 +800,17 @@
               <button class="chip-btn primary" id="i-btn-lesson">
                 <span class="chip-dot"></span>
                 <span class="chip-label">Aprender IA desde cero</span>
-                <span class="chip-kicker">Módulo 1 · Fundamentos</span>
+                <span class="chip-kicker"></span>
               </button>
               <button class="chip-btn secondary" id="i-btn-emotion">
                 <span class="chip-dot"></span>
                 <span class="chip-label">Aplicar IA en mi trabajo</span>
-                <span class="chip-kicker">Casos reales y flujos</span>
+                <span class="chip-kicker"></span>
               </button>
               <button class="chip-btn tertiary" id="i-btn-challenge">
                 <span class="chip-dot"></span>
                 <span class="chip-label">Dominar ChatGPT y otras IA</span>
-                <span class="chip-kicker">Retos prácticos</span>
+                <span class="chip-kicker"></span>
               </button>
             </div>
           </div>
@@ -1125,12 +823,12 @@
               <button class="subchip-btn" id="i-btn-slides">
                 <span class="subchip-dot"></span>
                 <span class="subchip-label">Estructura del programa</span>
-                <span class="subchip-kicker">Módulos y ruta</span>
+                <span class="subchip-kicker"></span>
               </button>
               <button class="subchip-btn" id="i-btn-summary">
                 <span class="subchip-dot"></span>
                 <span class="subchip-label">Automatizar tareas con IA</span>
-                <span class="subchip-kicker">Ideas y ejemplos</span>
+                <span class="subchip-kicker"></span>
               </button>
             </div>
           </div>
@@ -1143,19 +841,20 @@
                 </div>
                 <div class="chat-meta">
                   <div class="chat-meta-name" id="i-chat-name">Esteborg</div>
-<div class="chat-meta-role" id="i-chat-role">
-  COACH PROFESIONAL DE INTELIGENCIA ARTIFICIAL
-</div>
-</div>
-</div>
-<div class="chat-language-pill">
-  <span class="lang-option active" data-lang="es">ES</span>
-  <span class="lang-option" data-lang="en">EN</span>
-  <span class="lang-option" data-lang="pt">PT</span>
-  <span class="lang-option" data-lang="fr">FR</span>
-  <span class="lang-option" data-lang="it">IT</span>
-  <span class="lang-option" data-lang="de">DE</span>
-</div>
+                  <div class="chat-meta-role" id="i-chat-role">
+                    COACH PROFESIONAL DE INTELIGENCIA ARTIFICIAL
+                  </div>
+                </div>
+              </div>
+
+              <div class="chat-language-pill">
+                <span class="lang-option active" data-lang="es">ES</span>
+                <span class="lang-option" data-lang="en">EN</span>
+                <span class="lang-option" data-lang="pt">PT</span>
+                <span class="lang-option" data-lang="fr">FR</span>
+                <span class="lang-option" data-lang="it">IT</span>
+                <span class="lang-option" data-lang="de">DE</span>
+              </div>
             </div>
 
             <div class="chat-log" id="chat-log"></div>
@@ -1213,47 +912,26 @@
                 </div>
               </div>
               <div class="footer-meta">
-  <span id="i-footer-legal">Propiedad de Esteban Manuel González Cárdenas · Esteborg</span>
-  <span>·</span>
-  <a href="https://esteborg.com" target="_blank">esteborg.com</a>
-</div>
+                <span id="i-footer-legal">
+                  <span>Propiedad de Esteban Manuel González Cárdenas · Esteborg</span>
+                  <span>·</span>
+                  <a href="https://esteborg.com" target="_blank">esteborg.com</a>
+                </span>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
+
   <script>
   (async () => {
     // ========== CONFIG ==========
     const API_BASE = "https://esteborg88full-backend-modular.onrender.com";
     const TTS_URL = API_BASE + "/api/voice";
     const MODULE_PATH = "/api/modules/iavipcom";
-    const SESSION_STORAGE_PREFIX = "esteborg_iavipcom_session_";
-
-    function getSessionKey() {
-  const tkn = (VIP_TOKEN || getVIPTokenFromStorage() || "").slice(0, 24);
-  return SESSION_STORAGE_PREFIX + (tkn || "anon");
-}
-
-function saveSession() {
-  try {
-    localStorage.setItem(getSessionKey(), JSON.stringify({
-      lang: currentLang,
-      history
-    }));
-  } catch (e) {}
-}
-
-function loadSession() {
-  try {
-    const raw = localStorage.getItem(getSessionKey());
-    if (!raw) return null;
-    return JSON.parse(raw);
-  } catch (e) {
-    return null;
-  }
-}
 
     // ========== I18N ==========
     const I18N = {
@@ -1291,10 +969,6 @@ function loadSession() {
           "Tu Tokken Esteborg Members ya está validado ✅. Ahora enfoquémonos en tu entrenamiento en IA.",
         statusTokenInvalid:
           "Tokken inválido o expirado · pega tu Tokken Esteborg Members para continuar.",
-        statusDemoActive:
-          "Modo demo activo · si generas tu Tokken Esteborg Members conservarás acceso completo.",
-        statusDemoEnded:
-          "La demo ha terminado · genera tu Tokken Esteborg Members para seguir con acceso completo.",
         statusTTSOn: "Voz Esteborg activada.",
         statusTTSOff: "Voz Esteborg desactivada.",
         voiceToggleLabel: "Voz Esteborg activada",
@@ -1343,10 +1017,6 @@ function loadSession() {
           "Your Esteborg Members Tokken is validated ✅ · Members VIP mode.",
         statusTokenInvalid:
           "Invalid or expired Tokken · paste your Esteborg Members Tokken to continue.",
-        statusDemoActive:
-          "Demo mode active · if you generate your Esteborg Members Tokken you’ll keep full access.",
-        statusDemoEnded:
-          "Demo ended · generate your Esteborg Members Tokken to keep access.",
         statusTTSOn: "Esteborg Voice activated.",
         statusTTSOff: "Esteborg Voice deactivated.",
         voiceToggleLabel: "Esteborg Voice activated",
@@ -1395,10 +1065,6 @@ function loadSession() {
           "Seu Tokken Esteborg Members já está validado ✅ · Modo Members VIP.",
         statusTokenInvalid:
           "Tokken inválido ou expirado · cole o seu Tokken Esteborg Members para continuar.",
-        statusDemoActive:
-          "Modo demo ativo · se você gerar o seu Tokken Esteborg Members manterá o acesso completo.",
-        statusDemoEnded:
-          "Demo encerrada · gere o seu Tokken Esteborg Members para continuar com acesso.",
         statusTTSOn: "Voz Esteborg ativada.",
         statusTTSOff: "Voz Esteborg desativada.",
         voiceToggleLabel: "Voz Esteborg ativada",
@@ -1447,10 +1113,6 @@ function loadSession() {
           "Ton Tokken Esteborg Members est validé ✅ · Mode Members VIP.",
         statusTokenInvalid:
           "Tokken invalide ou expiré · colle ton Tokken Esteborg Members pour continuer.",
-        statusDemoActive:
-          "Mode démo actif · si tu génères ton Tokken Esteborg Members, tu garderas l’accès complet.",
-        statusDemoEnded:
-          "Démo terminée · génère ton Tokken Esteborg Members pour conserver l’accès.",
         statusTTSOn: "Voix Esteborg activée.",
         statusTTSOff: "Voix Esteborg désactivée.",
         voiceToggleLabel: "Voix Esteborg activée",
@@ -1489,7 +1151,7 @@ function loadSession() {
         btnSummaryText:
           "Aiutami ad automatizzare compiti con l’IA tramite strumenti no-code, agenti e flussi intelligenti.",
         chatName: "Esteborg",
-        chatRole: "COACH PROFESSIONALE DI INTELLIGENZA ARTIFICIALE",
+        chatRole: "COACH PROFESSIONALE DI INTELIGENZA ARTIFICIALE",
         inputPlaceholder:
           "Raccontami cosa vuoi ottenere con l’IA nel tuo lavoro, business o progetti...",
         inputMeta:
@@ -1499,10 +1161,6 @@ function loadSession() {
           "Il tuo Tokken Esteborg Members è stato validato ✅ · Modalità Members VIP.",
         statusTokenInvalid:
           "Tokken non valido o scaduto · incolla il tuo Tokken Esteborg Members per continuare.",
-        statusDemoActive:
-          "Modalità demo attiva · se generi il tuo Tokken Esteborg Members manterrai l’accesso completo.",
-        statusDemoEnded:
-          "Demo terminata · genera il tuo Tokken Esteborg Members per continuare ad avere accesso.",
         statusTTSOn: "Voce Esteborg attivata.",
         statusTTSOff: "Voce Esteborg disattivata.",
         voiceToggleLabel: "Voce Esteborg attivata",
@@ -1551,10 +1209,6 @@ function loadSession() {
           "Esteborg-Members-Tokken validiert ✅ · Members-VIP-Modus.",
         statusTokenInvalid:
           "Tokken ungültig oder abgelaufen · füge deinen Esteborg-Members-Tokken ein.",
-        statusDemoActive:
-          "Demo aktiv · wenn du dein Esteborg-Members-Tokken generierst, behältst du den vollen Zugriff.",
-        statusDemoEnded:
-          "Demo beendet · generiere dein Esteborg-Members-Tokken, um Zugriff zu behalten.",
         statusTTSOn: "Esteborg-Stimme aktiviert.",
         statusTTSOff: "Esteborg-Stimme deaktiviert.",
         voiceToggleLabel: "Esteborg-Stimme aktiviert",
@@ -1583,7 +1237,6 @@ function loadSession() {
 
     const VIP_STORAGE_KEY = "esteborg_vip_token";
 
-    // Mensajes iniciales y de validación por idioma
     const WELCOME_MESSAGES = {
       es: `¡Qué gusto saludarte! 😊 Antes de entrar a tu entrenamiento necesito tu Tokken Esteborg Members para validar tu acceso.
 
@@ -1676,9 +1329,7 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
     function saveVIPToken(token) {
       if (!token) return;
       VIP_TOKEN = token;
-      try {
-        localStorage.setItem(VIP_STORAGE_KEY, token);
-      } catch (e) {}
+      try { localStorage.setItem(VIP_STORAGE_KEY, token); } catch (e) {}
     }
 
     function bootstrapTokenStatus() {
@@ -1686,41 +1337,30 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
       const storedToken = getVIPTokenFromStorage();
       const effectiveToken = urlToken || storedToken || null;
 
-      if (urlToken && urlToken !== storedToken) {
-        saveVIPToken(urlToken);
-      } else if (storedToken) {
-        VIP_TOKEN = storedToken;
-      }
+      if (urlToken && urlToken !== storedToken) saveVIPToken(urlToken);
+      else if (storedToken) VIP_TOKEN = storedToken;
 
       if (effectiveToken) {
         VIP_TOKEN = effectiveToken;
-        setStatus("statusTokenValid");
+        // OJO: no asumimos validación real, solo que existe token guardado.
+        setStatus("statusInitial");
       } else {
         setStatus("statusInitial");
       }
     }
 
-    function showWelcomeMessage() {
-  const log = $("chat-log");
-  if (!log) return;
+    function showWelcomeMessageIfEmpty() {
+      const log = $("chat-log");
+      if (!log) return;
 
-  // si ya hay conversación guardada, restáurala (lo hacemos en el punto 4)
-  log.innerHTML = "";
+      // Si ya hay conversación, NO la borres
+      if (log.childElementCount > 0) return;
 
-  const hasToken = !!(VIP_TOKEN || getVIPTokenFromStorage() || getVIPTokenFromURL());
-
-  history = [];
-
-  const msg = hasToken
-    ? (TOKEN_VALID_MESSAGES[currentLang] || TOKEN_VALID_MESSAGES.es)
-    : (WELCOME_MESSAGES[currentLang] || WELCOME_MESSAGES.es);
-
-  appendMessage("assistant", msg);
-  history.push({ role: "assistant", content: msg });
-
-  playTTS(msg);
-}
-
+      const msg = WELCOME_MESSAGES[currentLang] || WELCOME_MESSAGES.es;
+      appendMessage("assistant", msg);
+      history.push({ role: "assistant", content: msg });
+      playTTS(msg);
+    }
 
     // ========== UI / LENGUAJE ==========
     function applyLanguage(lang) {
@@ -1748,11 +1388,10 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
       const inputMeta = document.querySelector(".input-meta");
       if (inputMeta) inputMeta.textContent = t("inputMeta");
 
-      // Voz
       setText("i-voice-toggle-label", t("voiceToggleLabel"));
       setText("i-voice-pill", t("voicePill"));
 
-      // ✅ Chips: NO reventamos markup; solo el label interno
+      // Solo traducimos labels, no tocamos kickers
       const lessonBtn = $("i-btn-lesson");
       const emotionBtn = $("i-btn-emotion");
       const challengeBtn = $("i-btn-challenge");
@@ -1780,32 +1419,41 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
         if (label) label.textContent = t("btnSummary");
       }
 
-      // Idioma activo
       document.querySelectorAll(".lang-option").forEach((btn) => {
         const btnLang = btn.getAttribute("data-lang");
         btn.classList.toggle("active", btnLang === currentLang);
       });
+
+      // Actualiza idioma del mic si existe
+      if (recognition) {
+        recognition.lang =
+          currentLang === "en"
+            ? "en-US"
+            : currentLang === "pt"
+            ? "pt-BR"
+            : currentLang === "fr"
+            ? "fr-FR"
+            : currentLang === "it"
+            ? "it-IT"
+            : currentLang === "de"
+            ? "de-DE"
+            : "es-MX";
+      }
     }
 
     // ========== CHAT ==========
     function appendMessage(role, content) {
-  const log = $("chat-log");
-  if (!log) return;
-
-  const wrapper = document.createElement("div");
-  wrapper.className = "message " + (role === "assistant" ? "assistant" : "user");
-
-  const bubble = document.createElement("div");
-  bubble.className = "bubble";
-  bubble.textContent = content;
-
-  wrapper.appendChild(bubble);
-  log.appendChild(wrapper);
-  log.scrollTop = log.scrollHeight;
-
-  // guarda sesión
-  saveSession();
-}
+      const log = $("chat-log");
+      if (!log) return;
+      const wrapper = document.createElement("div");
+      wrapper.className = "message " + (role === "assistant" ? "assistant" : "user");
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = content;
+      wrapper.appendChild(bubble);
+      log.appendChild(wrapper);
+      log.scrollTop = log.scrollHeight;
+    }
 
     // ========== TTS ==========
     function stopTTS() {
@@ -1850,11 +1498,7 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
       if (!raw) return false;
       const s = String(raw).trim().replace(/\s+/g, "");
       if (s.length < 40) return false;
-
-      // JWT (eyJ... . ... . ...)
       if (s.startsWith("eyJ") && (s.match(/\./g) || []).length >= 2) return true;
-
-      // base64/base64url largo
       return /^[A-Za-z0-9+/=_\-\.]+$/.test(s);
     }
 
@@ -1866,7 +1510,7 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
       const text = (optionalText || (inputEl && inputEl.value) || "").trim();
       if (!text || isSending) return;
 
-      // Si el usuario pega el Tokken como mensaje (lo interceptamos y NO lo mandamos al backend)
+      // Intercepta token pegado
       if (!optionalText && looksLikeVipToken(text)) {
         const cleaned = text.replace(/\s+/g, "");
         saveVIPToken(cleaned);
@@ -1883,7 +1527,6 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
         return;
       }
 
-      // Mensaje normal al backend
       appendMessage("user", text);
       history.push({ role: "user", content: text });
       if (inputEl) inputEl.value = "";
@@ -1979,34 +1622,17 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
 
     // ========== INIT ==========
     document.addEventListener("DOMContentLoaded", () => {
-  applyLanguage("es");
-  bootstrapTokenStatus();
+      applyLanguage("es");
+      bootstrapTokenStatus();
+      showWelcomeMessageIfEmpty();
 
-  const session = loadSession();
-  if (session && Array.isArray(session.history) && session.history.length) {
-    history = session.history;
-    if (session.lang && I18N[session.lang]) applyLanguage(session.lang);
-
-    const log = $("chat-log");
-    log.innerHTML = "";
-    history.forEach(m => appendMessage(m.role, m.content));
-    if (VIP_TOKEN || getVIPTokenFromStorage()) setStatus("statusTokenValid");
-    else setStatus("statusInitial");
-  } else {
-    showWelcomeMessage();
-  }
-
-      // Idiomas
+      // Idiomas (YA NO reiniciamos chat)
       document.querySelectorAll(".lang-option").forEach((btn) => {
         btn.addEventListener("click", () => {
-  const lang = btn.getAttribute("data-lang") || "es";
-  applyLanguage(lang);
-
-  // NO reiniciar chat ni history
-  // solo actualiza el status según token
-  if (VIP_TOKEN || getVIPTokenFromStorage()) setStatus("statusTokenValid");
-  else setStatus("statusInitial");
-});
+          const lang = btn.getAttribute("data-lang") || "es";
+          applyLanguage(lang);
+          // No limpiamos el chat; solo cambiamos UI
+        });
       });
 
       // Chips
@@ -2071,6 +1697,6 @@ Sobald du dein Tokken hast, füge es hier ein oder greife über dein Members-VIP
       }
     });
   })().catch(console.error);
-</script>
+  </script>
 </body>
 </html>
