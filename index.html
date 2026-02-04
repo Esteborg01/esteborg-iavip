@@ -537,7 +537,7 @@
     }
     @media (min-width: 768px) { .chat-log { padding: 10px 12px; max-height: 420px; } }
 
-    .message { display: flex; gap: 8px; font-size: 12px; line-height: 1.45; }
+    .message { display: flex; gap: 8px; font-size: 14px; line-height: 1.45; }
     .message.assistant { justify-content: flex-start; }
     .message.user { justify-content: flex-end; }
 
@@ -586,7 +586,7 @@
 
     .input-wrapper textarea::placeholder { color: #6b7280; }
 
-    .input-meta { position: absolute; left: 12px; bottom: 7px; font-size: 10px; color: #6b7280; }
+    .input-meta { position: absolute; left: 12px; bottom: 7px; font-size: 14px; color: #6b7280; }
 
     .input-actions { display: flex; gap: 8px; align-items: center; justify-content: flex-end; margin-top: 4px; }
 
@@ -748,6 +748,57 @@
       .lang-selector { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-start; }
       .lang-selector .lang-option { flex: 1 1 30%; max-width: 90px; padding: 4px 8px; font-size: 11px; text-align: center; }
     }
+    /* ====== FULLSCREEN + NO PAGE SCROLL ====== */
+html, body {
+  height: 100%;
+  overflow: hidden; /* quita scroll del documento */
+}
+
+#app {
+  min-height: 100vh;
+  height: 100vh;      /* fuerza altura exacta */
+  overflow: hidden;   /* no scroll en contenedor */
+  padding: 0;         /* opcional: si NO quieres que corte nada, déjalo como estaba */
+}
+
+/* La shell ocupa la altura de pantalla disponible */
+.shell {
+  height: calc(100vh - 48px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mantiene el layout interno sin scroll */
+.shell-inner {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Permite que el panel crezca */
+.panel {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* El chat-card se estira, pero NO genera scroll global */
+.chat-card {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ✅ SOLO el chat-log scrollea */
+.chat-log {
+  flex: 1;
+  overflow-y: auto;
+  max-height: none; /* quita tu límite fijo */
+}
   </style>
 </head>
 <body>
