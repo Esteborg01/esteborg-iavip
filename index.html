@@ -799,6 +799,73 @@ html, body {
   overflow-y: auto;
   max-height: none; /* quita tu límite fijo */
 }
+/* ============================= */
+/* CHAT MÁS GRANDE / INPUT MÁS CHICO */
+/* ============================= */
+
+/* Hace que la tarjeta de chat use mejor la altura */
+.chat-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 🔥 CHAT LOG MÁS GRANDE */
+.chat-log {
+  flex: 1;
+  min-height: 420px;      /* antes ~360 */
+  max-height: none;       /* quitamos límite viejo */
+  overflow-y: auto;
+}
+
+/* ============================= */
+/* ✍️ INPUT MÁS COMPACTO */
+/* ============================= */
+
+.input-row {
+  flex-shrink: 0;
+}
+
+/* Caja de texto más baja */
+.input-wrapper textarea {
+  min-height: 42px;     /* antes 54 */
+  max-height: 90px;     /* antes 120 */
+  padding: 8px 12px 22px;
+  font-size: 12.5px;
+}
+
+/* Ajuste del texto meta dentro */
+.input-meta {
+  font-size: 9.5px;
+  bottom: 6px;
+}
+
+/* Botones un poquito más compactos (opcional elegante) */
+.mic-btn,
+.send-btn {
+  width: 42px;
+  height: 42px;
+}
+
+/* ============================= */
+/* 📱 MOBILE OPTIMIZACIÓN */
+/* ============================= */
+
+@media (max-width: 768px) {
+
+  .chat-log {
+  height: clamp(420px, 60vh, 700px);
+}
+
+  .input-wrapper textarea {
+    min-height: 40px;
+    max-height: 80px;
+  }
+
+}
+
+    
   </style>
 </head>
 <body>
